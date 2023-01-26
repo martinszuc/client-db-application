@@ -1,0 +1,59 @@
+.idea
+
+# Built application files
+*.apk
+*.ap_
+
+# Files for the ART/Dalvik VM
+*.dex
+
+# Java class files
+*.class
+
+# Generated files
+bin/
+gen/
+out/
+build/
+captures/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Gradle files
+.gradle/
+build/
+
+# NDK files
+obj/
+jniLibs/
+
+# Android Studio Navigation editor temp files
+.navigation/
+
+# Android Studio captures folder
+captures/
+
+# Proguard files
+proguard-rules.pro
+proguard-project.txt
+
+# Log Files
+*.log
+*.txt
+.idea/workspace.xml
+.idea/tasks.xml
+
+# Android Studio 3.1+ serialized cache file
+.idea/caches/build_file_checksums.ser
+
+# Android Studio 4.1+ serialized cache file for configurations
+.idea/caches/gradle_models.ser
+
+# IntelliJ
+*.iml
+.idea_modules/
+.idea/libraries/
+.idea/modules.xml
+.idea/workspace.xml
+.idea_tasks.xml

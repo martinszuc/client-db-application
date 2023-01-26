@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary color for the app bars and buttons -->
+    <color name="colorPrimary">#FF4081</color>
+    <!-- Secondary color for the app bars and buttons when pressed -->
+    <color name="colorPrimaryVariant">#F50057</color>
+    <!-- Background color for the app theme -->
+    <color name="colorBackground">#FFFFFF</color>
+    <!-- Surface color for cards, menus, and dialogs -->
+    <color name="colorSurface">#F5F5F5</color>
+    <!-- Color for icons and text on primary color -->
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <!-- Color for icons and text on background color -->
+    <color name="colorOnBackground">#212121</color>
+    <!-- Color for icons and text on surface color -->
+    <color name="colorOnSurface">#212121</color>
+    <!-- Secondary color for accent elements -->
+    <color name="colorSecondary">#FF80AB</color>
+    <!-- Secondary color for accent elements when pressed or focused -->
+    <color name="colorSecondaryVariant">#FF4081</color>
+    <!-- Color for icons and text on secondary color -->
+    <color name="colorOnSecondary">#FFFFFF</color>
+    <!-- Color for the status bar -->
+    <color name="colorStatusBar">#C51162</color>
+</resources>
+
+
+    <!--<resources>-->
+<!--    <color name="colorBars">#F4ACB7</color>-->
+<!--    <color name="colorSecondary">#FFCAD4</color>-->
+<!--    <color name="colorIcons">#9D8189</color>-->
+<!--    <color name="colorIconsPressed">#F4ACB7</color>-->
+<!--    <color name="colorBackgroundLight">#FFE5D9</color>-->
+<!--    <color name="colorBackground">#D8E2DC</color>-->
+<!--    <color name="colorSurface">#ECCFC3</color>-->
+<!--    <color name="colorOnSurfaceDark">#9D8189</color>-->
+<!--    <color name="colorTextLightGray">#333333</color>-->
+<!--    <color name="colorTextDarkPink">#6C1A7E</color>-->
+<!--    <color name="white">#FFFFFF</color>-->
+
+<!--</resources>-->
