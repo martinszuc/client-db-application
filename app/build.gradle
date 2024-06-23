@@ -61,12 +61,18 @@ dependencies {
 
     // Hilt for dependency injection
     implementation 'com.google.dagger:hilt-android:2.46.1'
+    implementation 'androidx.databinding:databinding-adapters:8.5.0'
     kapt 'com.google.dagger:hilt-compiler:2.46.1'
 
     // Lifecycle components for MVVM
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.2'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.8.2'
     implementation 'androidx.fragment:fragment-ktx:1.8.0'
+
+    // Room components
+    implementation 'androidx.room:room-runtime:2.6.1'
+    kapt 'androidx.room:room-compiler:2.6.1'
+    implementation 'androidx.room:room-ktx:2.6.1'
 
     // Test dependencies
     testImplementation 'androidx.test:core-ktx:1.5.0'
