@@ -22,7 +22,7 @@
         tools:layout="@layout/fragment_services" />
     <fragment
         android:id="@+id/fragmentSettings"
-        android:name="com.matos.app.FragmentSettings"
+        android:name="com.matos.app.ui.component.settings.FragmentSettings"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
 </navigation>

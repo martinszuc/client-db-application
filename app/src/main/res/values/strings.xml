@@ -37,4 +37,6 @@
     <string name="select_time">Čas</string>
     <string name="sort">Poradie\n</string>
     <string name="sort_by_name">Podľa mena\n</string>
+    <string name="description">desription</string>
+    <string name="price">price</string>
 </resources>

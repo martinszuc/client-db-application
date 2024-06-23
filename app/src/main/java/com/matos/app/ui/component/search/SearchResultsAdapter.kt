@@ -13,12 +13,7 @@ import java.util.Locale
 class SearchResultsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val searchResults = mutableListOf<Any>()
-    private val originalItems = mutableListOf<Any>()
-    private var clients: List<Client> = emptyList()
 
-    fun setClients(clients: List<Client>) {
-        this.clients = clients
-    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
@@ -37,20 +32,12 @@ class SearchResultsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = searchResults[position]
         when (holder) {
-            is ClientViewHolder -> {
-                val client = item as Client
-                holder.bind(client)
-            }
-            is ServiceViewHolder -> {
-                val service = item as Service
-                holder.bind(service)
-            }
+            is ClientViewHolder -> holder.bind(item as Client)
+            is ServiceViewHolder -> holder.bind(item as Service)
         }
     }
 
-    override fun getItemCount(): Int {
-        return searchResults.size
-    }
+    override fun getItemCount(): Int = searchResults.size
 
     override fun getItemViewType(position: Int): Int {
         return when (searchResults[position]) {
@@ -63,19 +50,11 @@ class SearchResultsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     fun updateSearchResults(results: List<Any>) {
         searchResults.clear()
         searchResults.addAll(results)
-
-        // Save the original list of items when updating the search results
-        if (originalItems.isEmpty()) {
-            originalItems.addAll(searchResults)
-        }
-
         notifyDataSetChanged()
     }
 
     fun clearSearchResults() {
-        // Clear the search results and show the original list of items
         searchResults.clear()
-        searchResults.addAll(originalItems)
         notifyDataSetChanged()
     }
 
@@ -94,13 +73,12 @@ class SearchResultsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         fun bind(service: Service) {
             val dateFormat = SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.getDefault())
-
-            binding.textViewServiceDate.text = service.date?.let { dateFormat.format(it) }
+            binding.textViewServiceDate.text = dateFormat.format(service.date)
             binding.textViewServicePrice.text = service.price.toString()
             binding.textViewServiceDescription.text = service.description
-
-            val client = clients.find { it.id == service.clientId }
-            binding.textViewClientName.text = client?.name ?: ""
+            // Assume clients list is provided to the adapter
+//            val client = // Find client based on service.client_id
+//                binding.textViewClientName.text = client?.name ?: ""
         }
     }
 

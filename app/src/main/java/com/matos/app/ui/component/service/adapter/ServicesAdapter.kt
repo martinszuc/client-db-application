@@ -28,13 +28,13 @@ class ServicesAdapter(
     inner class ViewHolder(private val binding: ServicesCardViewBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(service: Service) {
-            val client = clients.find { it.id == service.clientId }
+            val client = clients.find { it.id == service.client_id }
             val dateFormat = SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.getDefault())
 
             binding.textViewClientName.text = client?.name ?: ""
             binding.textViewServiceDescription.text = service.description
-            binding.textViewServiceDate.text = service.date?.let { dateFormat.format(it) }
-            binding.textViewServicePrice.text = service.price?.toString()
+            binding.textViewServiceDate.text = service.date.let { dateFormat.format(it) }
+            binding.textViewServicePrice.text = service.price.toString()
         }
 
     }

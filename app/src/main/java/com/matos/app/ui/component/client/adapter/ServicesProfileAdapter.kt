@@ -1,4 +1,4 @@
-package com.matos.app.ui.component.service.adapter
+package com.matos.app.ui.component.client.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -23,8 +23,8 @@ class ServicesProfileAdapter(private val services: List<Service>) : RecyclerView
     inner class ViewHolder(private val binding: ServicesProfileCardViewBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(service: Service) {
             binding.textViewServiceDescription.text = service.description
-            binding.textViewServiceDate.text = service.date?.toString()
-            binding.textViewServicePrice.text = service.price?.toString()
+            binding.textViewServiceDate.text = service.date.toString()
+            binding.textViewServicePrice.text = service.price.toString()
         }
     }
 }

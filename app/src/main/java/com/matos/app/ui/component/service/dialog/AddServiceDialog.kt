@@ -1,4 +1,5 @@
-package com.matos.app.ui.component.service
+// ui/component/service/dialog/AddServiceDialog.kt
+package com.matos.app.ui.component.service.dialog
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -8,51 +9,49 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.fragment.app.Fragment
-import com.matos.app.ActivityMain
-import com.matos.app.databinding.FragmentAddServiceBinding
-import com.matos.app.data.entity.Client
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.matos.app.data.entity.Service
-import com.matos.app.ui.component.client.FragmentAddClient
-import com.matos.app.data.database.DbContext
+import com.matos.app.databinding.DialogAddServiceBinding
+import com.matos.app.ui.component.service.ServiceViewModel
+import com.matos.app.ui.viewmodel.SharedClientViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 
-class FragmentAddService : Fragment() {
+@AndroidEntryPoint
+class AddServiceDialog : DialogFragment() {
 
-    private lateinit var binding: FragmentAddServiceBinding
-    private lateinit var dbContext: DbContext
-    private lateinit var clientsList: MutableList<Client>
+    private var _binding: DialogAddServiceBinding? = null
+    private val binding get() = _binding!!
+    private val serviceViewModel: ServiceViewModel by viewModels()
+    private val sharedClientViewModel: SharedClientViewModel by activityViewModels()
     private val calendar = Calendar.getInstance()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentAddServiceBinding.inflate(inflater, container, false)
+        _binding = DialogAddServiceBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dbContext = DbContext(requireContext(), null)
 
-        clientsList = dbContext.getClients().toMutableList()
-
-        // Create a list of client names to display in the dropdown
-        val clientNames = clientsList.map { it.name }
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, clientNames)
-        binding.clientSpinner.adapter = adapter
+        sharedClientViewModel.clients.observe(viewLifecycleOwner) { clients ->
+            val clientNames = clients.map { it.name }
+            val adapter =
+                ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, clientNames)
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.clientSpinner.adapter = adapter
+        }
 
         binding.buttonSave.setOnClickListener {
             addService()
-            val activity = requireActivity() as? ActivityMain
-            activity?.loadFragment(FragmentServices())
-        }
-
-        binding.buttonAddClient.setOnClickListener {
-            val activity = requireActivity() as? ActivityMain
-            activity?.loadFragment(FragmentAddClient())
+            dismiss()
         }
 
         binding.buttonDate.setOnClickListener {
@@ -62,6 +61,7 @@ class FragmentAddService : Fragment() {
                     calendar.set(Calendar.YEAR, year)
                     calendar.set(Calendar.MONTH, month)
                     calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                    updateDateInView()
                 },
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
@@ -76,6 +76,7 @@ class FragmentAddService : Fragment() {
                 { _, hourOfDay, minute ->
                     calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
                     calendar.set(Calendar.MINUTE, minute)
+                    updateTimeInView()
                 },
                 calendar.get(Calendar.HOUR_OF_DAY),
                 calendar.get(Calendar.MINUTE),
@@ -85,8 +86,20 @@ class FragmentAddService : Fragment() {
         }
     }
 
+    private fun updateDateInView() {
+        val myFormat = "dd/MM/yyyy" // In which you need put here
+        val sdf = SimpleDateFormat(myFormat, Locale.getDefault())
+        binding.buttonDate.text = sdf.format(calendar.time)
+    }
+
+    private fun updateTimeInView() {
+        val myFormat = "HH:mm" // In which you need put here
+        val sdf = SimpleDateFormat(myFormat, Locale.getDefault())
+        binding.buttonTime.text = sdf.format(calendar.time)
+    }
+
     private fun addService() {
-        val clientId = clientsList[binding.clientSpinner.selectedItemPosition].id
+        val clientId = sharedClientViewModel.clients.value?.get(binding.clientSpinner.selectedItemPosition)?.id ?: -1
         val description = binding.editTextDescription.text.toString()
         val price = binding.editTextPrice.text.toString().toDoubleOrNull()
         if (clientId == -1 || description.isEmpty() || price == null) {
@@ -94,16 +107,15 @@ class FragmentAddService : Fragment() {
             return
         }
         val date = calendar.time
-        val service = Service(clientId, description, date, price)
-        dbContext.addService(service)
+        val service = Service(0, clientId, description, date, price)
+        serviceViewModel.addService(service)
         Toast.makeText(requireContext(), "Service added successfully", Toast.LENGTH_SHORT).show()
         binding.editTextDescription.text = null
         binding.editTextPrice.text = null
     }
 
-
-    override fun onDestroy() {
-        super.onDestroy()
-        dbContext.close()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

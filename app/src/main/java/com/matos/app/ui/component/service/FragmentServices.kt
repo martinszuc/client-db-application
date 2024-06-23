@@ -1,70 +1,57 @@
 package com.matos.app.ui.component.service
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.matos.app.ActivityMain
-import com.matos.app.R
-import com.matos.app.ui.component.service.adapter.ServicesAdapter
+import com.matos.app.data.entity.Client
 import com.matos.app.databinding.FragmentServicesBinding
-import com.matos.app.data.database.DbContext
+import com.matos.app.ui.component.service.adapter.ServicesAdapter
+import com.matos.app.ui.component.service.dialog.AddServiceDialog
+import com.matos.app.ui.viewmodel.SharedServiceViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FragmentServices : Fragment() {
 
-    private lateinit var recyclerViewServices: RecyclerView
-    private lateinit var dbContext: DbContext
-    private lateinit var recyclerView: RecyclerView
     private var _binding: FragmentServicesBinding? = null
     private val binding get() = _binding!!
-
+    private val sharedServiceViewModel: SharedServiceViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentServicesBinding.inflate(inflater, container, false)
-        recyclerViewServices = binding.recyclerViewServices
-        dbContext = DbContext(requireContext(), null)
         return binding.root
     }
 
-    @SuppressLint("Range")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.addFab.setOnClickListener {
-            val activity = requireActivity() as? ActivityMain
-            activity?.loadFragment(FragmentAddService())
+            AddServiceDialog().show(childFragmentManager, "AddServiceDialog")
         }
 
-        val dBHelper = DbContext(requireContext(), null)
+        val recyclerView = binding.recyclerViewServices
+        recyclerView.layoutManager = LinearLayoutManager(activity)
 
-        val clients = dBHelper.getClients()
-        val services = dBHelper.getServices()
+        sharedServiceViewModel.services.observe(viewLifecycleOwner, Observer { services ->
+            val clients = listOf<Client>() // Fetch or pass your clients list here
+            val servicesAdapter = ServicesAdapter(services, clients)
+            recyclerView.adapter = servicesAdapter
+        })
 
-        if (services.isNotEmpty()) {
-
-            recyclerView = view.findViewById(R.id.recyclerViewServices)
-            recyclerView.layoutManager = LinearLayoutManager(activity)
-            recyclerView.adapter = ServicesAdapter(services,clients)
-        } else {
-            val activity = requireActivity() as? ActivityMain
-            activity?.loadFragment(FragmentServicesEmpty())
-        }
-
-        dBHelper.close()
+        sharedServiceViewModel.loadServices()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
-
-
-
-
-
 
