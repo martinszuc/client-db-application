@@ -3,39 +3,23 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- Use the selector drawables for the clients item -->
     <item
         android:id="@+id/fragmentClients"
         android:title="@string/label_clients"
-        android:enabled="true"
-        android:icon="@drawable/ic_face"
-        android:tint="@drawable/menu_icon"
-        app:titleTextColor="@color/menu_title"/>
+        android:icon="@drawable/ic_face" />
 
-    <!-- Use the selector drawables for the services item -->
     <item
         android:id="@+id/fragmentServices"
         android:title="@string/label_services"
-        android:enabled="true"
-        android:icon="@drawable/ic_lipstick_bold"
-        android:tint="@drawable/menu_icon"
-        app:titleTextColor="@color/menu_title"/>
+        android:icon="@drawable/ic_lipstick_bold" />
 
-    <!-- Use the selector drawables for the search item -->
     <item
         android:id="@+id/fragmentSearch"
         android:title="@string/label_search"
-        android:enabled="true"
-        android:icon="@drawable/ic_baseline_search_24"
-        android:tint="@drawable/menu_icon"
-        app:titleTextColor="@color/menu_title"/>
+        android:icon="@drawable/ic_baseline_search_24" />
 
-    <!-- Use the selector drawables for the settings item -->
     <item
         android:id="@+id/fragmentSettings"
         android:title="@string/label_settings"
-        android:enabled="true"
-        android:icon="@drawable/ic_baseline_settings_24"
-        android:tint="@drawable/menu_icon"
-        app:titleTextColor="@color/menu_title"/>
+        android:icon="@drawable/ic_baseline_settings_24" />
 </menu>

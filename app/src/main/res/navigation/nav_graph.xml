@@ -2,27 +2,26 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_chart"
+    android:id="@+id/nav_graph"
     app:startDestination="@id/fragmentClients">
 
     <fragment
         android:id="@+id/fragmentSearch"
         android:name="com.matos.app.ui.component.search.FragmentSearch"
-        android:label="fragment_search"
+        android:label="@string/fragment_search"
         tools:layout="@layout/fragment_search" />
     <fragment
         android:id="@+id/fragmentClients"
         android:name="com.matos.app.ui.component.client.FragmentClients"
-        android:label="fragment_clients"
+        android:label="@string/fragment_clients"
         tools:layout="@layout/fragment_clients" />
     <fragment
         android:id="@+id/fragmentServices"
         android:name="com.matos.app.ui.component.service.FragmentServices"
-        android:label="fragment_services"
+        android:label="@string/fragment_services"
         tools:layout="@layout/fragment_services" />
     <fragment
         android:id="@+id/fragmentSettings"
         android:name="com.matos.app.ui.component.settings.FragmentSettings"
-        android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" />
+        android:label="@string/fragment_settings"/>
 </navigation>

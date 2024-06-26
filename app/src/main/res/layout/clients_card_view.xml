@@ -5,41 +5,56 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     app:cardCornerRadius="5dp"
-    app:cardElevation="5dp">
+    app:cardElevation="5dp"
+    app:cardBackgroundColor="?attr/colorSurface">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@color/colorSurface">
+        android:background="?attr/colorSurface">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:background="?attr/colorSurface">
 
-        <!-- Media -->
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center"
-            android:contentDescription="@string/str"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/default_pfp"
-            />
+            <!-- Media -->
+            <ImageView
+                android:id="@+id/image_view_client"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:contentDescription="@string/str"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/default_pfp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <!-- Client Name -->
+            <TextView
+                android:id="@+id/text_view_client_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/str"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textColor="?attr/colorOnSurface"
+                app:layout_constraintStart_toEndOf="@id/image_view_client"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/image_view_client"
+                app:layout_constraintBottom_toBottomOf="@id/image_view_client"
+                android:layout_marginStart="16dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/colorSurface"
+            android:background="?attr/colorSecondaryContainer"
             android:padding="16dp">
 
             <!-- Title, secondary and supporting text -->
-            <TextView
-                android:id="@+id/text_view_client_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/str"
-                android:textAppearance="?attr/textAppearanceBody1"
-                android:textColor="@color/colorOnSurface" />
-
             <TextView
                 android:id="@+id/text_view_client_email"
                 android:layout_width="wrap_content"
@@ -47,20 +62,18 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/str"
                 android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="@color/colorOnSurface" />
+                android:textColor="?attr/colorOnSurface"/>
 
             <TextView
                 android:id="@+id/text_view_client_phone"
-
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/str"
                 android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="@color/colorOnSurface" />
+                android:textColor="?attr/colorOnSurface"/>
 
         </LinearLayout>
     </LinearLayout>
-
 
 </com.google.android.material.card.MaterialCardView>

@@ -5,32 +5,39 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     app:cardCornerRadius="5dp"
-    app:cardElevation="5dp">
+    app:cardElevation="5dp"
+    app:cardBackgroundColor="?attr/colorSurface">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorSurface"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:background="?attr/colorSurface">
 
         <TextView
             android:id="@+id/textViewServiceDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@color/colorOnSurface" />
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:textColor="?attr/colorOnSurface"
+            android:text="Service Description"/>
 
         <TextView
             android:id="@+id/textViewServiceDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@color/colorOnSurface" />
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="?attr/colorOnSurface"
+            android:text="Service Date"/>
 
         <TextView
             android:id="@+id/textViewServicePrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@color/colorOnSurface" />
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="?attr/colorOnSurface"
+            android:text="Service Price"/>
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

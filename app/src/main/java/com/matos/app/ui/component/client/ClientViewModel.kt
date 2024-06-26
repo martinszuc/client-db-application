@@ -12,22 +12,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ClientViewModel @Inject constructor(
-    private val clientRepository: ClientRepository
 ) : ViewModel() {
 
-    private val _clients = MutableLiveData<List<Client>>()
-    val clients: LiveData<List<Client>> get() = _clients
-
-    fun loadClients() {
-        viewModelScope.launch {
-            _clients.value = clientRepository.getClients()
-        }
-    }
-
-    fun addClient(client: Client) {
-        viewModelScope.launch {
-            clientRepository.insertClient(client)
-            loadClients()
-        }
-    }
 }

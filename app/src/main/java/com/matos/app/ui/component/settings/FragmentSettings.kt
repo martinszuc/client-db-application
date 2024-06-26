@@ -1,41 +1,30 @@
 package com.matos.app.ui.component.settings
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import com.matos.app.databinding.FragmentSettingsBinding
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.preference.ListPreference
+import androidx.preference.PreferenceFragmentCompat
+import com.matos.app.R
 
-class FragmentSettings : Fragment() {
+class FragmentSettings : PreferenceFragmentCompat() {
 
-    private var _binding: FragmentSettingsBinding? = null
-    private val binding get() = _binding!!
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        setPreferencesFromResource(R.xml.preferences, rootKey)
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        // Set up the switch listeners
-        binding.switchSetting1.setOnCheckedChangeListener { _, isChecked ->
-            // TODO Handle the switch state change here
+        val themePreference: ListPreference? = findPreference("theme_preference")
+        themePreference?.setOnPreferenceChangeListener { _, newValue ->
+            when (newValue) {
+                "light" -> {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                }
+                "dark" -> {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                }
+                "system_default" -> {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                }
+            }
+            true
         }
-
-        binding.switchSetting2.setOnCheckedChangeListener { _, isChecked ->
-            // TODO Handle the switch state change here
-        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
