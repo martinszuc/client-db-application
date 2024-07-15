@@ -2,32 +2,45 @@ package com.matos.app.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.matos.app.data.entity.Service
 import com.matos.app.data.repository.ServiceRepository
+import com.matos.app.ui.base.AbstractViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SharedServiceViewModel @Inject constructor(
     private val serviceRepository: ServiceRepository
-) : ViewModel() {
+) : AbstractViewModel() {
 
     private val _services = MutableLiveData<List<Service>>()
     val services: LiveData<List<Service>> get() = _services
 
     fun loadServices() {
-        viewModelScope.launch {
-            _services.value = serviceRepository.getServices()
-        }
+        launchDataLoad(
+            execution = {
+                serviceRepository.getServices()
+            },
+            onSuccess = { servicesList ->
+                _services.value = servicesList
+            },
+            onFailure = {
+                // Handle the failure
+            }
+        )
     }
 
     fun addService(service: Service) {
-        viewModelScope.launch {
-            serviceRepository.insertService(service)
-            loadServices()
-        }
+        launchDataLoad(
+            execution = {
+                serviceRepository.insertService(service)
+            },
+            onSuccess = {
+                loadServices()
+            },
+            onFailure = {
+                // Handle the failure
+            }
+        )
     }
 }

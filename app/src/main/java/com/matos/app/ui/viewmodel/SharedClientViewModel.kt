@@ -2,18 +2,16 @@ package com.matos.app.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.matos.app.data.entity.Client
 import com.matos.app.data.repository.ClientRepository
+import com.matos.app.ui.base.AbstractViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SharedClientViewModel @Inject constructor(
     private val clientRepository: ClientRepository
-) : ViewModel() {
+) : AbstractViewModel() {
 
     private val _clients = MutableLiveData<List<Client>>()
     val clients: LiveData<List<Client>> get() = _clients
@@ -26,15 +24,30 @@ class SharedClientViewModel @Inject constructor(
     }
 
     fun loadClients() {
-        viewModelScope.launch {
-            _clients.value = clientRepository.getClients()
-        }
+        launchDataLoad(
+            execution = {
+                clientRepository.getClients()
+            },
+            onSuccess = { clientsList ->
+                _clients.value = clientsList
+            },
+            onFailure = {
+                // Handle the failure
+            }
+        )
     }
 
     fun addClient(client: Client) {
-        viewModelScope.launch {
-            clientRepository.insertClient(client)
-            loadClients()
-        }
+        launchDataLoad(
+            execution = {
+                clientRepository.insertClient(client)
+            },
+            onSuccess = {
+                loadClients()
+            },
+            onFailure = {
+                // Handle the failure
+            }
+        )
     }
 }

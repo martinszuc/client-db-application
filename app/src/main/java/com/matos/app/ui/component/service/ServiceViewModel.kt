@@ -1,21 +1,14 @@
 package com.matos.app.ui.component.service
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.matos.app.data.entity.Service
 import com.matos.app.data.repository.ServiceRepository
+import com.matos.app.ui.base.AbstractViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ServiceViewModel @Inject constructor(
-    private val serviceRepository: ServiceRepository
-) : ViewModel() {
-
-    fun addService(service: Service) {
-        viewModelScope.launch {
-            serviceRepository.insertService(service)
-        }
-    }
+) : AbstractViewModel() {
 }

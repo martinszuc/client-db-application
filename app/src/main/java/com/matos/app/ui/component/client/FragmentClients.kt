@@ -1,20 +1,20 @@
 package com.matos.app.ui.component.client
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.matos.app.ClientsAdapter
 import com.matos.app.databinding.FragmentClientsBinding
+import com.matos.app.ui.base.AbstractFragment
 import com.matos.app.ui.component.client.dialog.AddClientDialog
 import com.matos.app.ui.component.client.dialog.ClientProfileDialog
 import com.matos.app.ui.viewmodel.SharedClientViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FragmentClients : Fragment() {
+class FragmentClients : AbstractFragment() {
 
     private var _binding: FragmentClientsBinding? = null
     private val binding get() = _binding!!
@@ -36,7 +36,6 @@ class FragmentClients : Fragment() {
         }
 
         val recyclerView = binding.recyclerViewClients
-        recyclerView.layoutManager = LinearLayoutManager(activity)
 
         // Observe the client list
         sharedClientViewModel.clients.observe(viewLifecycleOwner) { clients ->
@@ -45,7 +44,7 @@ class FragmentClients : Fragment() {
                 sharedClientViewModel.selectClient(client)
                 ClientProfileDialog.newInstance().show(childFragmentManager, "ClientProfileDialog")
             }
-            recyclerView.adapter = clientsAdapter
+            setupRecyclerView(recyclerView, clientsAdapter)
         }
 
         // Load clients

@@ -16,6 +16,7 @@ import com.matos.app.data.entity.Service
 import com.matos.app.databinding.DialogAddServiceBinding
 import com.matos.app.ui.component.service.ServiceViewModel
 import com.matos.app.ui.viewmodel.SharedClientViewModel
+import com.matos.app.ui.viewmodel.SharedServiceViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -26,7 +27,7 @@ class AddServiceDialog : DialogFragment() {
 
     private var _binding: DialogAddServiceBinding? = null
     private val binding get() = _binding!!
-    private val serviceViewModel: ServiceViewModel by viewModels()
+    private val serviceSharedViewModel: SharedServiceViewModel by activityViewModels()
     private val sharedClientViewModel: SharedClientViewModel by activityViewModels()
     private val calendar = Calendar.getInstance()
 
@@ -108,7 +109,7 @@ class AddServiceDialog : DialogFragment() {
         }
         val date = calendar.time
         val service = Service(0, clientId, description, date, price)
-        serviceViewModel.addService(service)
+        serviceSharedViewModel.addService(service)
         Toast.makeText(requireContext(), "Service added successfully", Toast.LENGTH_SHORT).show()
         binding.editTextDescription.text = null
         binding.editTextPrice.text = null
