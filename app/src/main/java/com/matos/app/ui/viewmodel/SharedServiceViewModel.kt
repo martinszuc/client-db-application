@@ -1,11 +1,12 @@
 package com.matos.app.ui.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.matos.app.data.entity.Service
 import com.matos.app.data.repository.ServiceRepository
 import com.matos.app.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -13,8 +14,8 @@ class SharedServiceViewModel @Inject constructor(
     private val serviceRepository: ServiceRepository
 ) : BaseViewModel() {
 
-    private val _services = MutableLiveData<List<Service>>()
-    val services: LiveData<List<Service>> get() = _services
+    private val _services = MutableStateFlow<List<Service>>(emptyList())
+    val services: StateFlow<List<Service>> = _services.asStateFlow()
 
     fun loadServices() {
         launchDataLoad(
@@ -22,7 +23,7 @@ class SharedServiceViewModel @Inject constructor(
                 serviceRepository.getServices()
             },
             onSuccess = { servicesList ->
-                _services.postValue(servicesList.sortedByDescending { it.id }) // Sort by descending order
+                _services.value = servicesList.sortedByDescending { it.id } // Sort by descending order
             },
             onFailure = {
                 // Handle the failure
@@ -37,7 +38,7 @@ class SharedServiceViewModel @Inject constructor(
                 serviceRepository.getServices() // Ensure this returns the updated list
             },
             onSuccess = { servicesList ->
-                _services.postValue(servicesList.sortedByDescending { it.id }) // Sort by descending order
+                _services.value = servicesList.sortedByDescending { it.id } // Sort by descending order
             },
             onFailure = {
                 // Handle the failure

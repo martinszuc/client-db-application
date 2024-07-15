@@ -6,6 +6,9 @@ import com.matos.app.data.entity.Client
 import com.matos.app.data.repository.ClientRepository
 import com.matos.app.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -13,8 +16,8 @@ class SharedClientViewModel @Inject constructor(
     private val clientRepository: ClientRepository
 ) : BaseViewModel() {
 
-    private val _clients = MutableLiveData<List<Client>>()
-    val clients: LiveData<List<Client>> get() = _clients
+    private val _clients = MutableStateFlow<List<Client>>(emptyList())
+    val clients: StateFlow<List<Client>> = _clients.asStateFlow()
 
     private val _selectedClient = MutableLiveData<Client>()
     val selectedClient: LiveData<Client> get() = _selectedClient
@@ -29,7 +32,7 @@ class SharedClientViewModel @Inject constructor(
                 clientRepository.getClients()
             },
             onSuccess = { clientsList ->
-                _clients.postValue(clientsList.sortedByDescending { it.id }) // Sort by descending order
+                _clients.value = clientsList.sortedByDescending { it.id } // Sort by descending order
             },
             onFailure = {
                 // Handle the failure
@@ -44,7 +47,7 @@ class SharedClientViewModel @Inject constructor(
                 clientRepository.getClients() // Ensure this returns the updated list
             },
             onSuccess = { clientsList ->
-                _clients.postValue(clientsList.sortedByDescending { it.id }) // Sort by descending order
+                _clients.value = clientsList.sortedByDescending { it.id } // Sort by descending order
             },
             onFailure = {
                 // Handle the failure

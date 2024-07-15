@@ -1,35 +1,30 @@
 package com.matos.app.ui.component.search
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.matos.app.data.repository.ClientRepository
 import com.matos.app.data.repository.ServiceRepository
-import com.matos.app.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val clientRepository: ClientRepository,
     private val serviceRepository: ServiceRepository
-) : BaseViewModel() {
+) : ViewModel() {
 
-    private val _searchResults = MutableLiveData<List<Any>>()
-    val searchResults: LiveData<List<Any>> get() = _searchResults
+    private val _searchResults = MutableStateFlow<List<Any>>(emptyList())
+    val searchResults: StateFlow<List<Any>> = _searchResults.asStateFlow()
 
     fun performSearch(query: String) {
-        launchDataLoad(
-            execution = {
-                val clients = clientRepository.searchClients(query)
-                val services = serviceRepository.searchServices(query)
-                clients + services
-            },
-            onSuccess = { results ->
-                _searchResults.value = results
-            },
-            onFailure = { e ->
-                // Handle the failure
-            }
-        )
+        viewModelScope.launch {
+            val clients = clientRepository.searchClients(query)
+            val services = serviceRepository.searchServices(query)
+            _searchResults.value = clients + services
+        }
     }
 }
