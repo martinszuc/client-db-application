@@ -3,10 +3,10 @@ package com.matos.app.ui.component.search
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.matos.app.databinding.ClientsCardViewBinding
-import com.matos.app.databinding.ServicesCardViewBinding
 import com.matos.app.data.entity.Client
 import com.matos.app.data.entity.Service
+import com.matos.app.databinding.ClientsCardViewBinding
+import com.matos.app.databinding.ServicesCardViewBinding
 import java.text.SimpleDateFormat
 import java.util.Locale
 

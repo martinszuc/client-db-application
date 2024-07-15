@@ -3,7 +3,7 @@ package com.matos.app.data.entity
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import java.util.*
+import java.util.Date
 
 @Entity(
     tableName = "services",

@@ -3,14 +3,14 @@ package com.matos.app.ui.component.service.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.matos.app.databinding.ServicesCardViewBinding
 import com.matos.app.data.entity.Client
 import com.matos.app.data.entity.Service
+import com.matos.app.databinding.ServicesCardViewBinding
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class ServicesAdapter(
-    private val services: List<Service>,
+    private var services: List<Service>,
     private val clients: List<Client>
 ) : RecyclerView.Adapter<ServicesAdapter.ViewHolder>() {
 
@@ -33,9 +33,13 @@ class ServicesAdapter(
 
             binding.textViewClientName.text = client?.name ?: ""
             binding.textViewServiceDescription.text = service.description
-            binding.textViewServiceDate.text = service.date.let { dateFormat.format(it) }
+            binding.textViewServiceDate.text = dateFormat.format(service.date)
             binding.textViewServicePrice.text = service.price.toString()
         }
+    }
 
+    fun updateServices(newServices: List<Service>) {
+        this.services = newServices
+        notifyDataSetChanged()
     }
 }

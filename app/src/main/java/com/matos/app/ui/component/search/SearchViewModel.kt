@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.matos.app.data.repository.ClientRepository
 import com.matos.app.data.repository.ServiceRepository
-import com.matos.app.ui.base.AbstractViewModel
+import com.matos.app.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -12,7 +12,7 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
     private val clientRepository: ClientRepository,
     private val serviceRepository: ServiceRepository
-) : AbstractViewModel() {
+) : BaseViewModel() {
 
     private val _searchResults = MutableLiveData<List<Any>>()
     val searchResults: LiveData<List<Any>> get() = _searchResults

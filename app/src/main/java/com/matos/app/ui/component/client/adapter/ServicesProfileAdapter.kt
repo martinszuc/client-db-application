@@ -3,8 +3,8 @@ package com.matos.app.ui.component.client.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.matos.app.databinding.ServicesProfileCardViewBinding
 import com.matos.app.data.entity.Service
+import com.matos.app.databinding.ServicesProfileCardViewBinding
 
 class ServicesProfileAdapter(private val services: List<Service>) : RecyclerView.Adapter<ServicesProfileAdapter.ViewHolder>() {
 

@@ -4,19 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.matos.app.data.entity.Client
 import com.matos.app.databinding.DialogAddClientBinding
+import com.matos.app.ui.base.BaseDialogFragment
 import com.matos.app.ui.viewmodel.SharedClientViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AddClientDialog : DialogFragment() {
+class AddClientDialog : BaseDialogFragment() {
 
     private var _binding: DialogAddClientBinding? = null
     private val binding get() = _binding!!
-    private val sharedClientViewModel: SharedClientViewModel by viewModels()
+    private val sharedClientViewModel: SharedClientViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

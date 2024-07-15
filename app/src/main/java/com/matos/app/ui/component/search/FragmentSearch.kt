@@ -7,13 +7,12 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.matos.app.databinding.FragmentSearchBinding
-import com.matos.app.ui.base.AbstractFragment
+import com.matos.app.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FragmentSearch : AbstractFragment() {
+class FragmentSearch : BaseFragment() {
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!

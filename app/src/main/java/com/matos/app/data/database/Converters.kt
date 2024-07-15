@@ -1,7 +1,7 @@
 package com.matos.app.data.database
 
 import androidx.room.TypeConverter
-import java.util.*
+import java.util.Date
 
 class Converters {
     @TypeConverter

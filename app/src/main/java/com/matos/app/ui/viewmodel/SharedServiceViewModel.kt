@@ -4,14 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.matos.app.data.entity.Service
 import com.matos.app.data.repository.ServiceRepository
-import com.matos.app.ui.base.AbstractViewModel
+import com.matos.app.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class SharedServiceViewModel @Inject constructor(
     private val serviceRepository: ServiceRepository
-) : AbstractViewModel() {
+) : BaseViewModel() {
 
     private val _services = MutableLiveData<List<Service>>()
     val services: LiveData<List<Service>> get() = _services
@@ -22,7 +22,7 @@ class SharedServiceViewModel @Inject constructor(
                 serviceRepository.getServices()
             },
             onSuccess = { servicesList ->
-                _services.value = servicesList
+                _services.postValue(servicesList.sortedByDescending { it.id }) // Sort by descending order
             },
             onFailure = {
                 // Handle the failure
@@ -34,9 +34,10 @@ class SharedServiceViewModel @Inject constructor(
         launchDataLoad(
             execution = {
                 serviceRepository.insertService(service)
+                serviceRepository.getServices() // Ensure this returns the updated list
             },
-            onSuccess = {
-                loadServices()
+            onSuccess = { servicesList ->
+                _services.postValue(servicesList.sortedByDescending { it.id }) // Sort by descending order
             },
             onFailure = {
                 // Handle the failure

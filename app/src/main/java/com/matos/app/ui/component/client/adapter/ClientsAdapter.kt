@@ -3,8 +3,8 @@ package com.matos.app
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.matos.app.databinding.ClientsCardViewBinding
 import com.matos.app.data.entity.Client
+import com.matos.app.databinding.ClientsCardViewBinding
 
 class ClientsAdapter(private var clients: List<Client>) : RecyclerView.Adapter<ClientsAdapter.ViewHolder>() {
 
@@ -33,6 +33,12 @@ class ClientsAdapter(private var clients: List<Client>) : RecyclerView.Adapter<C
             }
         }
     }
+
+    fun updateClients(newClients: List<Client>) {
+        this.clients = newClients
+        notifyDataSetChanged()
+    }
+
     fun sortClients(sortBy: String) {
         when (sortBy) {
             "name" -> clients = clients.sortedBy { it.name }

@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-abstract class AbstractViewModel : ViewModel() {
+abstract class BaseViewModel : ViewModel() {
 
     protected val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading

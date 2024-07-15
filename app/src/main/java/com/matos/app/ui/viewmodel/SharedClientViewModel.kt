@@ -4,14 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.matos.app.data.entity.Client
 import com.matos.app.data.repository.ClientRepository
-import com.matos.app.ui.base.AbstractViewModel
+import com.matos.app.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class SharedClientViewModel @Inject constructor(
     private val clientRepository: ClientRepository
-) : AbstractViewModel() {
+) : BaseViewModel() {
 
     private val _clients = MutableLiveData<List<Client>>()
     val clients: LiveData<List<Client>> get() = _clients
@@ -29,7 +29,7 @@ class SharedClientViewModel @Inject constructor(
                 clientRepository.getClients()
             },
             onSuccess = { clientsList ->
-                _clients.value = clientsList
+                _clients.postValue(clientsList.sortedByDescending { it.id }) // Sort by descending order
             },
             onFailure = {
                 // Handle the failure
@@ -41,9 +41,10 @@ class SharedClientViewModel @Inject constructor(
         launchDataLoad(
             execution = {
                 clientRepository.insertClient(client)
+                clientRepository.getClients() // Ensure this returns the updated list
             },
-            onSuccess = {
-                loadClients()
+            onSuccess = { clientsList ->
+                _clients.postValue(clientsList.sortedByDescending { it.id }) // Sort by descending order
             },
             onFailure = {
                 // Handle the failure

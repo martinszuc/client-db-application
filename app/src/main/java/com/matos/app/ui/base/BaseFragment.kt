@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class AbstractFragment : Fragment() {
+abstract class BaseFragment : Fragment() {
 
     protected fun showConfirmationDialog(message: String, onConfirm: () -> Unit) {
         AlertDialog.Builder(requireContext())
