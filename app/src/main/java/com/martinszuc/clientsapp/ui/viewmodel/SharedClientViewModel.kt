@@ -1,5 +1,6 @@
 package com.martinszuc.clientsapp.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.martinszuc.clientsapp.data.entity.Client
@@ -19,38 +20,67 @@ class SharedClientViewModel @Inject constructor(
     private val _clients = MutableStateFlow<List<Client>>(emptyList())
     val clients: StateFlow<List<Client>> = _clients.asStateFlow()
 
-    private val _selectedClient = MutableLiveData<Client>()
-    val selectedClient: LiveData<Client> get() = _selectedClient
+    private val _selectedClient = MutableStateFlow<Client?>(null)
+    val selectedClient: StateFlow<Client?> = _selectedClient.asStateFlow()
+
+    private val logTag = "SharedClientViewModel"
 
     fun selectClient(client: Client) {
         _selectedClient.value = client
     }
 
     fun loadClients() {
+        Log.d(logTag, "Loading clients")
         launchDataLoad(
             execution = {
+                Log.d(logTag, "Fetching clients from repository")
                 clientRepository.getClients()
             },
             onSuccess = { clientsList ->
-                _clients.value = clientsList.sortedByDescending { it.id } // Sort by descending order
+                Log.d(logTag, "Clients loaded successfully: $clientsList")
+                _clients.value = clientsList.sortedByDescending { it.id }
             },
-            onFailure = {
-                // Handle the failure
+            onFailure = { e ->
+                Log.e(logTag, "Failed to load clients", e)
             }
         )
     }
 
     fun addClient(client: Client) {
+        Log.d(logTag, "Adding client: $client")
         launchDataLoad(
             execution = {
                 clientRepository.insertClient(client)
+                Log.d(logTag, "Client added successfully, reloading clients")
                 clientRepository.getClients() // Ensure this returns the updated list
             },
             onSuccess = { clientsList ->
-                _clients.value = clientsList.sortedByDescending { it.id } // Sort by descending order
+                Log.d(logTag, "Clients reloaded successfully: $clientsList")
+                _clients.value = clientsList.sortedByDescending { it.id }
             },
-            onFailure = {
-                // Handle the failure
+            onFailure = { e ->
+                Log.e(logTag, "Failed to add client", e)
+            }
+        )
+    }
+
+    fun loadClientById(clientId: Int) {
+        Log.d(logTag, "Loading client by ID: $clientId")
+        launchDataLoad(
+            execution = {
+                clientRepository.getClientById(clientId)
+            },
+            onSuccess = { client ->
+                if (client != null) {
+                    Log.d(logTag, "Client loaded successfully: $client")
+                    _selectedClient.value = client
+                } else {
+                    Log.e(logTag, "Client not found for ID: $clientId")
+                    throw KotlinNullPointerException()
+                }
+            },
+            onFailure = { e ->
+                Log.e(logTag, "Failed to load client by ID", e)
             }
         )
     }

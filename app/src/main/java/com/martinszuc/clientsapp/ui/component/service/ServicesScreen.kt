@@ -21,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.martinszuc.clientsapp.ui.AppBar
 import com.martinszuc.clientsapp.ui.viewmodel.SharedServiceViewModel
 
 @Composable
@@ -33,6 +34,7 @@ fun ServicesScreen(viewModel: SharedServiceViewModel = hiltViewModel()) {
     }
 
     Scaffold(
+        topBar = { AppBar(title = "Services") },
         floatingActionButton = {
             FloatingActionButton(onClick = { showDialog = true }) {
                 Icon(Icons.Default.Add, contentDescription = "Add Service")

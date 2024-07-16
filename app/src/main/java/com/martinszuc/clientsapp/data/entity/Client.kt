@@ -8,5 +8,7 @@ data class Client(
     @PrimaryKey(autoGenerate = true) val id: Int,
     val name: String,
     val phone: String?,
-    val email: String?
+    val email: String?,
+    val profilePictureUrl: String? = null,
+    val profilePictureColor: String? = null
 )

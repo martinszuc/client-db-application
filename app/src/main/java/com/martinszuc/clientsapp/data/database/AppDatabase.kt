@@ -8,7 +8,7 @@ import com.martinszuc.clientsapp.data.database.dao.ServiceDao
 import com.martinszuc.clientsapp.data.entity.Client
 import com.martinszuc.clientsapp.data.entity.Service
 
-@Database(entities = [Client::class, Service::class], version = 1)
+@Database(entities = [Client::class, Service::class], version = 4)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun clientDao(): ClientDao

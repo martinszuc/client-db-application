@@ -18,13 +18,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.martinszuc.clientsapp.data.entity.Client
 import com.martinszuc.clientsapp.data.entity.Service
 import com.martinszuc.clientsapp.ui.component.client.ClientItem
 import com.martinszuc.clientsapp.ui.component.service.ServiceItem
+import com.martinszuc.clientsapp.ui.navigation.Screen
 
 @Composable
 fun SearchScreen(
+    navController: NavHostController,
     viewModel: SearchViewModel = hiltViewModel()
 ) {
     val searchResults by viewModel.searchResults.collectAsState()
@@ -55,7 +58,9 @@ fun SearchScreen(
                     }
                 }) { result ->
                     when (result) {
-                        is Client -> ClientItem(client = result)
+                        is Client -> ClientItem(client = result, onClick = { selectedClient ->
+                            navController.navigate(Screen.ClientProfile(selectedClient.id).route)
+                        })
                         is Service -> ServiceItem(service = result)
                     }
                 }

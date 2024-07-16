@@ -15,4 +15,7 @@ interface ClientDao {
 
     @Query("SELECT * FROM clients WHERE name LIKE :query")
     suspend fun searchClients(query: String): List<Client>
+
+    @Query("SELECT * FROM clients WHERE id = :clientId")
+    suspend fun getClientById(clientId: Int): Client?
 }
