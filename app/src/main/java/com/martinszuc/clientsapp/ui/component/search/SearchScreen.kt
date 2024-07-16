@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -24,11 +25,13 @@ import com.martinszuc.clientsapp.data.entity.Service
 import com.martinszuc.clientsapp.ui.component.client.ClientItem
 import com.martinszuc.clientsapp.ui.component.service.ServiceItem
 import com.martinszuc.clientsapp.ui.navigation.Screen
+import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
 
 @Composable
 fun SearchScreen(
     navController: NavHostController,
-    viewModel: SearchViewModel = hiltViewModel()
+    viewModel: SearchViewModel = hiltViewModel(),
+    sharedClientViewModel: SharedClientViewModel = hiltViewModel()
 ) {
     val searchResults by viewModel.searchResults.collectAsState()
     var query by remember { mutableStateOf("") }
@@ -61,7 +64,12 @@ fun SearchScreen(
                         is Client -> ClientItem(client = result, onClick = { selectedClient ->
                             navController.navigate(Screen.ClientProfile(selectedClient.id).route)
                         })
-                        is Service -> ServiceItem(service = result)
+                        is Service -> {
+                            val clientName by produceState<String>("") {
+                                value = sharedClientViewModel.getClientName(result.client_id)
+                            }
+                            ServiceItem(service = result, clientName = clientName)
+                        }
                     }
                 }
             }

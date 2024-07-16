@@ -20,9 +20,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.ui.component.profile.ProfilePicture
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
 
@@ -36,13 +38,13 @@ fun ClientProfileScreen(
     val client by sharedClientViewModel.selectedClient.collectAsState()
 
     LaunchedEffect(clientId) {
-        sharedClientViewModel.loadClientById(clientId)
+        sharedClientViewModel.getClientById(clientId)
     }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "Client Profile") },
+                title = { Text(text = stringResource(R.string.client_profile)) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")

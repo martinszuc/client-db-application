@@ -5,21 +5,25 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.martinszuc.clientsapp.R
+import com.martinszuc.clientsapp.ui.component.settings.SettingsViewModel
 import com.martinszuc.clientsapp.ui.navigation.NavGraph
 import com.martinszuc.clientsapp.ui.navigation.Screen
 import com.martinszuc.clientsapp.ui.theme.AppTheme
+import com.martinszuc.clientsapp.util.AppConstants.THEME_DARK
+import com.martinszuc.clientsapp.util.AppConstants.THEME_SYSTEM_DEFAULT
 
 @Composable
-fun MainScreen(initialThemePreference: String) {
-    var themePreference by remember { mutableStateOf(initialThemePreference) }
-    val isDarkTheme = themePreference == "dark" || (themePreference == "system_default" && isSystemInDarkTheme())
+fun MainScreen() {
+    val settingsViewModel: SettingsViewModel = hiltViewModel()
+    val themePreference by settingsViewModel.themePreference.collectAsState(initial = THEME_SYSTEM_DEFAULT)
+
+    val isDarkTheme = themePreference == THEME_DARK || (themePreference == THEME_SYSTEM_DEFAULT && isSystemInDarkTheme())
 
     AppTheme(darkTheme = isDarkTheme) {
         val navController = rememberNavController()
@@ -34,7 +38,10 @@ fun MainScreen(initialThemePreference: String) {
             bottomBar = { BottomNavigationBar(navController, bottomNavItems) }
         ) { innerPadding ->
             Box(modifier = Modifier.padding(innerPadding)) {
-                NavGraph(navController = navController)
+                NavGraph(navController = navController,
+                    onThemeChanged = { newTheme ->
+                        settingsViewModel.changeTheme(newTheme)
+                    })
             }
         }
     }

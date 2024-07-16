@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.martinszuc.clientsapp.data.entity.Client
+import java.util.Date
 
 @Dao
 interface ClientDao {
@@ -18,4 +19,6 @@ interface ClientDao {
 
     @Query("SELECT * FROM clients WHERE id = :clientId")
     suspend fun getClientById(clientId: Int): Client?
+    @Query("UPDATE clients SET latestServiceDate = :date WHERE id = :clientId")
+    suspend fun updateLatestServiceDate(clientId: Int, date: Date)
 }

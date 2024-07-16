@@ -4,10 +4,12 @@ import android.util.Log
 import com.martinszuc.clientsapp.data.entity.Client
 import com.martinszuc.clientsapp.data.repository.ClientRepository
 import com.martinszuc.clientsapp.ui.base.BaseViewModel
+import com.martinszuc.clientsapp.util.AppConstants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -62,7 +64,7 @@ class SharedClientViewModel @Inject constructor(
         )
     }
 
-    fun loadClientById(clientId: Int) {
+    fun getClientById(clientId: Int) {
         Log.d(logTag, "Loading client by ID: $clientId")
         launchDataLoad(
             execution = {
@@ -81,5 +83,31 @@ class SharedClientViewModel @Inject constructor(
                 Log.e(logTag, "Failed to load client by ID", e)
             }
         )
+    }
+
+    fun updateLatestServiceDate(clientId: Int, date: Date) {
+        Log.d(logTag, "Updating latest service date for client ID: $clientId to $date")
+        launchDataLoad(
+            execution = {
+                clientRepository.updateLatestServiceDate(clientId, date)
+                clientRepository.getClientById(clientId) // Ensure this returns the updated client
+            },
+            onSuccess = { client ->
+                if (client != null) {
+                    Log.d(logTag, "Client updated successfully: $client")
+                    _selectedClient.value = client
+                } else {
+                    Log.e(logTag, "Client not found for ID: $clientId")
+                    throw KotlinNullPointerException()
+                }
+            },
+            onFailure = { e ->
+                Log.e(logTag, "Failed to update latest service date", e)
+            }
+        )
+    }
+    suspend fun getClientName(clientId: Int): String {
+        val client = _clients.value.find { it.id == clientId }
+        return client?.name ?: AppConstants.UNKNOWN_CLIENT
     }
 }

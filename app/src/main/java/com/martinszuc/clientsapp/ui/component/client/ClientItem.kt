@@ -14,9 +14,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.data.entity.Client
 import com.martinszuc.clientsapp.ui.component.profile.ProfilePicture
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 @Composable
 fun ClientItem(client: Client, onClick: (Client) -> Unit) {
@@ -45,8 +49,12 @@ fun ClientItem(client: Client, onClick: (Client) -> Unit) {
 
             Column {
                 Text(text = client.name, style = MaterialTheme.typography.bodyLarge)
-                Text(text = client.email ?: "No email", style = MaterialTheme.typography.bodyMedium)
-                Text(text = client.phone ?: "No phone", style = MaterialTheme.typography.bodyMedium)
+                Text(text = client.email ?: stringResource(R.string.no_email), style = MaterialTheme.typography.bodyMedium)
+                Text(text = client.phone ?: stringResource(R.string.no_phone), style = MaterialTheme.typography.bodyMedium)
+                client.latestServiceDate?.let {
+                    val formattedDateTime = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(it)
+                    Text(text = stringResource(R.string.latest_service_formated, formattedDateTime), style = MaterialTheme.typography.bodySmall)
+                }
             }
         }
     }

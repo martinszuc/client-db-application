@@ -16,28 +16,36 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.ui.AppBar
+import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.SharedServiceViewModel
 
 @Composable
-fun ServicesScreen(viewModel: SharedServiceViewModel = hiltViewModel()) {
-    val services by viewModel.services.collectAsState()
+fun ServicesScreen(
+    serviceViewModel: SharedServiceViewModel = hiltViewModel(),
+    clientViewModel: SharedClientViewModel = hiltViewModel()
+) {
+    val services by serviceViewModel.services.collectAsState()
     var showDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
-        viewModel.loadServices()
+        serviceViewModel.loadServices()
+        clientViewModel.loadClients()
     }
 
     Scaffold(
-        topBar = { AppBar(title = "Services") },
+        topBar = { AppBar(title = stringResource(R.string.label_services)) },
         floatingActionButton = {
             FloatingActionButton(onClick = { showDialog = true }) {
-                Icon(Icons.Default.Add, contentDescription = "Add Service")
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add_service))
             }
         }
     ) { innerPadding ->
@@ -50,7 +58,10 @@ fun ServicesScreen(viewModel: SharedServiceViewModel = hiltViewModel()) {
             } else {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(services) { service ->
-                        ServiceItem(service)
+                        val clientName by produceState<String>("") {
+                            value = clientViewModel.getClientName(service.client_id)
+                        }
+                        ServiceItem(service = service, clientName = clientName)
                     }
                 }
             }

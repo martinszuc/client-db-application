@@ -25,9 +25,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.data.entity.Client
 import com.martinszuc.clientsapp.ui.component.profile.ProfilePicture
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
@@ -79,7 +81,7 @@ fun AddClientDialog(
             Log.d(logTag, "Add client dialog dismissed")
             onDismissRequest()
         },
-        title = { Text(text = "Add Client") },
+        title = { Text(text = stringResource(R.string.add_client)) },
         text = {
             Column(modifier = Modifier.fillMaxWidth()) {
                 Spacer(modifier = Modifier.height(8.dp))
@@ -97,8 +99,10 @@ fun AddClientDialog(
                     )
                     Icon(
                         imageVector = Icons.Default.Edit,
-                        contentDescription = "Edit",
-                        modifier = Modifier.align(Alignment.BottomEnd).padding(4.dp)
+                        contentDescription = stringResource(R.string.edit),
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .padding(4.dp)
                     )
                 }
 
@@ -110,7 +114,7 @@ fun AddClientDialog(
                         name = it
                         Log.d(logTag, "Name input: $it")
                     },
-                    label = { Text("Name") },
+                    label = { Text(text = stringResource(R.string.name)) },
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -120,7 +124,7 @@ fun AddClientDialog(
                         phone = it
                         Log.d(logTag, "Phone input: $it")
                     },
-                    label = { Text("Phone") },
+                    label = { Text(text = stringResource(R.string.phone)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -131,7 +135,7 @@ fun AddClientDialog(
                         email = it
                         Log.d(logTag, "Email input: $it")
                     },
-                    label = { Text("Email") },
+                    label = { Text(text = stringResource(R.string.email)) },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -152,7 +156,7 @@ fun AddClientDialog(
                     onDismissRequest()
                 }
             ) {
-                Text("Save")
+                Text(text = stringResource(R.string.save))
             }
         },
         dismissButton = {
@@ -160,7 +164,7 @@ fun AddClientDialog(
                 Log.d(logTag, "Cancel button clicked")
                 onDismissRequest()
             }) {
-                Text("Cancel")
+                Text(text = stringResource(R.string.cancel))
             }
         }
     )

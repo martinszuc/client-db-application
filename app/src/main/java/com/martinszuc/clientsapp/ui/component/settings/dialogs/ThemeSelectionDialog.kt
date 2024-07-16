@@ -13,7 +13,11 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.martinszuc.clientsapp.R
+import com.martinszuc.clientsapp.util.AppConstants.THEME_LIGHT
+import com.martinszuc.clientsapp.util.AppConstants.THEME_SYSTEM_DEFAULT
 
 @Composable
 fun ThemeSelectionDialog(
@@ -21,16 +25,16 @@ fun ThemeSelectionDialog(
     onDismissRequest: () -> Unit,
     onThemeSelected: (String) -> Unit
 ) {
-    val themes = listOf("system_default", "light", "dark")
+    val themes = listOf("system_default", THEME_LIGHT, "dark")
     val themeLabels = mapOf(
-        "system_default" to "System Default",
+        THEME_SYSTEM_DEFAULT to "System Default",
         "light" to "Light Theme",
         "dark" to "Dark Theme"
     )
 
     AlertDialog(
         onDismissRequest = onDismissRequest,
-        title = { Text("Select Theme") },
+        title = { Text(stringResource(R.string.select_theme)) },
         text = {
             Column {
                 themes.forEach { theme ->

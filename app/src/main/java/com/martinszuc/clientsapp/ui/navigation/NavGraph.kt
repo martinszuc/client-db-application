@@ -28,7 +28,8 @@ sealed class Screen(val route: String) {
 fun NavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = Screen.Clients.route
+    startDestination: String = Screen.Clients.route,
+    onThemeChanged: (String) -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -45,9 +46,7 @@ fun NavGraph(
             SearchScreen(navController)
         }
         composable(Screen.Settings.route) {
-            SettingsScreen(onThemeChanged = {
-                // Handle theme change
-            })
+            SettingsScreen(onThemeChanged = onThemeChanged)
         }
         composable(Screen.ClientProfile.ROUTE) { backStackEntry ->
             val clientId = backStackEntry.arguments?.getString("clientId")?.toInt() ?: return@composable

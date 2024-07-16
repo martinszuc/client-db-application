@@ -30,9 +30,6 @@ class SettingsViewModel @Inject constructor(
             preferences[THEMEKEY] ?: "system_default"
         }
 
-    private val _themeChanged = MutableLiveData<Unit>()
-    val themeChanged: LiveData<Unit> = _themeChanged
-
     fun changeTheme(theme: String) {
         viewModelScope.launch {
             dataStore.edit { preferences ->
@@ -40,7 +37,6 @@ class SettingsViewModel @Inject constructor(
             }
             Log.d("SettingsViewModel", "Theme changed to: $theme")
             applyTheme(theme)
-            _themeChanged.postValue(Unit)
         }
     }
 

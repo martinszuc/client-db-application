@@ -2,49 +2,64 @@
     <string name="app_name">Kozmetické štúdio LS</string>
     <string name="label_search">Hľadat</string>
     <string name="label_settings">Nastavenia</string>
-    <string name="label_services">Ošetrenenia</string>
-    <string name="label_clients">Klienti</string>
+    <string name="label_services">Zákazky</string>
+    <string name="label_clients">Zákazníci</string>
 
     <string name="str">string</string>
 
     <string name="autofill_name">Name</string>
     <string name="autofill_phone">Phone</string>
-    <string name="autofill_email">Email</string>
+    <string name="autofill_email">E-mail</string>
 
     <string name="autofill_service_name">Service Name</string>
     <string name="autofill_service_price">Service Price</string>
 
+    <string name="default_web_client_id">450227172557-7o789rn2vcvc5chalvf8mt7v95g5ia7q.apps.googleusercontent.com</string>
+
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="submit">16dp</string>
-    <string name="clients_empty">Zoznam klientov prázdny :(</string>a
-    <string name="add_client">Pridať zákazničku</string>
+    <string name="clients_empty">Zoznam klientov prázdny</string>a
+    <string name="add_client">Pridať Zákazníka</string>
     <string name="name">"Meno Priezvisko"</string>
     <string name="phone">Telefónne číslo</string>
-    <string name="email">Email</string>
+    <string name="email">E-mail</string>
     <string name="add">Pridať</string>
     <string name="save">Uložiť</string>
     <string name="service_price">Cena</string>
-    <string name="services_empty">Zoznam ošetrení je prádzny!</string>
+    <string name="services_empty">Zoznam služieb je prádzny!</string>
     <string name="select_client">Zvoľ klienta:</string>
-    <string name="client_prompt">Klienti</string>
+    <string name="client_prompt">Zákazníci</string>
     <string name="service_description">Popis</string>
     <string name="empty_client_list_message">Zoznam klientov prázdny!</string>
     <string name="search_nothing">Žiadne výsledky</string>
-    <string name="label_setting_1">Work in progress!</string>
-    <string name="label_setting_2">Work in progress!</string>
     <string name="service_date">Dátum/čas</string>
     <string name="select_date">Dátum</string>
     <string name="select_time">Čas</string>
     <string name="sort">Poradie\n</string>
     <string name="sort_by_name">Podľa mena\n</string>
-    <string name="description">desription</string>
-    <string name="price">price</string>
+    <string name="description">Popis</string>
+    <string name="price">Cena</string>
     <string name="settings">Nastavenia</string>
-    <string name="fragment_clients">Klienti</string>
+    <string name="fragment_clients">Zákazníci</string>
     <string name="fragment_search">Hľadať</string>
-    <string name="fragment_services">Služby</string>
+    <string name="fragment_services">Zákazky</string>
     <string name="fragment_settings">Nastavenia</string>
-    <string name="default_web_client_id">450227172557-7o789rn2vcvc5chalvf8mt7v95g5ia7q.apps.googleusercontent.com</string>
+    <string name="select_theme">Zmena režimu</string>
+    <string name="add_service">Pridať Zákazku</string>
+    <string name="select_client_add">Zvoliť Zákazníka</string>
+    <string name="popis">Popis: %1$s</string>
+    <string name="d_tum">Dátum: %1$s</string>
+    <string name="cena">Cena: %1$s</string>
+    <string name="date_with_date">Dátum: %1$s</string>
+    <string name="time_with_time">Čas: %1$s</string>
+    <string name="service_added_successfully">Zákazka úspešne pridaná</string>
+    <string name="cancel">Zrušiť</string>
+    <string name="latest_service_formated">Posledná zákazka: %1$s</string>
+    <string name="no_email">No e-mail</string>
+    <string name="no_phone">No phone</string>
+    <string name="edit">Upraviť</string>
+    <string name="client_profile">Profil Zákazníka</string>
 
     <string-array name="theme_options">
         <item>Light</item>
