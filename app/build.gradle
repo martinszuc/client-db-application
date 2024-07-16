@@ -99,7 +99,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.android.gms:play-services-auth:21.2.0'
 
+    // Images
     implementation "io.coil-kt:coil-compose:2.0.0"
 
+    // Memory leaks check
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
 
 }
