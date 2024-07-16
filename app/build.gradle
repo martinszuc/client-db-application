@@ -105,4 +105,7 @@ dependencies {
     // Memory leaks check
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
 
+    // Pagers
+    implementation "com.google.accompanist:accompanist-pager:0.23.1"
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.23.1"
 }

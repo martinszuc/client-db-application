@@ -2,7 +2,6 @@ package com.martinszuc.clientsapp.data.repository
 
 import com.martinszuc.clientsapp.data.database.dao.ServiceDao
 import com.martinszuc.clientsapp.data.entity.Service
-import java.util.Date
 import javax.inject.Inject
 import javax.inject.Singleton
 

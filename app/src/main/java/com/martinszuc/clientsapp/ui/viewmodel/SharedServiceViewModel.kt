@@ -45,4 +45,17 @@ class SharedServiceViewModel @Inject constructor(
             }
         )
     }
+    fun loadServicesForClient(clientId: Int) {
+        launchDataLoad(
+            execution = {
+                serviceRepository.getServicesForClient(clientId)
+            },
+            onSuccess = { servicesList ->
+                _services.value = servicesList.sortedByDescending { it.id } // Sort by descending order
+            },
+            onFailure = {
+                // Handle the failure
+            }
+        )
+    }
 }
