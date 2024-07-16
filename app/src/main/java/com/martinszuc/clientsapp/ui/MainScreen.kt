@@ -22,7 +22,6 @@ import com.martinszuc.clientsapp.ui.component.settings.SettingsScreen
 import com.martinszuc.clientsapp.ui.theme.AppTheme
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(initialThemePreference: String) {
     var themePreference by remember { mutableStateOf(initialThemePreference) }
@@ -32,8 +31,8 @@ fun MainScreen(initialThemePreference: String) {
         val navController = rememberNavController()
         val bottomNavItems = listOf(
             BottomNavItem("clients", R.drawable.ic_face, R.string.label_clients),
-            BottomNavItem("search", R.drawable.ic_baseline_search_24, R.string.fragment_search),
             BottomNavItem("services", R.drawable.ic_lipstick_bold, R.string.label_services),
+            BottomNavItem("search", R.drawable.ic_baseline_search_24, R.string.fragment_search),
             BottomNavItem("settings", R.drawable.ic_baseline_settings_24, R.string.settings)
         )
 
@@ -44,8 +43,8 @@ fun MainScreen(initialThemePreference: String) {
             Box(modifier = Modifier.padding(innerPadding)) {
                 NavHost(navController = navController, startDestination = "clients") {
                     composable("clients") { ClientsScreen() }
-                    composable("search") { SearchScreen() }
                     composable("services") { ServicesScreen() }
+                    composable("search") { SearchScreen() }
                     composable("settings") { SettingsScreen(onThemeChanged = { newTheme ->
                         themePreference = newTheme
                     }) }
