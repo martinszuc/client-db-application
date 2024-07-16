@@ -3,14 +3,16 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'dagger.hilt.android.plugin'
     id 'com.google.devtools.ksp'
+    id 'com.google.gms.google-services'
+
 }
 
 android {
-    namespace 'com.matos.app'
+    namespace 'com.martinszuc.clientsapp'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.matos.app"
+        applicationId "com.martinszuc.clientsapp"
         minSdk 22
         targetSdk 34
         versionCode 1
@@ -86,14 +88,15 @@ dependencies {
     implementation "androidx.compose.compiler:compiler:$compose_compiler_version"
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.35.1-alpha"
 
-
-
     // Shared Preferences
     implementation 'androidx.datastore:datastore-preferences:1.1.1'
 
     // Compose
     implementation "androidx.lifecycle:lifecycle-runtime-compose:2.8.3"
 
+    // Google auth and cloud storage
+    implementation 'com.google.firebase:firebase-auth:23.0.0'
+    implementation 'com.google.android.gms:play-services-auth:21.2.0'
 
 
 
