@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">Kozmeticke studio LS</string>
+    <string name="app_name">Kozmetické štúdio LS</string>
     <string name="label_search">Hľadat</string>
     <string name="label_settings">Nastavenia</string>
     <string name="label_services">Ošetrenenia</string>
     <string name="label_clients">Klienti</string>
 
-    <string name="str">strrrrrrr</string>
+    <string name="str">string</string>
 
     <string name="autofill_name">Name</string>
     <string name="autofill_phone">Phone</string>
@@ -16,7 +16,7 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="submit">16dp</string>
-    <string name="clients_empty">Zoznam klientov prázdny :(</string>
+    <string name="clients_empty">Zoznam klientov prázdny :(</string>a
     <string name="add_client">Pridať zákazničku</string>
     <string name="name">"Meno Priezvisko"</string>
     <string name="phone">Telefónne číslo</string>
