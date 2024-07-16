@@ -23,7 +23,7 @@ fun ProfileServicesTab(clientId: Int, sharedServiceViewModel: SharedServiceViewM
 
     LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         items(services) { service ->
-            ServiceItem(service = service, clientName = "Client Name") // Replace with actual client name if needed
+            ProfileServiceItem(service = service)
         }
     }
 }
