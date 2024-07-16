@@ -1,26 +1,10 @@
-// AddServiceDialog.kt
 package com.matos.app.ui.component.service
 
 import android.widget.Toast
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -31,7 +15,7 @@ import com.matos.app.data.entity.Service
 import com.matos.app.ui.viewmodel.SharedClientViewModel
 import com.matos.app.ui.viewmodel.SharedServiceViewModel
 import kotlinx.coroutines.launch
-import java.util.Date
+import java.util.*
 
 @Composable
 fun AddServiceDialog(
@@ -46,58 +30,71 @@ fun AddServiceDialog(
     val context = LocalContext.current
     val clients by sharedClientViewModel.clients.collectAsState()
 
-    Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth()
-    ) {
-        if (clients.isNotEmpty()) {
-            val clientNames = clients.map { it.name }
-            DropdownMenu(
-                items = clientNames,
-                selectedIndex = selectedClientIndex,
-                onItemSelected = { index ->
-                    selectedClientIndex = index
-                }
-            )
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(
-            value = description,
-            onValueChange = { description = it },
-            label = { Text("Description") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(
-            value = price,
-            onValueChange = { price = it },
-            label = { Text("Price") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(
-            onClick = {
-                val servicePrice = price.toDoubleOrNull()
-                if (selectedClientIndex == -1 || description.isEmpty() || servicePrice == null) {
-                    Toast.makeText(context, "Please fill in all fields", Toast.LENGTH_SHORT).show()
-                    return@Button
-                }
-                val clientId = clients[selectedClientIndex].id
-                val service = Service(0, clientId, description, Date(), servicePrice)
-                scope.launch {
-                    sharedServiceViewModel.addService(service)
-                    Toast.makeText(context, "Service added successfully", Toast.LENGTH_SHORT).show()
-                    onDismissRequest()
-                }
-            },
-            modifier = Modifier.align(Alignment.End)
-        ) {
-            Text("Save")
-        }
+    LaunchedEffect(Unit) {
+        sharedClientViewModel.loadClients()
     }
+
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        title = { Text(text = "Add Service") },
+        text = {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                if (clients.isNotEmpty()) {
+                    val clientNames = clients.map { it.name }
+                    DropdownMenu(
+                        items = clientNames,
+                        selectedIndex = selectedClientIndex,
+                        onItemSelected = { index ->
+                            selectedClientIndex = index
+                        }
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                OutlinedTextField(
+                    value = description,
+                    onValueChange = { description = it },
+                    label = { Text("Description") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                OutlinedTextField(
+                    value = price,
+                    onValueChange = { price = it },
+                    label = { Text("Price") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        },
+        confirmButton = {
+            Box(modifier = Modifier.fillMaxWidth()) {
+                Button(
+                    onClick = {
+                        val servicePrice = price.toDoubleOrNull()
+                        if (selectedClientIndex == -1 || description.isEmpty() || servicePrice == null) {
+                            Toast.makeText(context, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                            return@Button
+                        }
+                        val clientId = clients[selectedClientIndex].id
+                        val service = Service(0, clientId, description, Date(), servicePrice)
+                        scope.launch {
+                            sharedServiceViewModel.addService(service)
+                            Toast.makeText(context, "Service added successfully", Toast.LENGTH_SHORT).show()
+                            onDismissRequest()
+                        }
+                    },
+                    modifier = Modifier.align(Alignment.CenterEnd)
+                ) {
+                    Text("Save")
+                }
+            }
+        },
+        dismissButton = {
+            Button(onClick = onDismissRequest) {
+                Text("Cancel")
+            }
+        }
+    )
 }
 
 @Composable
@@ -112,7 +109,7 @@ fun DropdownMenu(
         Button(onClick = { expanded = true }, modifier = Modifier.fillMaxWidth()) {
             Text(text = selectedItem)
         }
-        DropdownMenu(
+        androidx.compose.material3.DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
