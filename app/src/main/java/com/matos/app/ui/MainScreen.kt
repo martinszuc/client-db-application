@@ -42,7 +42,7 @@ fun MainScreen() {
         topBar = { AppBar(title = "App") },
         bottomBar = { BottomNavigationBar(navController, bottomNavItems) }
     ) { innerPadding ->
-        Box(modifier = Modifier.padding(innerPadding)) {
+        Box(modifier = Modifier.padding(top = innerPadding.calculateTopPadding() / 2, bottom = innerPadding.calculateBottomPadding() / 2)) {
             NavHost(navController = navController, startDestination = "clients") {
                 composable("clients") { ClientsScreen() }
                 composable("search") { SearchScreen() }
