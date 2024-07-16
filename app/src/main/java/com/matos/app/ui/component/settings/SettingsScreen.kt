@@ -22,7 +22,9 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
     val themePreference by viewModel.themePreference.collectAsState(initial = "system_default")
     val scope = rememberCoroutineScope()
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .padding(16.dp)) {
         OutlinedTextField(
             value = themePreference,
             onValueChange = { newTheme ->
@@ -33,7 +35,7 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
             label = { Text("Theme") },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(bottom = 16.dp)
         )
 
         ListItem(
