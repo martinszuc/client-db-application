@@ -66,20 +66,3 @@ fun ServicesScreen(viewModel: SharedServiceViewModel = hiltViewModel()) {
         }
     }
 }
-
-@Composable
-fun ServiceItem(service: Service) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        shape = MaterialTheme.shapes.medium,
-        elevation = CardDefaults.cardElevation(4.dp)
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = "Service Description: ${service.description}")
-            Text(text = "Service Price: ${service.price}")
-            Text(text = "Service Date: ${service.date}")
-        }
-    }
-}

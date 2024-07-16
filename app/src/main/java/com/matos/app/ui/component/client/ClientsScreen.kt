@@ -66,20 +66,3 @@ fun ClientsScreen(sharedClientViewModel: SharedClientViewModel = hiltViewModel()
         }
     }
 }
-
-@Composable
-fun ClientItem(client: Client) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        shape = MaterialTheme.shapes.medium,
-        elevation = CardDefaults.cardElevation(4.dp)
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = client.name, style = MaterialTheme.typography.bodyLarge)
-            Text(text = client.email ?: "No email", style = MaterialTheme.typography.bodyMedium)
-            Text(text = client.phone ?: "No phone", style = MaterialTheme.typography.bodyMedium)
-        }
-    }
-}
