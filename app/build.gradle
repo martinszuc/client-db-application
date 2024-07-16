@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId "com.martinszuc.clientsapp"
-        minSdk 22
+        minSdk 23
         targetSdk 34
         versionCode 1
         versionName "1.0"
@@ -95,9 +95,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-compose:2.8.3"
 
     // Google auth and cloud storage
-    implementation 'com.google.firebase:firebase-auth:23.0.0'
+    implementation platform('com.google.firebase:firebase-bom:33.1.2')
+    implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.android.gms:play-services-auth:21.2.0'
-
 
 
 

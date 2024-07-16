@@ -44,6 +44,7 @@
     <string name="fragment_search">Hľadať</string>
     <string name="fragment_services">Služby</string>
     <string name="fragment_settings">Nastavenia</string>
+    <string name="default_web_client_id">450227172557-7o789rn2vcvc5chalvf8mt7v95g5ia7q.apps.googleusercontent.com</string>
 
     <string-array name="theme_options">
         <item>Light</item>

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "450227172557",
+    "project_id": "kozmeticke-studio",
+    "storage_bucket": "kozmeticke-studio.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:450227172557:android:2054e4f418a576ba086584",
+        "android_client_info": {
+          "package_name": "com.martinszuc.clientsapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "450227172557-qnt0jbckidqjuasto46pklr28o4slgl4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.martinszuc.clientsapp",
+            "certificate_hash": "5e35d388915812e9c4037a5d6e449bad2b1045ec"
+          }
+        },
+        {
+          "client_id": "450227172557-7o789rn2vcvc5chalvf8mt7v95g5ia7q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAg8VljxfxMwB-1Oo1DkeaciC-XkKrKnm0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "450227172557-7o789rn2vcvc5chalvf8mt7v95g5ia7q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
