@@ -1,8 +1,6 @@
 package com.martinszuc.clientsapp.ui.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.martinszuc.clientsapp.data.entity.Client
 import com.martinszuc.clientsapp.data.repository.ClientRepository
 import com.martinszuc.clientsapp.ui.base.BaseViewModel

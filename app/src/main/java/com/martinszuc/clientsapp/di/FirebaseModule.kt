@@ -1,7 +1,6 @@
 package com.martinszuc.clientsapp.di
 
 import android.content.Context
-import androidx.credentials.CredentialManager
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.auth.FirebaseAuth

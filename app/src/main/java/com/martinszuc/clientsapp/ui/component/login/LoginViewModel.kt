@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.martinszuc.clientsapp.ui.component.login
 
 import android.app.Activity
@@ -22,7 +24,7 @@ class LoginViewModel @Inject constructor(
     private val oneTapClient: SignInClient
 ) : ViewModel() {
 
-    private val TAG = "LoginViewModel"
+    private val logTAG = "LoginViewModel"
 
     fun startSignIn(activity: Activity, launcher: ActivityResultLauncher<IntentSenderRequest>) {
         val signInRequest = BeginSignInRequest.builder()
@@ -41,11 +43,11 @@ class LoginViewModel @Inject constructor(
                     val intentSenderRequest = IntentSenderRequest.Builder(result.pendingIntent.intentSender).build()
                     launcher.launch(intentSenderRequest)
                 } catch (e: IntentSender.SendIntentException) {
-                    Log.e(TAG, "Couldn't start One Tap UI: ${e.localizedMessage}")
+                    Log.e(logTAG, "Couldn't start One Tap UI: ${e.localizedMessage}")
                 }
             }
             .addOnFailureListener(activity) { e ->
-                Log.e(TAG, "One Tap sign-in failed: ${e.localizedMessage}")
+                Log.e(logTAG, "One Tap sign-in failed: ${e.localizedMessage}")
             }
     }
 
@@ -59,21 +61,21 @@ class LoginViewModel @Inject constructor(
                     firebaseAuth.signInWithCredential(firebaseCredential)
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
-                                Log.d(TAG, "signInWithCredential:success")
+                                Log.d(logTAG, "signInWithCredential:success")
                                 onLoginSuccess()
                             } else {
-                                Log.w(TAG, "signInWithCredential:failure", task.exception)
+                                Log.w(logTAG, "signInWithCredential:failure", task.exception)
                                 onLoginFailed(task.exception ?: Exception("Sign-in failed"))
                             }
                         }
                 }
                 else -> {
-                    Log.d(TAG, "No ID token!")
+                    Log.d(logTAG, "No ID token!")
                     onLoginFailed(Exception("No ID token"))
                 }
             }
         } catch (e: Exception) {
-            Log.e(TAG, "Sign-in failed", e)
+            Log.e(logTAG, "Sign-in failed", e)
             onLoginFailed(e)
         }
     }
