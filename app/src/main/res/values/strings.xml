@@ -64,6 +64,7 @@
     <string name="dark_theme">Tmavý režim</string>
     <string name="light_theme">Svetlý režim</string>
     <string name="system_default">Podľa systému</string>
+    <string name="select_from_contacts">Z kontaktov</string>
 
     <string-array name="theme_options">
         <item>Light</item>

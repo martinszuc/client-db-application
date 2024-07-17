@@ -1,6 +1,9 @@
 package com.martinszuc.clientsapp.ui.component.client
 
+import android.Manifest
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -21,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -38,6 +42,20 @@ fun ClientsScreen(
     val logTag = "ClientsScreen"
     val clients by sharedClientViewModel.clients.collectAsState()
     var showDialog by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    var hasContactPermission by remember { mutableStateOf(false) }
+
+    val contactPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { granted ->
+            hasContactPermission = granted
+            if (granted) {
+                showDialog = true
+            } else {
+                Log.d(logTag, "Contact permission denied")
+            }
+        }
+    )
 
     LaunchedEffect(Unit) {
         Log.d(logTag, "Launched effect triggered, loading clients")
@@ -49,7 +67,11 @@ fun ClientsScreen(
         floatingActionButton = {
             FloatingActionButton(onClick = {
                 Log.d(logTag, "Add Client button clicked")
-                showDialog = true
+                if (hasContactPermission) {
+                    showDialog = true
+                } else {
+                    contactPermissionLauncher.launch(Manifest.permission.READ_CONTACTS)
+                }
             }) {
                 Icon(Icons.Default.Add, contentDescription = "Add Client")
             }
@@ -76,10 +98,13 @@ fun ClientsScreen(
         }
 
         if (showDialog) {
-            AddClientDialog(onDismissRequest = {
-                Log.d(logTag, "Add Client dialog dismissed")
-                showDialog = false
-            })
+            AddClientDialog(
+                onDismissRequest = {
+                    Log.d(logTag, "Add Client dialog dismissed")
+                    showDialog = false
+                },
+                context = context // Pass context here
+            )
         }
     }
 }

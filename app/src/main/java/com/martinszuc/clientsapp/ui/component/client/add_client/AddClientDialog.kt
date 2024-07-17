@@ -1,5 +1,6 @@
 package com.martinszuc.clientsapp.ui.component.client.add_client
 
+import android.content.Context
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -33,11 +34,14 @@ import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.data.entity.Client
 import com.martinszuc.clientsapp.ui.component.profile.ProfilePicture
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
+import com.martinszuc.clientsapp.util.getContactInfo
+import com.martinszuc.clientsapp.util.getInitials
 
 @Composable
 fun AddClientDialog(
     onDismissRequest: () -> Unit,
-    sharedClientViewModel: SharedClientViewModel = hiltViewModel()
+    sharedClientViewModel: SharedClientViewModel = hiltViewModel(),
+    context: Context
 ) {
     val logTag = "AddClientDialog"
 
@@ -48,7 +52,16 @@ fun AddClientDialog(
     var profilePictureColor by remember { mutableStateOf<String?>(null) }
     var showColorDialog by remember { mutableStateOf(false) }
 
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+    val contactPickerLauncher = rememberLauncherForActivityResult(ActivityResultContracts.PickContact()) { uri ->
+        uri?.let {
+            val contactInfo = getContactInfo(context, it)
+            name = contactInfo.name
+            phone = contactInfo.phone
+            email = contactInfo.email
+        }
+    }
+
+    val imagePickerLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
             Log.d(logTag, "Image selected: $it")
             profilePictureUrl = it.toString()
@@ -66,7 +79,7 @@ fun AddClientDialog(
             },
             onUploadImage = {
                 Log.d(logTag, "Launching image picker")
-                launcher.launch("image/*")
+                imagePickerLauncher.launch("image/*")
                 showColorDialog = false
             },
             onDismissRequest = {
@@ -90,7 +103,7 @@ fun AddClientDialog(
                 Box(modifier = Modifier.align(Alignment.CenterHorizontally)) {
                     ProfilePicture(
                         profilePictureUrl = profilePictureUrl,
-                        initials = name.take(2),
+                        initials = getInitials(name),
                         profilePictureColor = profilePictureColor,
                         modifier = Modifier.clickable {
                             Log.d(logTag, "Profile picture clicked")
@@ -138,6 +151,13 @@ fun AddClientDialog(
                     label = { Text(text = stringResource(R.string.email)) },
                     modifier = Modifier.fillMaxWidth()
                 )
+                Spacer(modifier = Modifier.height(8.dp))
+                Button(onClick = {
+                    Log.d(logTag, "Selecting contact")
+                    contactPickerLauncher.launch(null)
+                }) {
+                    Text(text = stringResource(R.string.select_from_contacts))
+                }
             }
         },
         confirmButton = {

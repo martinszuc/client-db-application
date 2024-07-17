@@ -43,6 +43,7 @@ import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.ui.component.profile.ProfilePicture
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.SharedServiceViewModel
+import com.martinszuc.clientsapp.util.getInitials
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPagerApi::class,
@@ -92,7 +93,7 @@ fun ClientProfileScreen(
                         if (!profileCollapsed) {
                             ProfilePicture(
                                 profilePictureUrl = client.profilePictureUrl,
-                                initials = client.name.take(2),
+                                initials = getInitials(client.name),
                                 profilePictureColor = client.profilePictureColor
                             )
                             Spacer(modifier = Modifier.height(16.dp))
