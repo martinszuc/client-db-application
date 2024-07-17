@@ -93,9 +93,8 @@ fun AddServiceDialog(
         text = {
             Column(modifier = Modifier.fillMaxWidth()) {
                 if (clients.isNotEmpty()) {
-                    val clientNames = clients.map { it.name }
                     ServiceDropdownMenu(
-                        items = clientNames,
+                        clients = clients,
                         selectedIndex = selectedClientIndex,
                         onItemSelected = { index ->
                             selectedClientIndex = index

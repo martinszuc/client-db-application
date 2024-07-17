@@ -112,7 +112,8 @@ fun ClientProfileScreen(
                         containerColor = MaterialTheme.colorScheme.surface,
                         contentColor = contentColorFor(MaterialTheme.colorScheme.surface)
                     ) {
-                        listOf("Services", "To-Do").forEachIndexed { index, title ->
+                        listOf(stringResource(R.string.label_services),
+                            stringResource(R.string.to_do)).forEachIndexed { index, title ->
                             Tab(
                                 text = { Text(title) },
                                 selected = pagerState.currentPage == index,

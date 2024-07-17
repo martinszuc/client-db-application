@@ -65,6 +65,7 @@
     <string name="light_theme">Svetlý režim</string>
     <string name="system_default">Podľa systému</string>
     <string name="select_from_contacts">Z kontaktov</string>
+    <string name="to_do">Zoznam úloh</string>
 
     <string-array name="theme_options">
         <item>Light</item>
