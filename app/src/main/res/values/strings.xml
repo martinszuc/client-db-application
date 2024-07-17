@@ -72,6 +72,7 @@
     <string name="no">Nie</string>
     <string name="label_menu">Menu</string>
     <string name="search">Hladať</string>
+    <string name="data">Dáta</string>
 
     <string-array name="theme_options">
         <item>Light</item>

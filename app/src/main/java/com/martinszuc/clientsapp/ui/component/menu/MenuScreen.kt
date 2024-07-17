@@ -21,8 +21,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -50,8 +53,9 @@ fun MenuScreen(navController: NavHostController) {
         ) {
             // Adjust the grid arrangement to display buttons in rows of 2
             val buttons = listOf(
-                Pair(stringResource(R.string.search), Screen.Search.route),
-                // Add more buttons here with placeholder icons as needed
+                Triple(stringResource(R.string.search), Screen.Search.route, painterResource(R.drawable.ic_baseline_search_24)),
+                Triple(stringResource(R.string.data), Screen.Data.route, painterResource(R.drawable.ic_chart)) // New Data screen button with a different icon
+                // Add more buttons here with appropriate icons as needed
             )
 
             buttons.chunked(2).forEach { rowButtons ->
@@ -59,7 +63,7 @@ fun MenuScreen(navController: NavHostController) {
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    rowButtons.forEach { (label, route) ->
+                    rowButtons.forEach { (label, route, icon) ->
                         Box(
                             modifier = Modifier
                                 .weight(1f)
@@ -69,6 +73,7 @@ fun MenuScreen(navController: NavHostController) {
                             SquareButton(
                                 label = label,
                                 route = route,
+                                icon = icon,
                                 navController = navController
                             )
                         }
@@ -88,7 +93,13 @@ fun MenuScreen(navController: NavHostController) {
 }
 
 @Composable
-fun SquareButton(label: String, route: String, navController: NavHostController, shape: Shape = RectangleShape) {
+fun SquareButton(
+    label: String,
+    route: String,
+    icon: Painter,
+    navController: NavHostController,
+    shape: Shape = RectangleShape
+) {
     Button(
         onClick = { navController.navigate(route) },
         modifier = Modifier
@@ -101,7 +112,7 @@ fun SquareButton(label: String, route: String, navController: NavHostController,
             verticalArrangement = Arrangement.Center
         ) {
             Icon(
-                imageVector = Icons.Default.Search, // Replace with appropriate icons
+                painter = icon, // Use the provided icon
                 contentDescription = label,
                 modifier = Modifier.size(24.dp)
             )
