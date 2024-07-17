@@ -66,6 +66,10 @@
     <string name="system_default">Podľa systému</string>
     <string name="select_from_contacts">Z kontaktov</string>
     <string name="to_do">Zoznam úloh</string>
+    <string name="call_client">Telefonát zákazníkovi</string>
+    <string name="confirm_call">Naozaj zavolať?</string>
+    <string name="yes">Ano</string>
+    <string name="no">Nie</string>
 
     <string-array name="theme_options">
         <item>Light</item>
