@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.martinszuc.clientsapp.ui.component.client.ClientsScreen
 import com.martinszuc.clientsapp.ui.component.client.profile.ClientProfileScreen
+import com.martinszuc.clientsapp.ui.component.menu.MenuScreen
 import com.martinszuc.clientsapp.ui.component.search.SearchScreen
 import com.martinszuc.clientsapp.ui.component.service.ServicesScreen
 import com.martinszuc.clientsapp.ui.component.settings.SettingsScreen
@@ -17,6 +18,7 @@ sealed class Screen(val route: String) {
     data object Services : Screen("services")
     data object Search : Screen("search")
     data object Settings : Screen("settings")
+    data object Menu : Screen("menu")
     data class ClientProfile(val clientId: Int) : Screen("clientProfile/$clientId") {
         companion object {
             const val ROUTE = "clientProfile/{clientId}"
@@ -47,6 +49,9 @@ fun NavGraph(
         }
         composable(Screen.Settings.route) {
             SettingsScreen(onThemeChanged = onThemeChanged)
+        }
+        composable(Screen.Menu.route) {
+            MenuScreen(navController)
         }
         composable(Screen.ClientProfile.ROUTE) { backStackEntry ->
             val clientId = backStackEntry.arguments?.getString("clientId")?.toInt() ?: return@composable

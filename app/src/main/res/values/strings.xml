@@ -70,6 +70,8 @@
     <string name="confirm_call">Naozaj zavolať?</string>
     <string name="yes">Ano</string>
     <string name="no">Nie</string>
+    <string name="label_menu">Menu</string>
+    <string name="search">Hladať</string>
 
     <string-array name="theme_options">
         <item>Light</item>

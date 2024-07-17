@@ -3,6 +3,8 @@ package com.martinszuc.clientsapp.ui
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -30,7 +32,7 @@ fun MainScreen() {
         val bottomNavItems = listOf(
             BottomNavItem(Screen.Clients.route, R.drawable.ic_face, R.string.label_clients),
             BottomNavItem(Screen.Services.route, R.drawable.ic_lipstick_bold, R.string.label_services),
-            BottomNavItem(Screen.Search.route, R.drawable.ic_baseline_search_24, R.string.fragment_search),
+            BottomNavItem(Screen.Menu.route, R.drawable.ic_menu_four_squares, R.string.label_menu),
             BottomNavItem(Screen.Settings.route, R.drawable.ic_baseline_settings_24, R.string.settings)
         )
 
