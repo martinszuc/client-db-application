@@ -14,14 +14,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.ui.component.settings.dialogs.ThemeSelectionDialog
+import com.martinszuc.clientsapp.util.AppConstants
 import kotlinx.coroutines.launch
 
 @Composable
 fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel(), onThemeChanged: (String) -> Unit) {
-    val themePreference by viewModel.themePreference.collectAsState(initial = "system_default")
+    val themePreference by viewModel.themePreference.collectAsState(initial = AppConstants.THEME_SYSTEM_DEFAULT)
     val scope = rememberCoroutineScope()
 
     var showThemeDialog by remember { mutableStateOf(false) }
@@ -33,7 +36,7 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel(), onThemeChange
     ) {
         ListItem(
             modifier = Modifier.clickable { showThemeDialog = true },
-            headlineContent = { Text("Theme") },
+            headlineContent = { Text(stringResource(R.string.theme)) },
             supportingContent = { Text(getThemeLabel(themePreference)) }
         )
         // Add more settings options here as needed
@@ -57,8 +60,8 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel(), onThemeChange
 @Composable
 fun getThemeLabel(theme: String): String {
     return when (theme) {
-        "light" -> "Light Theme"
-        "dark" -> "Dark Theme"
-        else -> "System Default"
+        AppConstants.THEME_LIGHT -> stringResource(R.string.light_theme)
+        AppConstants.THEME_DARK -> stringResource(R.string.dark_theme)
+        else -> stringResource(R.string.system_default)
     }
 }

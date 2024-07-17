@@ -9,6 +9,9 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.martinszuc.clientsapp.util.AppConstants
+import com.martinszuc.clientsapp.util.AppConstants.THEME_DARK
+import com.martinszuc.clientsapp.util.AppConstants.THEME_LIGHT
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -21,11 +24,11 @@ class SettingsViewModel @Inject constructor(
     application: Application
 ) : AndroidViewModel(application) {
 
-    private val THEMEKEY = stringPreferencesKey("theme_preference")
+    private val THEMEKEY = stringPreferencesKey(AppConstants.THEME_PREFERENCE)
 
     val themePreference: Flow<String> = dataStore.data
         .map { preferences ->
-            preferences[THEMEKEY] ?: "system_default"
+            preferences[THEMEKEY] ?: AppConstants.THEME_SYSTEM_DEFAULT
         }
 
     fun changeTheme(theme: String) {
@@ -40,15 +43,15 @@ class SettingsViewModel @Inject constructor(
 
     private fun applyTheme(theme: String) {
         when (theme) {
-            "light" -> {
+            THEME_LIGHT -> {
                 Log.d("SettingsViewModel", "Applying Light Theme")
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             }
-            "dark" -> {
+            THEME_DARK -> {
                 Log.d("SettingsViewModel", "Applying Dark Theme")
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             }
-            "system_default" -> {
+            AppConstants.THEME_SYSTEM_DEFAULT -> {
                 Log.d("SettingsViewModel", "Applying System Default Theme")
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             }

@@ -1,6 +1,7 @@
 package com.martinszuc.clientsapp.util
 
 object AppConstants {
+    const val THEME_PREFERENCE= "theme_preference"
     const val UNKNOWN_CLIENT = "Unknown Client"
     const val THEME_LIGHT = "light"
     const val THEME_DARK = "dark"

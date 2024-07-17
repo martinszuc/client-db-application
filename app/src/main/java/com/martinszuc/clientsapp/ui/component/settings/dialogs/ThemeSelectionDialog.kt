@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.martinszuc.clientsapp.R
+import com.martinszuc.clientsapp.util.AppConstants.THEME_DARK
 import com.martinszuc.clientsapp.util.AppConstants.THEME_LIGHT
 import com.martinszuc.clientsapp.util.AppConstants.THEME_SYSTEM_DEFAULT
 
@@ -25,11 +26,11 @@ fun ThemeSelectionDialog(
     onDismissRequest: () -> Unit,
     onThemeSelected: (String) -> Unit
 ) {
-    val themes = listOf("system_default", THEME_LIGHT, "dark")
+    val themes = listOf(THEME_SYSTEM_DEFAULT, THEME_LIGHT, THEME_DARK)
     val themeLabels = mapOf(
-        THEME_SYSTEM_DEFAULT to "System Default",
-        "light" to "Light Theme",
-        "dark" to "Dark Theme"
+        THEME_SYSTEM_DEFAULT to stringResource(R.string.system_default),
+        THEME_LIGHT to stringResource(R.string.light_theme),
+        THEME_DARK to stringResource(R.string.dark_theme)
     )
 
     AlertDialog(
@@ -56,7 +57,7 @@ fun ThemeSelectionDialog(
         },
         confirmButton = {
             Button(onClick = onDismissRequest) {
-                Text("Cancel")
+                Text(stringResource(R.string.cancel))
             }
         }
     )
