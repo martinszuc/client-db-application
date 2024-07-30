@@ -110,4 +110,21 @@ class SharedClientViewModel @Inject constructor(
         val client = _clients.value.find { it.id == clientId }
         return client?.name ?: AppConstants.UNKNOWN_CLIENT
     }
+    fun deleteClient(clientId: Int) {
+        Log.d(logTag, "Deleting client with ID: $clientId")
+        launchDataLoad(
+            execution = {
+                clientRepository.deleteClientById(clientId)
+                clientRepository.getClients() // Reload clients to reflect changes
+            },
+            onSuccess = { clientsList ->
+                Log.d(logTag, "Clients reloaded successfully after deletion: $clientsList")
+                _clients.value = clientsList.sortedByDescending { it.id }
+                _selectedClient.value = null
+            },
+            onFailure = { e ->
+                Log.e(logTag, "Failed to delete client", e)
+            }
+        )
+    }
 }

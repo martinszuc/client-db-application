@@ -21,4 +21,6 @@ interface ClientDao {
     suspend fun getClientById(clientId: Int): Client?
     @Query("UPDATE clients SET latestServiceDate = :date WHERE id = :clientId")
     suspend fun updateLatestServiceDate(clientId: Int, date: Date)
+    @Query("DELETE FROM clients WHERE id = :clientId")
+    suspend fun deleteClientById(clientId: Int)
 }

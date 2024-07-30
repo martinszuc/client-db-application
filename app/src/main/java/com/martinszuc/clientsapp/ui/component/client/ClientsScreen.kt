@@ -77,11 +77,13 @@ fun ClientsScreen(
             }
         }
     ) { innerPadding ->
-        Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .padding(innerPadding)) {
             if (clients.isEmpty()) {
                 Log.d(logTag, "No clients found")
                 Text(
-                    text = "No clients found",
+                    text = stringResource(R.string.no_clients_found),
                     modifier = Modifier.align(Alignment.Center)
                 )
             } else {

@@ -13,7 +13,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -24,6 +27,7 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -50,7 +54,8 @@ import com.martinszuc.clientsapp.ui.viewmodel.SharedServiceViewModel
 import com.martinszuc.clientsapp.util.getInitials
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalPagerApi::class,
+@OptIn(
+    ExperimentalMaterial3Api::class, ExperimentalPagerApi::class,
     ExperimentalFoundationApi::class
 )
 @Composable
@@ -66,6 +71,8 @@ fun ClientProfileScreen(
     var profileCollapsed by remember { mutableStateOf(false) }
     var showCallDialog by remember { mutableStateOf(false) }
     var phoneNumber by remember { mutableStateOf("") }
+    var showMenu by remember { mutableStateOf(false) }
+    var showDeleteDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
     LaunchedEffect(clientId) {
@@ -78,9 +85,36 @@ fun ClientProfileScreen(
                 title = { Text(text = stringResource(R.string.client_profile)) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back"
+                        )
                     }
-                }
+                },
+                actions = {
+                    IconButton(onClick = { showMenu = !showMenu }) {
+                        Icon(
+                            imageVector = Icons.Default.MoreVert,
+                            contentDescription = stringResource(R.string.more_options)
+                        )
+                    }
+                    DropdownMenu(
+                        expanded = showMenu,
+                        onDismissRequest = { showMenu = false }
+                    ) {
+                        DropdownMenuItem(
+                            onClick = {
+                                showDeleteDialog = true
+                                showMenu = false
+                            },
+                            text = { Text(text = stringResource(R.string.delete)) }
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary
+                )
             )
         }
     ) { innerPadding ->
@@ -107,7 +141,10 @@ fun ClientProfileScreen(
                         }
 
                         Text(text = client.name, style = MaterialTheme.typography.titleLarge)
-                        Text(text = client.email ?: "No email", style = MaterialTheme.typography.bodyMedium)
+                        Text(
+                            text = client.email ?: "No email",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
                         Text(
                             text = client.phone ?: "No phone",
                             style = MaterialTheme.typography.bodyMedium,
@@ -128,7 +165,10 @@ fun ClientProfileScreen(
                         containerColor = MaterialTheme.colorScheme.surface,
                         contentColor = contentColorFor(MaterialTheme.colorScheme.surface)
                     ) {
-                        listOf(stringResource(R.string.label_services), stringResource(R.string.to_do)).forEachIndexed { index, title ->
+                        listOf(
+                            stringResource(R.string.label_services),
+                            stringResource(R.string.to_do)
+                        ).forEachIndexed { index, title ->
                             Tab(
                                 text = { Text(title) },
                                 selected = pagerState.currentPage == index,
@@ -186,6 +226,32 @@ fun ClientProfileScreen(
                         onClick = { showCallDialog = false }
                     ) {
                         Text(text = stringResource(R.string.no))
+                    }
+                }
+            )
+        }
+
+        if (showDeleteDialog) {
+            AlertDialog(
+                onDismissRequest = { showDeleteDialog = false },
+                title = { Text(text = stringResource(R.string.delete_client)) },
+                text = { Text(text = stringResource(R.string.confirm_delete_client, client?.name ?: "")) },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            sharedClientViewModel.deleteClient(client!!.id)
+                            showDeleteDialog = false
+                            navController.popBackStack()
+                        }
+                    ) {
+                        Text(text = stringResource(R.string.delete))
+                    }
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = { showDeleteDialog = false }
+                    ) {
+                        Text(text = stringResource(R.string.cancel))
                     }
                 }
             )

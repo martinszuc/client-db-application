@@ -15,5 +15,6 @@ class ClientRepository @Inject constructor(
     suspend fun searchClients(query: String) = clientDao.searchClients(query)
     suspend fun getClientById(clientId: Int) = clientDao.getClientById(clientId)
     suspend fun updateLatestServiceDate(clientId: Int, date: Date) = clientDao.updateLatestServiceDate(clientId, date)
+    suspend fun deleteClientById(clientId: Int) = clientDao.deleteClientById(clientId)
 
 }
