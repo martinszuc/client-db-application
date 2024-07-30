@@ -73,6 +73,13 @@
     <string name="label_menu">Menu</string>
     <string name="search">Hladať</string>
     <string name="data">Dáta</string>
+    <string name="add_type">Pridať typ</string>
+    <string name="add_category">Pridať kategóriu</string>
+    <string name="add_category_or_type">Nová Kategória/Typ</string>
+    <string name="category_name">Názov kategórie</string>
+    <string name="category_emoji">Emoji</string>
+    <string name="type_name">Názov</string>
+    <string name="type_emoji">Emoji</string>
 
     <string-array name="theme_options">
         <item>Light</item>

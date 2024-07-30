@@ -1,4 +1,4 @@
-package com.martinszuc.clientsapp.ui.component.service
+package com.martinszuc.clientsapp.ui.component.service.service_list
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.data.entity.Service
+import com.martinszuc.clientsapp.ui.component.service.ServiceDropdownMenu
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.SharedServiceViewModel
 import kotlinx.coroutines.launch

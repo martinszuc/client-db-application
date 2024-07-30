@@ -108,4 +108,10 @@ dependencies {
     // Pagers
     implementation "com.google.accompanist:accompanist-pager:0.23.1"
     implementation "com.google.accompanist:accompanist-pager-indicators:0.23.1"
+
+    // Emojis
+    implementation 'androidx.emoji2:emoji2:1.4.0'
+    implementation 'androidx.emoji2:emoji2-bundled:1.4.0'
+    implementation 'androidx.emoji2:emoji2-views:1.4.0'
+
 }

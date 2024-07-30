@@ -4,7 +4,9 @@ import android.content.Context
 import androidx.room.Room
 import com.martinszuc.clientsapp.data.database.AppDatabase
 import com.martinszuc.clientsapp.data.database.dao.ClientDao
+import com.martinszuc.clientsapp.data.database.dao.ServiceCategoryDao
 import com.martinszuc.clientsapp.data.database.dao.ServiceDao
+import com.martinszuc.clientsapp.data.database.dao.ServiceTypeDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,5 +37,13 @@ object DatabaseModule {
     @Provides
     fun provideServiceDao(db: AppDatabase): ServiceDao {
         return db.serviceDao()
+    }
+    @Provides
+    fun provideServiceCategoryDao(db: AppDatabase): ServiceCategoryDao {
+        return db.serviceCategoryDao()
+    }
+    @Provides
+    fun provideServiceTypeDao(db: AppDatabase): ServiceTypeDao {
+        return db.serviceTypeDao()
     }
 }
