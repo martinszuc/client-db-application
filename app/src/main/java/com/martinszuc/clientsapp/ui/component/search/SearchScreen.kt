@@ -29,15 +29,21 @@ import com.martinszuc.clientsapp.ui.AppBar
 import com.martinszuc.clientsapp.ui.component.client.ClientItem
 import com.martinszuc.clientsapp.ui.component.service.ServiceItem
 import com.martinszuc.clientsapp.ui.navigation.Screen
+import com.martinszuc.clientsapp.ui.viewmodel.ServiceCategoryViewModel
+import com.martinszuc.clientsapp.ui.viewmodel.ServiceTypeViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
 
 @Composable
 fun SearchScreen(
     navController: NavHostController,
     viewModel: SearchViewModel = hiltViewModel(),
-    sharedClientViewModel: SharedClientViewModel = hiltViewModel()
+    sharedClientViewModel: SharedClientViewModel = hiltViewModel(),
+    categoryViewModel: ServiceCategoryViewModel = hiltViewModel(),
+    typeViewModel: ServiceTypeViewModel = hiltViewModel()
 ) {
     val searchResults by viewModel.searchResults.collectAsState()
+    val categories by categoryViewModel.categories.collectAsState()
+    val types by typeViewModel.serviceTypes.collectAsState()
     var query by remember { mutableStateOf("") }
 
     Scaffold(
@@ -83,7 +89,15 @@ fun SearchScreen(
                                 val clientName by produceState<String>("") {
                                     value = sharedClientViewModel.getClientName(result.client_id)
                                 }
-                                ServiceItem(service = result, clientName = clientName)
+                                val category = categories.find { it.id == result.category_id }
+                                val type = types.find { it.id == result.type_id }
+
+                                ServiceItem(
+                                    service = result,
+                                    clientName = clientName,
+                                    category = category,
+                                    type = type
+                                )
                             }
                         }
                     }

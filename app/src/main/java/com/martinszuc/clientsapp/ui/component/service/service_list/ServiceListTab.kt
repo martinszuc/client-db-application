@@ -11,6 +11,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,30 +25,52 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.ui.component.service.ServiceItem
+import com.martinszuc.clientsapp.ui.viewmodel.ServiceCategoryViewModel
+import com.martinszuc.clientsapp.ui.viewmodel.ServiceTypeViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.SharedServiceViewModel
 
 @Composable
 fun ServiceListTab(
     serviceViewModel: SharedServiceViewModel = hiltViewModel(),
-    clientViewModel: SharedClientViewModel = hiltViewModel()
+    clientViewModel: SharedClientViewModel = hiltViewModel(),
+    categoryViewModel: ServiceCategoryViewModel = hiltViewModel(),
+    typeViewModel: ServiceTypeViewModel = hiltViewModel()
 ) {
+    LaunchedEffect(Unit) {
+        serviceViewModel.loadServices()
+        clientViewModel.loadClients()
+        categoryViewModel.loadCategories()
+        typeViewModel.loadServiceTypes()
+    }
+
     val services by serviceViewModel.services.collectAsState()
+    val clients by clientViewModel.clients.collectAsState()
+    val categories by categoryViewModel.categories.collectAsState()
+    val types by typeViewModel.serviceTypes.collectAsState()
     var showDialog by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier.fillMaxSize()) {
         if (services.isEmpty()) {
             Text(
-                text = "No services found",
+                text = stringResource(R.string.no_services_found),
                 modifier = Modifier.align(Alignment.Center)
             )
         } else {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(services) { service ->
-                    val clientName by produceState<String>("") {
-                        value = clientViewModel.getClientName(service.client_id)
+                    val clientName by produceState(initialValue = "") {
+                        value = clients.find { it.id == service.client_id }?.name ?: "Unknown Client"
                     }
-                    ServiceItem(service = service, clientName = clientName)
+                    val category = categories.find { it.id == service.category_id }
+                    val type = types.find { it.id == service.type_id }
+
+                    ServiceItem(
+                        service = service,
+                        clientName = clientName,
+                        category = category,
+                        type = type
+                    )
                 }
             }
         }

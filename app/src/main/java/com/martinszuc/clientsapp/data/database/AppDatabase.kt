@@ -14,7 +14,7 @@ import com.martinszuc.clientsapp.data.entity.ServiceType
 
 @Database(
     entities = [Client::class, Service::class, ServiceCategory::class, ServiceType::class],
-    version = 5
+    version = 1
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {

@@ -49,7 +49,7 @@
     <string name="add_service">Pridať Zákazku</string>
     <string name="select_client_add">Zvoliť Zákazníka</string>
     <string name="popis">Popis: %1$s</string>
-    <string name="d_tum">Dátum: %1$s</string>
+    <string name="d_tum">%1$s</string>
     <string name="cena">Cena: %1$s €</string>
     <string name="date_with_date">Dátum: %1$s</string>
     <string name="time_with_time">Čas: %1$s</string>

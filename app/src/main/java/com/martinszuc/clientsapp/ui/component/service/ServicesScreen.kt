@@ -46,7 +46,10 @@ fun ServicesScreen(
                 selectedTabIndex = pagerState.currentPage,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                listOf("Services", "Service Types").forEachIndexed { index, title ->
+                listOf(
+                    stringResource(R.string.label_list_services),
+                    stringResource(R.string.label_services_type_manager)
+                ).forEachIndexed { index, title ->
                     Tab(
                         text = { Text(title) },
                         selected = pagerState.currentPage == index,
