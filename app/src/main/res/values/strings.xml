@@ -80,6 +80,8 @@
     <string name="category_emoji">Emoji</string>
     <string name="type_name">Názov</string>
     <string name="type_emoji">Emoji</string>
+    <string name="collapse">Menej</string>
+    <string name="expand">Viac</string>
 
     <string-array name="theme_options">
         <item>Light</item>
