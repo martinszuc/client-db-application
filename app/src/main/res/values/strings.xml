@@ -102,6 +102,13 @@
     <string name="delete">Vymazať</string>
     <string name="more_options">Viac možností</string>
     <string name="no_clients_found">Nemáte žiadných zákazníkov!</string>
+    <string name="database">Databáza</string>
+    <string name="delete_database">Vymazať databázu</string>
+    <string name="backup_database">Zálohovať databázu</string>
+    <string name="confirmation">Ste si istý?</string>
+    <string name="delete_database_confirmation">Naozaj si prajete vymazať databázu? Prídete o všetky dáta</string>
+    <string name="delete_database_desc">Vymazať databázu</string>
+    <string name="backup_database_desc">Zálohovať databázu</string>
 
     <string-array name="theme_options">
         <item>Light</item>
