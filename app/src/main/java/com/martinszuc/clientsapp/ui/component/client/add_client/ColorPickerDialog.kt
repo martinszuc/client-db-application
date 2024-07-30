@@ -19,7 +19,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.martinszuc.clientsapp.R
 
 @Composable
 fun ColorPickerDialog(
@@ -39,10 +41,10 @@ fun ColorPickerDialog(
             Log.d(logTag, "Color picker dialog dismissed")
             onDismissRequest()
         },
-        title = { Text("Choose Profile Picture") },
+        title = { Text(stringResource(R.string.choose_profile_picture)) },
         text = {
             Column {
-                Text("Select a default color:")
+                Text(stringResource(R.string.select_a_default_color))
                 Spacer(modifier = Modifier.height(8.dp))
                 Column {
                     for (i in colors.indices step 5) {
@@ -56,7 +58,10 @@ fun ColorPickerDialog(
                                 Box(
                                     modifier = Modifier
                                         .size(40.dp)
-                                        .background(Color(android.graphics.Color.parseColor(color)), CircleShape)
+                                        .background(
+                                            Color(android.graphics.Color.parseColor(color)),
+                                            CircleShape
+                                        )
                                         .clickable {
                                             Log.d(logTag, "Color selected: $color")
                                             onColorSelected(color)
@@ -67,13 +72,13 @@ fun ColorPickerDialog(
                     }
                 }
                 Spacer(modifier = Modifier.height(16.dp))
-                Text("Or upload an image:")
+                Text(stringResource(R.string.or_upload_an_image))
                 Spacer(modifier = Modifier.height(8.dp))
                 Button(onClick = {
                     Log.d(logTag, "Launching image picker")
                     onUploadImage()
                 }) {
-                    Text("Choose from gallery")
+                    Text(stringResource(R.string.choose_from_gallery))
                 }
             }
         },
@@ -82,7 +87,7 @@ fun ColorPickerDialog(
                 Log.d(logTag, "Done button clicked")
                 onDismissRequest()
             }) {
-                Text("Done")
+                Text(stringResource(R.string.save))
             }
         }
     )

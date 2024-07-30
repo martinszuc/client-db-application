@@ -50,7 +50,7 @@
     <string name="select_client_add">Zvoliť Zákazníka</string>
     <string name="popis">Popis: %1$s</string>
     <string name="d_tum">Dátum: %1$s</string>
-    <string name="cena">Cena: %1$s</string>
+    <string name="cena">Cena: %1$s €</string>
     <string name="date_with_date">Dátum: %1$s</string>
     <string name="time_with_time">Čas: %1$s</string>
     <string name="service_added_successfully">Zákazka úspešne pridaná</string>
@@ -73,7 +73,7 @@
     <string name="label_menu">Menu</string>
     <string name="search">Hladať</string>
     <string name="data">Dáta</string>
-    <string name="add_type">Pridať typ</string>
+    <string name="add_type">Pridať Typ</string>
     <string name="add_category">Pridať kategóriu</string>
     <string name="add_category_or_type">Nová Kategória/Typ</string>
     <string name="category_name">Názov kategórie</string>
@@ -82,6 +82,21 @@
     <string name="type_emoji">Emoji</string>
     <string name="collapse">Menej</string>
     <string name="expand">Viac</string>
+    <string name="emoji_label">Značka:</string>
+    <string name="emoji_hint">Vložiť emotikon</string>
+    <string name="emoji_error">Možné zadať iba emoji!</string>
+    <string name="category_label">Kategória:</string>
+    <string name="select_category">Zvoliť kategóriu</string>
+    <string name="pick_category">Zvoliť</string>
+    <string name="choose_profile_picture">Vybrať profilovú fotku</string>
+    <string name="select_a_default_color">Zvoliť farbu pozadia:</string>
+    <string name="or_upload_an_image">Nahrať obrázok z úložiska:</string>
+    <string name="choose_from_gallery">Vybrať z galérie</string>
+    <string name="select_service_type">Zvoliť kategóriu/typ</string>
+    <string name="please_fill_in_all_fields">Potreba vyplniť všetky polia!</string>
+    <string name="label_list_services">Zoznam</string>
+    <string name="label_services_type_manager">Manažér zákaziek</string>
+    <string name="no_services_found">Nemáte žiadne zákazky</string>
 
     <string-array name="theme_options">
         <item>Light</item>

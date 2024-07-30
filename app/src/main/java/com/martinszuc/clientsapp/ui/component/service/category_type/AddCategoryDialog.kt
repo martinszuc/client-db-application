@@ -2,6 +2,7 @@ package com.martinszuc.clientsapp.ui.component.service.category_type
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -37,7 +38,7 @@ fun AddCategoryDialog(
             }
         },
         confirmButton = {
-            TextButton(
+            Button(
                 onClick = {
                     onAddCategory(name.value, emoji.value)
                     onDismissRequest()
@@ -47,7 +48,7 @@ fun AddCategoryDialog(
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismissRequest) {
+            Button(onClick = onDismissRequest) {
                 Text(stringResource(R.string.cancel))
             }
         }

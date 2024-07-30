@@ -20,6 +20,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.data.entity.Service
 import com.martinszuc.clientsapp.ui.component.service.ServiceDropdownMenu
+import com.martinszuc.clientsapp.ui.viewmodel.ServiceCategoryViewModel
+import com.martinszuc.clientsapp.ui.viewmodel.ServiceTypeViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.SharedServiceViewModel
 import kotlinx.coroutines.launch
@@ -30,18 +32,26 @@ import java.util.*
 fun AddServiceDialog(
     onDismissRequest: () -> Unit,
     sharedServiceViewModel: SharedServiceViewModel = hiltViewModel(),
-    sharedClientViewModel: SharedClientViewModel = hiltViewModel()
+    sharedClientViewModel: SharedClientViewModel = hiltViewModel(),
+    serviceCategoryViewModel: ServiceCategoryViewModel = hiltViewModel(),
+    serviceTypeViewModel: ServiceTypeViewModel = hiltViewModel()
 ) {
     var description by remember { mutableStateOf("") }
     var price by remember { mutableStateOf("") }
-    var selectedClientIndex by remember { mutableStateOf(-1) }
+    var selectedClientId by remember { mutableStateOf<Int?>(null) }
     var selectedDate by remember { mutableStateOf(Date()) }
+    var selectedCategoryId by remember { mutableStateOf<Int?>(null) }
+    var selectedTypeId by remember { mutableStateOf<Int?>(null) }
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val clients by sharedClientViewModel.clients.collectAsState()
+    val categories by serviceCategoryViewModel.categories.collectAsState()
+    val types by serviceTypeViewModel.serviceTypes.collectAsState()
 
     LaunchedEffect(Unit) {
         sharedClientViewModel.loadClients()
+        serviceCategoryViewModel.loadCategories()
+        serviceTypeViewModel.loadServiceTypes()
     }
 
     val calendar = Calendar.getInstance()
@@ -73,17 +83,15 @@ fun AddServiceDialog(
 
     AlertDialog(
         onDismissRequest = onDismissRequest,
-        title = {
-            Text(text = stringResource(R.string.add_service))
-        },
+        title = { Text(text = stringResource(R.string.add_service)) },
         text = {
             Column(modifier = Modifier.fillMaxWidth()) {
                 if (clients.isNotEmpty()) {
                     ServiceDropdownMenu(
                         clients = clients,
-                        selectedIndex = selectedClientIndex,
+                        selectedIndex = clients.indexOfFirst { it.id == selectedClientId },
                         onItemSelected = { index ->
-                            selectedClientIndex = index
+                            selectedClientId = clients.getOrNull(index)?.id
                         }
                     )
                 }
@@ -150,15 +158,22 @@ fun AddServiceDialog(
                         )
                     }
                 }
+                Spacer(modifier = Modifier.height(8.dp))
+                ServiceTypeDropdownMenu(
+                    categories = categories,
+                    types = types,
+                    selectedCategoryId = selectedCategoryId,
+                    selectedTypeId = selectedTypeId,
+                    onCategorySelected = { categoryId -> selectedCategoryId = categoryId },
+                    onTypeSelected = { typeId -> selectedTypeId = typeId }
+                )
             }
         },
         confirmButton = {
             Row(modifier = Modifier.fillMaxWidth()) {
                 Button(
                     onClick = onDismissRequest,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary
-                    ),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     modifier = Modifier.weight(1f)
                 ) {
                     Text(text = stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onPrimary)
@@ -167,32 +182,34 @@ fun AddServiceDialog(
                 Button(
                     onClick = {
                         val servicePrice = price.toDoubleOrNull()
-                        if (selectedClientIndex == -1 || description.isEmpty() || servicePrice == null) {
-                            Toast.makeText(context, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                        if (selectedClientId == null || description.isEmpty() || servicePrice == null || selectedCategoryId == null || selectedTypeId == null) {
+                            Toast.makeText(context,
+                                context.getString(R.string.please_fill_in_all_fields), Toast.LENGTH_SHORT).show()
                             return@Button
                         }
-                        val clientId = clients[selectedClientIndex].id
-                        val service = Service(0, clientId, description, selectedDate, servicePrice)
+                        val service = Service(
+                            id = 0,
+                            client_id = selectedClientId!!,
+                            description = description,
+                            date = selectedDate,
+                            price = servicePrice,
+                            category_id = selectedCategoryId,
+                            type_id = selectedTypeId
+                        )
                         scope.launch {
                             sharedServiceViewModel.addService(service)
-                            sharedClientViewModel.updateLatestServiceDate(clientId, selectedDate)
+                            sharedClientViewModel.updateLatestServiceDate(selectedClientId!!, selectedDate)
                             sharedClientViewModel.loadClients()
-                            Toast.makeText(
-                                context,
-                                context.getString(R.string.service_added_successfully),
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            Toast.makeText(context, context.getString(R.string.service_added_successfully), Toast.LENGTH_SHORT).show()
                             onDismissRequest()
                         }
                     },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary
-                    ),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     modifier = Modifier.weight(1f)
                 ) {
                     Text(text = stringResource(R.string.save), color = MaterialTheme.colorScheme.onPrimary)
                 }
             }
-        },
+        }
     )
 }

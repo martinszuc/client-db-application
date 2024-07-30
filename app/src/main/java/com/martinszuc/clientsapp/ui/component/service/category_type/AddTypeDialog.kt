@@ -1,19 +1,11 @@
 package com.martinszuc.clientsapp.ui.component.service.category_type
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -29,7 +21,8 @@ fun AddTypeDialog(
     var name by remember { mutableStateOf("") }
     var emoji by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
-    var selectedCategory by remember { mutableStateOf(categories.firstOrNull()?.id ?: 0) }
+    var selectedCategory by remember { mutableStateOf(0) } // Default to 0, assuming 0 is not a valid category ID
+    var emojiError by remember { mutableStateOf(false) }
 
     AlertDialog(
         onDismissRequest = onDismissRequest,
@@ -41,15 +34,39 @@ fun AddTypeDialog(
                     onValueChange = { name = it },
                     label = { Text(stringResource(R.string.type_name)) }
                 )
-                EmojiTextField(
+                OutlinedTextField(
                     value = emoji,
-                    onValueChange = { emoji = it }
-                )
-                TextButton(
-                    onClick = { expanded = true },
+                    onValueChange = {
+                        emoji = it
+                        emojiError = emoji.any { char -> !Character.isDefined(char) || Character.isISOControl(char) }
+                    },
+                    label = { Text(stringResource(R.string.category_emoji)) },
+                    isError = emojiError,
                     modifier = Modifier.padding(top = 8.dp)
+                )
+                if (emojiError) {
+                    Text(
+                        text = stringResource(R.string.emoji_error),
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+                    )
+                }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(top = 16.dp)
                 ) {
-                    Text(text = categories.find { it.id == selectedCategory }?.name ?: "Select Category")
+                    Text(text = stringResource(R.string.category_label))
+                    Button(
+                        onClick = { expanded = true },
+                        modifier = Modifier.padding(start = 8.dp)
+                    ) {
+                        val selectedCategoryObject = categories.find { it.id == selectedCategory }
+                        val categoryText = selectedCategoryObject?.let {
+                            "${it.emoji} ${it.name}"
+                        } ?: stringResource(R.string.pick_category)
+                        Text(text = categoryText)
+                    }
                 }
                 DropdownMenu(
                     expanded = expanded,
@@ -68,18 +85,25 @@ fun AddTypeDialog(
             }
         },
         confirmButton = {
-            TextButton(
+            Button(
                 onClick = {
-                    onAddType(name, emoji, selectedCategory)
-                    onDismissRequest()
-                }
+                    if (!emojiError && emoji.isNotEmpty() && selectedCategory != 0) {
+                        onAddType(name, emoji, selectedCategory)
+                        onDismissRequest()
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                )
             ) {
-                Text(stringResource(R.string.add))
+                Text(stringResource(R.string.add), color = MaterialTheme.colorScheme.onPrimary)
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismissRequest) {
-                Text(stringResource(R.string.cancel))
+            Button(
+                onClick = onDismissRequest,
+            ) {
+                Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSecondary)
             }
         }
     )
