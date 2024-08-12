@@ -3,7 +3,9 @@ package com.martinszuc.clientsapp.ui.component.client.profile
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,8 +13,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenu
@@ -39,6 +43,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -48,6 +53,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.martinszuc.clientsapp.R
+import com.martinszuc.clientsapp.ui.component.client.profile.add_client.AddServiceFromProfileDialog
 import com.martinszuc.clientsapp.ui.component.profile.ProfilePicture
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.SharedServiceViewModel
@@ -73,6 +79,7 @@ fun ClientProfileScreen(
     var phoneNumber by remember { mutableStateOf("") }
     var showMenu by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
+    var showAddServiceDialog by remember { mutableStateOf(false) } // State to show AddServiceFromProfileDialog
     val context = LocalContext.current
 
     LaunchedEffect(clientId) {
@@ -92,11 +99,35 @@ fun ClientProfileScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = { showMenu = !showMenu }) {
-                        Icon(
-                            imageVector = Icons.Default.MoreVert,
-                            contentDescription = stringResource(R.string.more_options)
-                        )
+                    // Add the new "Add Service" button with a circular background
+                    Box(
+                        modifier = Modifier
+                            .padding(end = 8.dp)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.secondary)
+                    ) {
+                        IconButton(onClick = { showAddServiceDialog = true }) {
+                            Icon(
+                                imageVector = Icons.Default.Add,
+                                contentDescription = stringResource(R.string.add_service),
+                                tint = MaterialTheme.colorScheme.onSecondary
+                            )
+                        }
+                    }
+                    // Add the "More options" button with a circular background
+                    Box(
+                        modifier = Modifier
+                            .padding(end = 8.dp)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.secondary)
+                    ) {
+                        IconButton(onClick = { showMenu = !showMenu }) {
+                            Icon(
+                                imageVector = Icons.Default.MoreVert,
+                                contentDescription = stringResource(R.string.more_options),
+                                tint = MaterialTheme.colorScheme.onSecondary
+                            )
+                        }
                     }
                     DropdownMenu(
                         expanded = showMenu,
@@ -254,6 +285,14 @@ fun ClientProfileScreen(
                         Text(text = stringResource(R.string.cancel))
                     }
                 }
+            )
+        }
+
+        // Show AddServiceFromProfileDialog
+        if (showAddServiceDialog) {
+            AddServiceFromProfileDialog(
+                clientId = clientId,
+                onDismissRequest = { showAddServiceDialog = false }
             )
         }
     }

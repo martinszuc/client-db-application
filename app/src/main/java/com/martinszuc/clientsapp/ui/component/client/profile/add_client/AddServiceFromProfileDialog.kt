@@ -1,4 +1,4 @@
-package com.martinszuc.clientsapp.ui.component.service.service_list
+package com.martinszuc.clientsapp.ui.component.client.profile.add_client
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -20,33 +20,28 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.data.entity.Service
-import com.martinszuc.clientsapp.ui.component.service.ServiceDropdownMenu
-import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.SharedServiceViewModel
+import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
-fun AddServiceDialog(
+fun AddServiceFromProfileDialog(
+    clientId: Int,
     onDismissRequest: () -> Unit,
     sharedServiceViewModel: SharedServiceViewModel = hiltViewModel(),
     sharedClientViewModel: SharedClientViewModel = hiltViewModel()
 ) {
     var description by remember { mutableStateOf("") }
     var price by remember { mutableStateOf("") }
-    var selectedClientId by remember { mutableStateOf<Int?>(null) }
     var selectedDate by remember { mutableStateOf(Date()) }
+    var expanded by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
-    val clients by sharedClientViewModel.clients.collectAsState()
-
-    LaunchedEffect(Unit) {
-        sharedClientViewModel.loadClients()
-    }
 
     val calendar = Calendar.getInstance()
-    val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    val dateFormat = SimpleDateFormat("dd/MM/yy", Locale.getDefault())
     val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
 
     val datePickerDialog = DatePickerDialog(
@@ -77,15 +72,6 @@ fun AddServiceDialog(
         title = { Text(text = stringResource(R.string.add_service)) },
         text = {
             Column(modifier = Modifier.fillMaxWidth()) {
-                if (clients.isNotEmpty()) {
-                    ServiceDropdownMenu(
-                        clients = clients,
-                        selectedIndex = clients.indexOfFirst { it.id == selectedClientId },
-                        onItemSelected = { index ->
-                            selectedClientId = clients.getOrNull(index)?.id
-                        }
-                    )
-                }
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
                     value = description,
@@ -164,14 +150,14 @@ fun AddServiceDialog(
                 Button(
                     onClick = {
                         val servicePrice = price.toDoubleOrNull()
-                        if (selectedClientId == null || description.isEmpty() || servicePrice == null) {
+                        if (description.isEmpty() || servicePrice == null) {
                             Toast.makeText(context,
                                 context.getString(R.string.please_fill_in_all_fields), Toast.LENGTH_SHORT).show()
                             return@Button
                         }
                         val service = Service(
                             id = 0,
-                            client_id = selectedClientId!!,
+                            client_id = clientId,
                             description = description,
                             date = selectedDate,
                             price = servicePrice,
@@ -180,7 +166,7 @@ fun AddServiceDialog(
                         )
                         scope.launch {
                             sharedServiceViewModel.addService(service)
-                            sharedClientViewModel.updateLatestServiceDate(selectedClientId!!, selectedDate)
+                            sharedClientViewModel.updateLatestServiceDate(clientId, selectedDate)
                             sharedClientViewModel.loadClients()
                             Toast.makeText(context, context.getString(R.string.service_added_successfully), Toast.LENGTH_SHORT).show()
                             onDismissRequest()

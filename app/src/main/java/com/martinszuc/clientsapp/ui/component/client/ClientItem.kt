@@ -53,7 +53,7 @@ fun ClientItem(client: Client, onClick: (Client) -> Unit) {
                 Text(text = client.email ?: stringResource(R.string.no_email), style = MaterialTheme.typography.bodyMedium)
                 Text(text = client.phone ?: stringResource(R.string.no_phone), style = MaterialTheme.typography.bodyMedium)
                 client.latestServiceDate?.let {
-                    val formattedDateTime = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(it)
+                    val formattedDateTime = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).format(it)
                     Text(text = stringResource(R.string.latest_service_formated, formattedDateTime), style = MaterialTheme.typography.bodySmall)
                 }
             }

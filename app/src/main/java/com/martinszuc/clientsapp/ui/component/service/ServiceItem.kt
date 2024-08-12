@@ -26,7 +26,7 @@ fun ServiceItem(
     category: ServiceCategory?,
     type: ServiceType?
 ) {
-    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+    val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
     val formattedDate = dateFormat.format(service.date)
 
     Card(
