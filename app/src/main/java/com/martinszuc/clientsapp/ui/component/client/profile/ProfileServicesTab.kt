@@ -11,7 +11,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.martinszuc.clientsapp.ui.component.service.ServiceItem
 import com.martinszuc.clientsapp.ui.viewmodel.ServiceCategoryViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.ServiceTypeViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.SharedServiceViewModel
