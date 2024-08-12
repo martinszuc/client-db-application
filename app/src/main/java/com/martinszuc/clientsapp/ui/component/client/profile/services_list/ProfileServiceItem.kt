@@ -1,4 +1,4 @@
-package com.martinszuc.clientsapp.ui.component.client.profile
+package com.martinszuc.clientsapp.ui.component.client.profile.services_list
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -36,17 +36,6 @@ fun ProfileServiceItem(
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Row(modifier = Modifier.fillMaxWidth()) {
-                Text(
-                    text = "${category?.emoji.orEmpty()} ${category?.name.orEmpty()}",
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(end = 8.dp)
-                )
-                Text(
-                    text = "${type?.emoji.orEmpty()} ${type?.name.orEmpty()}",
-                    style = MaterialTheme.typography.bodyLarge
-                )
-            }
             Text(text = stringResource(R.string.popis, service.description))
             Text(text = stringResource(R.string.cena, service.price.toString()))
             Text(text = stringResource(R.string.d_tum, formattedDate))

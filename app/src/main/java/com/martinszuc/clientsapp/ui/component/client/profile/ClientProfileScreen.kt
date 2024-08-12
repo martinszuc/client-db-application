@@ -54,6 +54,8 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.ui.component.client.profile.add_client.AddServiceFromProfileDialog
+import com.martinszuc.clientsapp.ui.component.client.profile.services_list.ProfileServicesTab
+import com.martinszuc.clientsapp.ui.component.client.profile.todo.ProfileTodoTab
 import com.martinszuc.clientsapp.ui.component.profile.ProfilePicture
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.SharedServiceViewModel
@@ -198,7 +200,7 @@ fun ClientProfileScreen(
                     ) {
                         listOf(
                             stringResource(R.string.label_services),
-                            stringResource(R.string.to_do)
+//                            stringResource(R.string.to_do)
                         ).forEachIndexed { index, title ->
                             Tab(
                                 text = { Text(title) },
@@ -215,7 +217,8 @@ fun ClientProfileScreen(
 
                 item {
                     HorizontalPager(
-                        count = 2,
+//                        count = 2,
+                        count = 1,
                         state = pagerState,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -223,7 +226,7 @@ fun ClientProfileScreen(
                     ) { page ->
                         when (page) {
                             0 -> ProfileServicesTab(clientId)
-                            1 -> ProfileTodoTab()
+//                            1 -> ProfileTodoTab()
                         }
                     }
                 }

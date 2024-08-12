@@ -1,4 +1,4 @@
-package com.martinszuc.clientsapp.ui.component.client.profile
+package com.martinszuc.clientsapp.ui.component.client.profile.todo
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize

@@ -1,4 +1,4 @@
-package com.martinszuc.clientsapp.ui.component.client.profile
+package com.martinszuc.clientsapp.ui.component.client.profile.services_list
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
