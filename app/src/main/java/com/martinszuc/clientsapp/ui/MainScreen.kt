@@ -25,15 +25,18 @@ fun MainScreen() {
     val settingsViewModel: SettingsViewModel = hiltViewModel()
     val themePreference by settingsViewModel.themePreference.collectAsState(initial = THEME_SYSTEM_DEFAULT)
 
-    val isDarkTheme = themePreference == THEME_DARK || (themePreference == THEME_SYSTEM_DEFAULT && isSystemInDarkTheme())
+    val isDarkTheme =
+        themePreference == THEME_DARK || (themePreference == THEME_SYSTEM_DEFAULT && isSystemInDarkTheme())
 
     AppTheme(darkTheme = isDarkTheme) {
         val navController = rememberNavController()
         val bottomNavItems = listOf(
-            BottomNavItem(Screen.Clients.route, R.drawable.ic_face, R.string.label_clients),
-            BottomNavItem(Screen.Services.route, R.drawable.ic_lipstick_bold, R.string.label_services),
-            BottomNavItem(Screen.Menu.route, R.drawable.ic_menu_four_squares, R.string.label_menu),
-            BottomNavItem(Screen.Settings.route, R.drawable.ic_baseline_settings_24, R.string.settings)
+            BottomNavItem(Screen.Clients.route, R.drawable.ic_face),
+            BottomNavItem(Screen.Services.route, R.drawable.ic_lipstick_bold),
+            BottomNavItem(Screen.Menu.route, R.drawable.ic_menu_four_squares),
+            BottomNavItem(
+                Screen.Settings.route, R.drawable.ic_baseline_settings_24,
+            )
         )
 
         Scaffold(

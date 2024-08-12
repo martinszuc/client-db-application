@@ -1,13 +1,14 @@
 package com.martinszuc.clientsapp.ui
 
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 
@@ -16,11 +17,12 @@ fun BottomNavigationBar(navController: NavController, items: List<BottomNavItem>
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route
 
-    NavigationBar {
+    NavigationBar(
+        modifier = Modifier.height(56.dp)
+    ) {
         items.forEach { item ->
             NavigationBarItem(
-                icon = { Icon(painterResource(item.icon), contentDescription = stringResource(item.label)) },
-                label = { Text(stringResource(item.label)) },
+                icon = { Icon(painterResource(item.icon), contentDescription = null) }, // No label, so no content description needed
                 selected = currentRoute == item.route,
                 onClick = {
                     navController.navigate(item.route) {
@@ -34,7 +36,8 @@ fun BottomNavigationBar(navController: NavController, items: List<BottomNavItem>
                             saveState = true
                         }
                     }
-                }
+                },
+                alwaysShowLabel = false // Ensure labels are not shown
             )
         }
     }
@@ -42,6 +45,5 @@ fun BottomNavigationBar(navController: NavController, items: List<BottomNavItem>
 
 data class BottomNavItem(
     val route: String,
-    val icon: Int,
-    val label: Int
+    val icon: Int
 )
