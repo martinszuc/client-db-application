@@ -1,6 +1,7 @@
 package com.martinszuc.clientsapp.util.imageViewer
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -8,19 +9,30 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import coil.compose.rememberAsyncImagePainter
+import kotlinx.coroutines.launch
 
 @Composable
 fun FullScreenImageViewer(
     imageUri: String,
     onDismiss: () -> Unit
 ) {
+    // Zoom state
+    var scale by remember { mutableStateOf(1f) }
+    var offsetX by remember { mutableStateOf(0f) }
+    var offsetY by remember { mutableStateOf(0f) }
+
+    // Gesture detection to handle zoom and pan
+    val coroutineScope = rememberCoroutineScope()
+
     Dialog(onDismissRequest = onDismiss) {
         Box(
             modifier = Modifier
@@ -28,10 +40,27 @@ fun FullScreenImageViewer(
                 .padding(16.dp),
             contentAlignment = Alignment.Center
         ) {
+            // Image with zoom and pan capabilities
             Image(
                 painter = rememberAsyncImagePainter(imageUri),
                 contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .graphicsLayer(
+                        scaleX = scale,
+                        scaleY = scale,
+                        translationX = offsetX,
+                        translationY = offsetY
+                    )
+                    .pointerInput(Unit) {
+                        detectTransformGestures { _, pan, zoom, _ ->
+                            coroutineScope.launch {
+                                scale *= zoom
+                                offsetX += pan.x
+                                offsetY += pan.y
+                            }
+                        }
+                    },
                 contentScale = ContentScale.Fit
             )
 
