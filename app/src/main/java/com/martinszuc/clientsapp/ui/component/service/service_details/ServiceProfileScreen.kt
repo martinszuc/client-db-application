@@ -5,11 +5,7 @@ import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.produceState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -50,12 +46,15 @@ fun ServiceProfileScreen(
     val photos by servicePicturesViewModel.photos.collectAsState()
     val isLoadingPhotos by servicePicturesViewModel.isLoadingPhotos.collectAsState()
 
-    // Fetch the client name based on the service's client_id
-    val clientName by produceState(initialValue = "Unknown Client") {
+    // State to store client name locally
+    var clientName by remember { mutableStateOf("Unknown Client") }
+
+    // Fetch the client name once and store it in local state
+    LaunchedEffect(service?.client_id) {
         service?.let {
-            val clientName = clientViewModel.getClientName(it.client_id)
-            Log.d("ServiceProfileScreen", "Fetched client name: $clientName for client ID: ${it.client_id}")
-            value = clientName
+            val fetchedClientName = clientViewModel.getClientName(it.client_id)
+            Log.d("ServiceProfileScreen", "Fetched client name: $fetchedClientName for client ID: ${it.client_id}")
+            clientName = fetchedClientName
         }
     }
 
@@ -72,7 +71,7 @@ fun ServiceProfileScreen(
     if (service != null) {
         ServiceProfileContent(
             service = service,
-            clientName = clientName,
+            clientName = clientName,  // Use the locally stored client name
             imageUris = photos.map { it.photoUri },
             isLoadingImages = isLoadingPhotos,  // Pass loading state for images
             navController = navController,
