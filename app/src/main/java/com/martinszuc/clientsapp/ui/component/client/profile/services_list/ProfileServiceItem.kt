@@ -1,5 +1,6 @@
 package com.martinszuc.clientsapp.ui.component.client.profile.services_list
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,7 +24,8 @@ import java.util.Locale
 fun ProfileServiceItem(
     service: Service,
     category: ServiceCategory?,
-    type: ServiceType?
+    type: ServiceType?,
+    onClick: (Int) -> Unit  // Add onClick to handle navigation
 ) {
     val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
     val formattedDate = dateFormat.format(service.date)
@@ -31,7 +33,8 @@ fun ProfileServiceItem(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
+            .padding(8.dp)
+            .clickable { onClick(service.id) },  // Make card clickable and trigger navigation
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(4.dp)
     ) {

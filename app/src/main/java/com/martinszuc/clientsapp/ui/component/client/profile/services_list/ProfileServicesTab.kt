@@ -11,6 +11,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import com.martinszuc.clientsapp.ui.navigation.Screen
 import com.martinszuc.clientsapp.ui.viewmodel.ServiceCategoryViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.ServiceTypeViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.SharedServiceViewModel
@@ -18,6 +20,7 @@ import com.martinszuc.clientsapp.ui.viewmodel.SharedServiceViewModel
 @Composable
 fun ProfileServicesTab(
     clientId: Int,
+    navController: NavHostController,  // Accept NavHostController to navigate to service details
     sharedServiceViewModel: SharedServiceViewModel = hiltViewModel(),
     serviceCategoryViewModel: ServiceCategoryViewModel = hiltViewModel(),
     serviceTypeViewModel: ServiceTypeViewModel = hiltViewModel()
@@ -32,16 +35,27 @@ fun ProfileServicesTab(
     }
 
     val clientServices = sharedServiceViewModel.clientServices.collectAsState()
-
     val servicesForClient = clientServices.value[clientId] ?: emptyList()
 
-    LazyColumn(modifier = Modifier
-        .fillMaxSize()
-        .padding(16.dp)) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
         items(servicesForClient) { service ->
             val category = categories.find { it.id == service.category_id }
             val type = types.find { it.id == service.type_id }
-            ProfileServiceItem(service = service, category = category, type = type)
+
+            // Call ProfileServiceItem and pass the navigation to the service profile screen
+            ProfileServiceItem(
+                service = service,
+                category = category,
+                type = type,
+                onClick = { serviceId ->
+                    // Navigate to ServiceProfileScreen when the item is clicked
+                    navController.navigate(Screen.ServiceProfile(serviceId).route)
+                }
+            )
         }
     }
 }

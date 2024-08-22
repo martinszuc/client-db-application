@@ -224,7 +224,7 @@ fun ClientProfileScreen(
                             .height(600.dp) // Set a fixed height for the pager
                     ) { page ->
                         when (page) {
-                            0 -> ProfileServicesTab(clientId)
+                            0 -> ProfileServicesTab(clientId, navController)
 //                            1 -> ProfileTodoTab()
                         }
                     }
