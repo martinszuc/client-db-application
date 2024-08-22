@@ -52,7 +52,7 @@ fun ProfileServicesTab(
                 category = category,
                 type = type,
                 onClick = { serviceId ->
-                    // Navigate to ServiceProfileScreen when the item is clicked
+                    // Navigate to com.martinszuc.clientsapp.ui.component.service.service_details.ServiceProfileScreen when the item is clicked
                     navController.navigate(Screen.ServiceProfile(serviceId).route)
                 }
             )

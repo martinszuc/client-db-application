@@ -7,15 +7,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -25,26 +17,14 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -64,12 +44,15 @@ fun ServiceProfileContent(
     imageUris: List<String>,
     isLoadingImages: Boolean,
     navController: NavHostController,
-    onAddPhotos: (List<Uri>) -> Unit
+    onAddPhotos: (List<Uri>) -> Unit,
+    onDeleteSelectedPhotos: (List<String>) -> Unit,  // Callback for deleting selected photos
+    onDeleteService: () -> Unit  // Callback for deleting the entire service
 ) {
     var selectedImageUri by remember { mutableStateOf<String?>(null) }
     var showMenu by remember { mutableStateOf(false) }
-    var showAddServiceDialog by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
+    var showDeleteServiceDialog by remember { mutableStateOf(false) }
+    val selectedPhotos = remember { mutableStateListOf<String>() }  // List of selected photos
 
     // File picker launcher
     val filePickerLauncher = rememberLauncherForActivityResult(
@@ -83,7 +66,12 @@ fun ServiceProfileContent(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = stringResource(R.string.service_details)) },
+                title = {
+                    Text(
+                        text = if (selectedPhotos.isEmpty()) stringResource(R.string.service_details)
+                        else stringResource(R.string.delete_selected_photos)
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
@@ -93,20 +81,18 @@ fun ServiceProfileContent(
                     }
                 },
                 actions = {
-                    Box(
-                        modifier = Modifier
-                            .padding(end = 8.dp)
-                            .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.secondary)
-                    ) {
-                        IconButton(onClick = {
-                            // Launch file picker to select images
-                            filePickerLauncher.launch("image/*")
-                        }) {
+                    if (selectedPhotos.isNotEmpty()) {
+                        IconButton(onClick = { showDeleteDialog = true }) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = stringResource(R.string.delete_selected_photos)
+                            )
+                        }
+                    } else {
+                        IconButton(onClick = { filePickerLauncher.launch("image/*") }) {
                             Icon(
                                 imageVector = Icons.Default.Add,
-                                contentDescription = stringResource(R.string.add_service),
-                                tint = MaterialTheme.colorScheme.onSecondary
+                                contentDescription = stringResource(R.string.add_service)
                             )
                         }
                     }
@@ -131,10 +117,10 @@ fun ServiceProfileContent(
                     ) {
                         DropdownMenuItem(
                             onClick = {
-                                showDeleteDialog = true
+                                showDeleteServiceDialog = true
                                 showMenu = false
                             },
-                            text = { Text(text = stringResource(R.string.delete)) }
+                            text = { Text(text = stringResource(R.string.delete_service)) }
                         )
                     }
                 },
@@ -145,10 +131,10 @@ fun ServiceProfileContent(
             )
         }
     ) { innerPadding ->
+        // Scrollable content without verticalScroll() on the parent Column
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
                 .padding(innerPadding)
                 .padding(16.dp)
         ) {
@@ -201,7 +187,7 @@ fun ServiceProfileContent(
                 }
             }
 
-            // Display Images in a 2x2 grid using LazyVerticalGrid
+            // Display Images in a 2x2 grid with a fixed height
             if (!isLoadingImages && imageUris.isNotEmpty()) {
                 Text(
                     text = stringResource(R.string.images),
@@ -210,28 +196,42 @@ fun ServiceProfileContent(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // 2x2 Grid of Images
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),  // 2 columns
+                // Grid of Images with selection feature (constrained height)
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(200.dp)  // Adjust height for grid display
-                        .border(1.dp, MaterialTheme.colorScheme.primary)
-                        .padding(8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                        .height(400.dp)  // Constrain height to avoid infinite height error
                 ) {
-                    items(imageUris) { uri ->
-                        Image(
-                            painter = rememberAsyncImagePainter(uri),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(100.dp)
-                                .clickable {
-                                    selectedImageUri = uri
-                                },
-                            contentScale = ContentScale.Crop
-                        )
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(imageUris) { uri ->
+                            val isSelected = selectedPhotos.contains(uri)
+                            Box(
+                                modifier = Modifier
+                                    .size(100.dp)
+                                    .border(2.dp, if (isSelected) Color.Red else Color.Transparent)
+                                    .clickable {
+                                        if (isSelected) {
+                                            selectedPhotos.remove(uri)
+                                        } else {
+                                            selectedPhotos.add(uri)
+                                        }
+                                    }
+                            ) {
+                                Image(
+                                    painter = rememberAsyncImagePainter(uri),
+                                    contentDescription = null,
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentScale = ContentScale.Crop
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -243,6 +243,51 @@ fun ServiceProfileContent(
                 FullScreenImageViewer(
                     imageUri = uri,
                     onDismiss = { selectedImageUri = null }
+                )
+            }
+
+            // Confirmation Dialog for deleting selected photos
+            if (showDeleteDialog) {
+                AlertDialog(
+                    onDismissRequest = { showDeleteDialog = false },
+                    title = { Text(text = stringResource(R.string.confirmation)) },
+                    text = { Text(text = stringResource(R.string.delete_selected_photos_confirmation)) },
+                    confirmButton = {
+                        TextButton(onClick = {
+                            onDeleteSelectedPhotos(selectedPhotos)
+                            selectedPhotos.clear()  // Clear selection after deletion
+                            showDeleteDialog = false
+                        }) {
+                            Text(text = stringResource(R.string.yes))
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = { showDeleteDialog = false }) {
+                            Text(text = stringResource(R.string.no))
+                        }
+                    }
+                )
+            }
+
+            // Confirmation Dialog for deleting the entire service
+            if (showDeleteServiceDialog) {
+                AlertDialog(
+                    onDismissRequest = { showDeleteServiceDialog = false },
+                    title = { Text(text = stringResource(R.string.confirmation)) },
+                    text = { Text(text = stringResource(R.string.delete_service_confirmation)) },
+                    confirmButton = {
+                        TextButton(onClick = {
+                            onDeleteService()
+                            showDeleteServiceDialog = false
+                        }) {
+                            Text(text = stringResource(R.string.yes))
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = { showDeleteServiceDialog = false }) {
+                            Text(text = stringResource(R.string.no))
+                        }
+                    }
                 )
             }
         }

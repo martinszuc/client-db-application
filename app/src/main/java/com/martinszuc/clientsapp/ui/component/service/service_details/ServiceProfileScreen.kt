@@ -2,12 +2,14 @@ package com.martinszuc.clientsapp.ui.component.service.service_details
 
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.martinszuc.clientsapp.ui.viewmodel.ServicePicturesViewModel
@@ -24,17 +26,15 @@ fun ServiceProfileScreen(
 ) {
     // Collect the services state
     val services by serviceViewModel.services.collectAsState()
-
-    // Find the service by ID
     val service = services.find { it.id == serviceId }
+    var clientName by remember { mutableStateOf("Unknown Client") }
+    val context = LocalContext.current  // Get context for showing Toast
 
-    // Log the service state for debugging
-    if (service != null) {
-        Log.d("ServiceProfileScreen", "Fetched service: ${service.description}")
-    } else if (services.isNotEmpty()) {
-        Log.d("ServiceProfileScreen", "Service with ID: $serviceId not found")
-    } else {
-        Log.d("ServiceProfileScreen", "Services are still loading")
+    // Fetch the client name once and store it in local state
+    LaunchedEffect(service?.client_id) {
+        service?.let {
+            clientName = clientViewModel.getClientName(it.client_id)
+        }
     }
 
     // Load images for the service using ServicePicturesViewModel
@@ -46,15 +46,34 @@ fun ServiceProfileScreen(
     val photos by servicePicturesViewModel.photos.collectAsState()
     val isLoadingPhotos by servicePicturesViewModel.isLoadingPhotos.collectAsState()
 
-    // State to store client name locally
-    var clientName by remember { mutableStateOf("Unknown Client") }
+    // Callback to delete selected photos
+    val onDeleteSelectedPhotos: (List<String>) -> Unit = { selectedUris ->
+        val selectedPhotos = photos.filter { it.photoUri in selectedUris }
+        servicePicturesViewModel.deleteSelectedPhotos(selectedPhotos) {
+            // Reload photos after deletion
+            servicePicturesViewModel.loadPhotosForService(serviceId)
+        }
+    }
 
-    // Fetch the client name once and store it in local state
-    LaunchedEffect(service?.client_id) {
+    // Callback to delete the service
+    val onDeleteService: () -> Unit = {
         service?.let {
-            val fetchedClientName = clientViewModel.getClientName(it.client_id)
-            Log.d("ServiceProfileScreen", "Fetched client name: $fetchedClientName for client ID: ${it.client_id}")
-            clientName = fetchedClientName
+            serviceViewModel.deleteService(it,
+                onDeleteSuccess = {
+                    // Show success toast
+                    Toast.makeText(context, "Service deleted successfully", Toast.LENGTH_SHORT).show()
+                    // Navigate back to the services screen
+                    navController.navigate("services") {
+                        popUpTo(navController.graph.startDestinationId) {
+                            inclusive = true  // Clear backstack
+                        }
+                    }
+                },
+                onDeleteFailure = { errorMessage ->
+                    // Show error toast
+                    Toast.makeText(context, "Failed to delete service: $errorMessage", Toast.LENGTH_SHORT).show()
+                }
+            )
         }
     }
 
@@ -77,7 +96,9 @@ fun ServiceProfileScreen(
             imageUris = photos.map { it.photoUri },
             isLoadingImages = isLoadingPhotos,  // Pass loading state for images
             navController = navController,
-            onAddPhotos = onAddPhotos  // Pass the onAddPhotos callback
+            onAddPhotos = onAddPhotos,  // Pass the onAddPhotos callback
+            onDeleteSelectedPhotos = onDeleteSelectedPhotos,  // Callback to delete selected photos
+            onDeleteService = onDeleteService  // Pass the delete service callback
         )
     } else {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

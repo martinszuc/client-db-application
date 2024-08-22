@@ -114,6 +114,10 @@
     <string name="loading_images">Načítavam fotky</string>
     <string name="service_details">Detail zakázky</string>
     <string name="nevybrali_ste_adne_fotky">Nevybrali ste žadne fotky</string>
+    <string name="delete_service_confirmation">Vymazať zákazku</string>
+    <string name="delete_selected_photos">Vymazať vybrané fotky</string>
+    <string name="delete_service">Vymazať zákazku</string>
+    <string name="delete_selected_photos_confirmation">Určite vymazať vybrané fotky?</string>
 
     <string-array name="theme_options">
         <item>Light</item>

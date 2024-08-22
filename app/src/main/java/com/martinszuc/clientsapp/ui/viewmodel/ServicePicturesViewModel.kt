@@ -37,4 +37,27 @@ class ServicePicturesViewModel @Inject constructor(
             }
         )
     }
+    // Delete selected photos
+    fun deleteSelectedPhotos(photos: List<ServicePhoto>, onSuccess: () -> Unit) {
+        launchDataLoad(
+            execution = {
+                photos.forEach { serviceRepository.deletePhoto(it) }
+            },
+            onSuccess = {
+                onSuccess()  // Callback after successful deletion
+            }
+        )
+    }
+
+    // Delete all photos for a specific service
+    fun deleteAllPhotosForService(serviceId: Int, onSuccess: () -> Unit) {
+        launchDataLoad(
+            execution = {
+                serviceRepository.deletePhotosForService(serviceId)
+            },
+            onSuccess = {
+                onSuccess()  // Callback after successful deletion
+            }
+        )
+    }
 }

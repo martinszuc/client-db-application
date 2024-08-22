@@ -18,4 +18,7 @@ class ServiceRepository @Inject constructor(
     suspend fun searchServices(query: String) = serviceDao.searchServices(query)
     suspend fun insertPhoto(servicePhoto: ServicePhoto) = servicePhotoDao.insertPhoto(servicePhoto)
     suspend fun getPhotosForService(serviceId: Int) = servicePhotoDao.getPhotosForService(serviceId)
+    suspend fun deletePhoto(servicePhoto: ServicePhoto) = servicePhotoDao.deletePhoto(servicePhoto)
+    suspend fun deletePhotosForService(serviceId: Int) = servicePhotoDao.deletePhotosForService(serviceId)
+    suspend fun deleteService(service: Service) = serviceDao.deleteService(service)
 }

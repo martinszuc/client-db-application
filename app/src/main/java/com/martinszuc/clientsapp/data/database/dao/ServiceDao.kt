@@ -1,6 +1,7 @@
 package com.martinszuc.clientsapp.data.database.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.martinszuc.clientsapp.data.entity.Service
@@ -18,4 +19,6 @@ interface ServiceDao {
 
     @Query("SELECT * FROM services WHERE description LIKE :query")
     suspend fun searchServices(query: String): List<Service>
+    @Delete
+    suspend fun deleteService(service: Service)
 }

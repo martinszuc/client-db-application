@@ -175,4 +175,25 @@ class SharedServiceViewModel @Inject constructor(
             }
         )
     }
+
+    // Delete a service and its associated photos
+    fun deleteService(service: Service, onDeleteSuccess: () -> Unit, onDeleteFailure: (String) -> Unit) {
+        launchDataLoad(
+            execution = {
+                // First, delete all photos associated with the service
+                serviceRepository.deletePhotosForService(service.id)
+
+                // Then, delete the service itself
+                serviceRepository.deleteService(service)
+            },
+            onSuccess = {
+                // Successfully deleted service and photos
+                onDeleteSuccess()
+            },
+            onFailure = {
+                // Handle failure
+                onDeleteFailure("Failed to delete service: ${it.localizedMessage}")
+            }
+        )
+    }
 }
