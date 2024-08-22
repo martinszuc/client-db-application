@@ -202,7 +202,7 @@ fun AddServiceDialog(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
-                    Text("Pick Photos")
+                    Text(stringResource(R.string.pick_photos))
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
