@@ -10,6 +10,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.martinszuc.clientsapp.data.remote.FirebaseStorageRepository
 import com.martinszuc.clientsapp.util.AppConstants
 import com.martinszuc.clientsapp.util.AppConstants.THEME_DARK
 import com.martinszuc.clientsapp.util.AppConstants.THEME_LIGHT
@@ -27,6 +28,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
+    private val firebaseStorageRepository: FirebaseStorageRepository,
     private val dataStore: DataStore<Preferences>,
     application: Application // Use Application instead of Context
 ) : AndroidViewModel(application) {
@@ -52,23 +54,36 @@ class SettingsViewModel @Inject constructor(
     private val _backupStatus = MutableStateFlow<String?>(null)
     val backupStatus: StateFlow<String?> get() = _backupStatus
 
+    // Backup database and upload to Firebase Storage
     fun backupDatabase() {
         val dbName = "kozmetika_database"
         val currentDBPath = getApplication<Application>().getDatabasePath(dbName).absolutePath
-        val backupDir = getApplication<Application>().filesDir // Internal storage
+        val backupDir = getApplication<Application>().cacheDir // Store temporary file in cache dir
         val backupFile = File(backupDir, "$dbName-backup.db")
 
-        try {
-            FileInputStream(currentDBPath).use { src ->
-                FileOutputStream(backupFile).use { dst ->
-                    src.channel.transferTo(0, src.channel.size(), dst.channel)
+        viewModelScope.launch {
+            try {
+                // Copy the current database to a backup file
+                FileInputStream(currentDBPath).use { src ->
+                    FileOutputStream(backupFile).use { dst ->
+                        src.channel.transferTo(0, src.channel.size(), dst.channel)
+                    }
                 }
+                Log.d("SettingsViewModel", "Database backed up to ${backupFile.absolutePath}")
+
+                // Upload the backup file to Firebase Storage
+                val downloadUrl = firebaseStorageRepository.uploadDatabaseBackup(backupFile)
+                if (downloadUrl != null) {
+                    Log.d("SettingsViewModel", "Database uploaded to Firebase: $downloadUrl")
+                    Toast.makeText(getApplication(), "Databáza zálohovaná úspešne", Toast.LENGTH_LONG).show()
+                } else {
+                    Log.e("SettingsViewModel", "Error uploading database backup to Firebase")
+                    Toast.makeText(getApplication(), "Chyba pri zálohovaní na Firebase", Toast.LENGTH_LONG).show()
+                }
+            } catch (e: IOException) {
+                Log.e("SettingsViewModel", "Error backing up database", e)
+                Toast.makeText(getApplication(), "Chyba pri zálohovaní", Toast.LENGTH_LONG).show()
             }
-            Log.d("SettingsViewModel", "Database backed up successfully to ${backupFile.absolutePath}")
-            Toast.makeText(getApplication(), "Databáza zálohovaná úspešne", Toast.LENGTH_LONG).show()
-        } catch (e: IOException) {
-            Log.e("SettingsViewModel", "Error backing up database", e)
-            Toast.makeText(getApplication(), "Chyba pri zálohovaní", Toast.LENGTH_LONG).show()
         }
     }
 

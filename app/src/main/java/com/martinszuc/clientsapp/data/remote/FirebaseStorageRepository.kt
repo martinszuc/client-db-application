@@ -5,6 +5,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.tasks.await
+import java.io.File
 import javax.inject.Inject
 
 class FirebaseStorageRepository @Inject constructor(
@@ -31,38 +32,20 @@ class FirebaseStorageRepository @Inject constructor(
             null  // Return null if upload failed
         }
     }
+    // New method to upload database backup
+    suspend fun uploadDatabaseBackup(databaseFile: File): String? {
+        val uid = getCurrentUserUid() ?: return null
+        val timestamp = System.currentTimeMillis()
+        val fileName = "backup_$timestamp.db"  // Add timestamp to filename for unique backups
+        val fileUri = Uri.fromFile(databaseFile)
 
-    // Upload multiple photos for the authenticated user
-    fun uploadMultiplePhotos(
-        uris: List<Uri>,
-        onAllUploadsSuccess: (List<String>) -> Unit,
-        onFailure: (Exception) -> Unit
-    ) {
-        val uid = getCurrentUserUid()
-        if (uid == null) {
-            onFailure(Exception("User not authenticated"))
-            return
-        }
-
-        val downloadUrls = mutableListOf<String>()
-        var completedUploads = 0
-
-        uris.forEach { uri ->
-            val fileRef = storageRef.child("$uid/service_photos/${System.currentTimeMillis()}_${uri.lastPathSegment}")
-            val uploadTask = fileRef.putFile(uri)
-
-            uploadTask.addOnSuccessListener {
-                fileRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                    downloadUrls.add(downloadUri.toString())
-                    completedUploads++
-
-                    if (completedUploads == uris.size) {
-                        onAllUploadsSuccess(downloadUrls)
-                    }
-                }
-            }.addOnFailureListener { exception ->
-                onFailure(exception)
-            }
+        return try {
+            val fileRef = firebaseStorage.reference.child("$uid/database_backups/$fileName")
+            fileRef.putFile(fileUri).await()
+            fileRef.downloadUrl.await().toString()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null  // Return null if the backup upload fails
         }
     }
 
