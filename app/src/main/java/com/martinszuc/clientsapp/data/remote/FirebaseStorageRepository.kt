@@ -1,39 +1,54 @@
 package com.martinszuc.clientsapp.data.remote
 
 import android.net.Uri
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.UploadTask
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class FirebaseStorageRepository @Inject constructor(
-    private val firebaseStorage: FirebaseStorage  // Injected via Hilt
+    private val firebaseStorage: FirebaseStorage,
+    private val firebaseAuth: FirebaseAuth // Inject FirebaseAuth to get current user
 ) {
-    private val storageRef: StorageReference = firebaseStorage.reference.child("service_photos")
+    // Get the current user's UID
+    private fun getCurrentUserUid(): String? {
+        return firebaseAuth.currentUser?.uid
+    }
 
-    fun uploadPhoto(uri: Uri, onSuccess: (String) -> Unit, onFailure: (Exception) -> Unit) {
-        val fileRef = storageRef.child("${System.currentTimeMillis()}.jpg")
-        val uploadTask: UploadTask = fileRef.putFile(uri)
+    suspend fun uploadPhotoWithDirectory(uri: Uri, fileName: String, directory: String): String? {
+        val uid = firebaseAuth.currentUser?.uid ?: return null  // Ensure user is authenticated
 
-        uploadTask.addOnSuccessListener {
-            fileRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                onSuccess(downloadUri.toString())  // Get the download URL
-            }
-        }.addOnFailureListener { exception ->
-            onFailure(exception)
+        return try {
+            // Create the directory path in Firebase Storage
+            val fileRef = firebaseStorage.reference.child("$uid/$directory/$fileName")
+
+            // Upload the file and get the download URL
+            fileRef.putFile(uri).await()
+            fileRef.downloadUrl.await().toString()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null  // Return null if upload failed
         }
     }
 
+    // Upload multiple photos for the authenticated user
     fun uploadMultiplePhotos(
         uris: List<Uri>,
         onAllUploadsSuccess: (List<String>) -> Unit,
         onFailure: (Exception) -> Unit
     ) {
+        val uid = getCurrentUserUid()
+        if (uid == null) {
+            onFailure(Exception("User not authenticated"))
+            return
+        }
+
         val downloadUrls = mutableListOf<String>()
         var completedUploads = 0
 
         uris.forEach { uri ->
-            val fileRef = storageRef.child("${System.currentTimeMillis()}_${uri.lastPathSegment}")
+            val fileRef = storageRef.child("$uid/service_photos/${System.currentTimeMillis()}_${uri.lastPathSegment}")
             val uploadTask = fileRef.putFile(uri)
 
             uploadTask.addOnSuccessListener {
@@ -50,4 +65,7 @@ class FirebaseStorageRepository @Inject constructor(
             }
         }
     }
+
+    // Reference to Firebase Storage's root path
+    private val storageRef: StorageReference = firebaseStorage.reference
 }

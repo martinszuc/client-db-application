@@ -2,7 +2,11 @@ package com.martinszuc.clientsapp.ui.component.service.service_list
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.net.Uri
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +15,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
@@ -38,6 +44,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberAsyncImagePainter
 import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.data.entity.Service
 import com.martinszuc.clientsapp.ui.component.service.ServiceDropdownMenu
@@ -59,10 +66,12 @@ fun AddServiceDialog(
     var price by remember { mutableStateOf("") }
     var selectedClientId by remember { mutableStateOf<Int?>(null) }
     var selectedDate by remember { mutableStateOf(Date()) }
+    var photoUris by remember { mutableStateOf<List<Uri>>(emptyList()) }
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val clients by sharedClientViewModel.clients.collectAsState()
 
+    // Load clients
     LaunchedEffect(Unit) {
         sharedClientViewModel.loadClients()
     }
@@ -92,6 +101,18 @@ fun AddServiceDialog(
         calendar.get(Calendar.HOUR_OF_DAY),
         calendar.get(Calendar.MINUTE),
         true
+    )
+
+    // File picker launcher
+    val filePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetMultipleContents(),
+        onResult = { uris: List<Uri> ->
+            if (uris.size <= 4) {  // Limit to 4 photos
+                photoUris = uris
+            } else {
+                Toast.makeText(context, "You can only select up to 4 photos", Toast.LENGTH_SHORT).show()
+            }
+        }
     )
 
     AlertDialog(
@@ -171,13 +192,42 @@ fun AddServiceDialog(
                         )
                     }
                 }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Button to pick photos
+                Button(
+                    onClick = { filePickerLauncher.launch("image/*") },
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                ) {
+                    Text("Pick Photos")
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Display selected photos (up to 4)
+                if (photoUris.isNotEmpty()) {
+                    LazyRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(photoUris) { uri ->
+                            Image(
+                                painter = rememberAsyncImagePainter(uri),
+                                contentDescription = null,
+                                modifier = Modifier.size(64.dp)  // Smaller size for photos
+                            )
+                        }
+                    }
+                }
             }
         },
         confirmButton = {
             Row(modifier = Modifier.fillMaxWidth()) {
                 Button(
                     onClick = onDismissRequest,
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
                     modifier = Modifier.weight(1f)
                 ) {
                     Text(text = stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onPrimary)
@@ -197,13 +247,13 @@ fun AddServiceDialog(
                             description = description,
                             date = selectedDate,
                             price = servicePrice,
-                            category_id = null, // Set category to null
-                            type_id = null // Set type to null
+                            category_id = null,
+                            type_id = null
                         )
                         scope.launch {
-                            sharedServiceViewModel.addService(service)
-                            sharedClientViewModel.updateLatestServiceDate(selectedClientId!!, selectedDate)
-                            sharedClientViewModel.loadClients()
+                            sharedServiceViewModel.addServiceWithPhotos(service, photoUris) { message ->
+                                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                            }
                             Toast.makeText(context, context.getString(R.string.service_added_successfully), Toast.LENGTH_SHORT).show()
                             onDismissRequest()
                         }

@@ -5,6 +5,7 @@ import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
+import com.martinszuc.clientsapp.data.remote.FirebaseStorageRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,5 +33,13 @@ object FirebaseModule {
     @Singleton
     fun provideFirebaseStorage(): FirebaseStorage {
         return FirebaseStorage.getInstance()
+    }
+    @Provides
+    @Singleton
+    fun provideFirebaseStorageRepository(
+        firebaseStorage: FirebaseStorage,
+        firebaseAuth: FirebaseAuth
+    ): FirebaseStorageRepository {
+        return FirebaseStorageRepository(firebaseStorage, firebaseAuth)
     }
 }

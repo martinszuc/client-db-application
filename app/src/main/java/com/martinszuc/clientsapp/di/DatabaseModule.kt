@@ -6,6 +6,7 @@ import com.martinszuc.clientsapp.data.database.AppDatabase
 import com.martinszuc.clientsapp.data.database.dao.ClientDao
 import com.martinszuc.clientsapp.data.database.dao.ServiceCategoryDao
 import com.martinszuc.clientsapp.data.database.dao.ServiceDao
+import com.martinszuc.clientsapp.data.database.dao.ServicePhotoDao
 import com.martinszuc.clientsapp.data.database.dao.ServiceTypeDao
 import dagger.Module
 import dagger.Provides
@@ -25,7 +26,8 @@ object DatabaseModule {
             appContext,
             AppDatabase::class.java,
             "kozmetika_database"
-        ).fallbackToDestructiveMigration()
+        )
+            .addMigrations(AppDatabase.MIGRATION_1_2)
             .build()
     }
 
@@ -45,5 +47,8 @@ object DatabaseModule {
     @Provides
     fun provideServiceTypeDao(db: AppDatabase): ServiceTypeDao {
         return db.serviceTypeDao()
+    }    @Provides
+    fun provideServicePhotoDao(db: AppDatabase): ServicePhotoDao {
+        return db.servicePhotoDao()
     }
 }

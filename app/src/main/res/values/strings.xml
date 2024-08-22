@@ -109,6 +109,7 @@
     <string name="delete_database_confirmation">Naozaj si prajete vymazať databázu? Prídete o všetky dáta</string>
     <string name="delete_database_desc">Vymazať databázu</string>
     <string name="backup_database_desc">Zálohovať databázu</string>
+    <string name="select_photos">Vybrať z galérie</string>
 
     <string-array name="theme_options">
         <item>Light</item>

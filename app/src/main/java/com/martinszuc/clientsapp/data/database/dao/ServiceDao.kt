@@ -8,7 +8,7 @@ import com.martinszuc.clientsapp.data.entity.Service
 @Dao
 interface ServiceDao {
     @Insert
-    suspend fun insertService(service: Service)
+    suspend fun insertService(service: Service): Long
 
     @Query("SELECT * FROM services WHERE client_id = :clientId")
     suspend fun getServicesForClient(clientId: Int): List<Service>
