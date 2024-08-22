@@ -53,9 +53,8 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.martinszuc.clientsapp.R
-import com.martinszuc.clientsapp.ui.component.client.profile.add_client.AddServiceFromProfileDialog
+import com.martinszuc.clientsapp.ui.component.client.profile.add_service.AddServiceFromProfileDialog
 import com.martinszuc.clientsapp.ui.component.client.profile.services_list.ProfileServicesTab
-import com.martinszuc.clientsapp.ui.component.client.profile.todo.ProfileTodoTab
 import com.martinszuc.clientsapp.ui.component.profile.ProfilePicture
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.SharedServiceViewModel

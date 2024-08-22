@@ -1,33 +1,20 @@
-package com.martinszuc.clientsapp.ui.component.client.profile.add_client
+package com.martinszuc.clientsapp.ui.component.client.profile.add_service
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.net.Uri
 import android.widget.Toast
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -36,15 +23,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberAsyncImagePainter
 import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.data.entity.Service
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.SharedServiceViewModel
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
+import java.util.*
 
 @Composable
 fun AddServiceFromProfileDialog(
@@ -56,7 +42,7 @@ fun AddServiceFromProfileDialog(
     var description by remember { mutableStateOf("") }
     var price by remember { mutableStateOf("") }
     var selectedDate by remember { mutableStateOf(Date()) }
-    var expanded by remember { mutableStateOf(false) }
+    var photoUris by remember { mutableStateOf<List<Uri>>(emptyList()) }  // Store selected photos
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
@@ -85,6 +71,14 @@ fun AddServiceFromProfileDialog(
         calendar.get(Calendar.HOUR_OF_DAY),
         calendar.get(Calendar.MINUTE),
         true
+    )
+
+    // File picker for selecting photos
+    val filePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetMultipleContents(),
+        onResult = { uris: List<Uri> ->
+            photoUris = uris  // Store selected photos
+        }
     )
 
     AlertDialog(
@@ -155,6 +149,35 @@ fun AddServiceFromProfileDialog(
                         )
                     }
                 }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Button to pick photos
+                Button(
+                    onClick = { filePickerLauncher.launch("image/*") },
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                ) {
+                    Text("Pick Photos")
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Display selected photos (up to 4)
+                if (photoUris.isNotEmpty()) {
+                    LazyRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(photoUris.take(4)) { uri ->
+                            Image(
+                                painter = rememberAsyncImagePainter(uri),
+                                contentDescription = null,
+                                modifier = Modifier.size(64.dp)
+                            )
+                        }
+                    }
+                }
             }
         },
         confirmButton = {
@@ -171,8 +194,11 @@ fun AddServiceFromProfileDialog(
                     onClick = {
                         val servicePrice = price.toDoubleOrNull()
                         if (description.isEmpty() || servicePrice == null) {
-                            Toast.makeText(context,
-                                context.getString(R.string.please_fill_in_all_fields), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.please_fill_in_all_fields),
+                                Toast.LENGTH_SHORT
+                            ).show()
                             return@Button
                         }
                         val service = Service(
@@ -181,14 +207,23 @@ fun AddServiceFromProfileDialog(
                             description = description,
                             date = selectedDate,
                             price = servicePrice,
-                            category_id = null, // Set category to null
-                            type_id = null // Set type to null
+                            category_id = null,
+                            type_id = null
                         )
                         scope.launch {
-                            sharedServiceViewModel.addService(service)
+                                if (photoUris.isNotEmpty()) {
+                                    sharedServiceViewModel.addServiceWithPhotos(service, photoUris) { message ->
+                                    }
+                                } else {
+                                    sharedServiceViewModel.addService(service)
+                                }
                             sharedClientViewModel.updateLatestServiceDate(clientId, selectedDate)
                             sharedClientViewModel.loadClients()
-                            Toast.makeText(context, context.getString(R.string.service_added_successfully), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.service_added_successfully),
+                                Toast.LENGTH_SHORT
+                            ).show()
                             onDismissRequest()
                         }
                     },

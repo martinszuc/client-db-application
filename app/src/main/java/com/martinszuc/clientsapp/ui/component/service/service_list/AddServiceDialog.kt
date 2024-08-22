@@ -250,10 +250,16 @@ fun AddServiceDialog(
                             category_id = null,
                             type_id = null
                         )
+
                         scope.launch {
-                            sharedServiceViewModel.addServiceWithPhotos(service, photoUris) { message ->
-                                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                            if (photoUris.isNotEmpty()) {
+                                sharedServiceViewModel.addServiceWithPhotos(service, photoUris) { message ->
+                                }
+                            } else {
+                                sharedServiceViewModel.addService(service)
                             }
+                            sharedClientViewModel.updateLatestServiceDate(selectedClientId!!, selectedDate)
+                            sharedClientViewModel.loadClients()
                             Toast.makeText(context, context.getString(R.string.service_added_successfully), Toast.LENGTH_SHORT).show()
                             onDismissRequest()
                         }
