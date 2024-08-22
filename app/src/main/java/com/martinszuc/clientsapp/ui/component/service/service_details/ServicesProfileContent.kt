@@ -1,7 +1,6 @@
 package com.martinszuc.clientsapp.ui.component.service.service_details
 
 import android.net.Uri
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -17,8 +16,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -64,7 +64,7 @@ fun ServiceProfileContent(
     imageUris: List<String>,
     isLoadingImages: Boolean,
     navController: NavHostController,
-    onAddPhotos: (List<Uri>) -> Unit  // Accept the callback to handle adding photos
+    onAddPhotos: (List<Uri>) -> Unit
 ) {
     var selectedImageUri by remember { mutableStateOf<String?>(null) }
     var showMenu by remember { mutableStateOf(false) }
@@ -201,7 +201,7 @@ fun ServiceProfileContent(
                 }
             }
 
-            // Display Images
+            // Display Images in a 2x2 grid using LazyVerticalGrid
             if (!isLoadingImages && imageUris.isNotEmpty()) {
                 Text(
                     text = stringResource(R.string.images),
@@ -210,30 +210,28 @@ fun ServiceProfileContent(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
 
-                Box(
+                // 2x2 Grid of Images
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),  // 2 columns
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(200.dp)
-                        .border(1.dp, MaterialTheme.colorScheme.primary, MaterialTheme.shapes.medium)
-                        .padding(8.dp)
+                        .height(200.dp)  // Adjust height for grid display
+                        .border(1.dp, MaterialTheme.colorScheme.primary)
+                        .padding(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    LazyRow(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        items(imageUris) { uri ->
-                            Image(
-                                painter = rememberAsyncImagePainter(uri),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .size(100.dp)
-                                    .clickable {
-                                        selectedImageUri = uri
-                                    }
-                                    .padding(8.dp),
-                                contentScale = ContentScale.Crop
-                            )
-                        }
+                    items(imageUris) { uri ->
+                        Image(
+                            painter = rememberAsyncImagePainter(uri),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(100.dp)
+                                .clickable {
+                                    selectedImageUri = uri
+                                },
+                            contentScale = ContentScale.Crop
+                        )
                     }
                 }
             }

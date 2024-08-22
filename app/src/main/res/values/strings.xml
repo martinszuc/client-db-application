@@ -113,6 +113,7 @@
     <string name="images">Fotky</string>
     <string name="loading_images">Načítavam fotky</string>
     <string name="service_details">Detail zakázky</string>
+    <string name="nevybrali_ste_adne_fotky">Nevybrali ste žadne fotky</string>
 
     <string-array name="theme_options">
         <item>Light</item>

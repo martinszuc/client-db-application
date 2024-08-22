@@ -64,6 +64,8 @@ fun ServiceProfileScreen(
             serviceViewModel.addPhotosForService(it.id, uris) { error ->
                 Log.e("ServiceProfileScreen", "Failed to upload photos: $error")
             }
+            // Reload the photos after adding
+            servicePicturesViewModel.loadPhotosForService(serviceId)
         }
     }
 

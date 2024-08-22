@@ -107,10 +107,11 @@ fun AddServiceDialog(
     val filePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetMultipleContents(),
         onResult = { uris: List<Uri> ->
-            if (uris.size <= 4) {  // Limit to 4 photos
+            if (uris.isNotEmpty()) {  // Limit to 4 photos
                 photoUris = uris
             } else {
-                Toast.makeText(context, "You can only select up to 4 photos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,
+                    context.getString(R.string.nevybrali_ste_adne_fotky), Toast.LENGTH_SHORT).show()
             }
         }
     )
