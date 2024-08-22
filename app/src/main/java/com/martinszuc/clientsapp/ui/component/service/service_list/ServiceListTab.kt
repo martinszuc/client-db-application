@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.ui.component.service.ServiceItem
 import com.martinszuc.clientsapp.ui.viewmodel.ServiceCategoryViewModel
@@ -32,13 +33,14 @@ import com.martinszuc.clientsapp.ui.viewmodel.SharedServiceViewModel
 
 @Composable
 fun ServiceListTab(
+    navController: NavHostController,  // Accept NavController
     serviceViewModel: SharedServiceViewModel = hiltViewModel(),
     clientViewModel: SharedClientViewModel = hiltViewModel(),
     categoryViewModel: ServiceCategoryViewModel = hiltViewModel(),
     typeViewModel: ServiceTypeViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
-        serviceViewModel.loadServices()
+        serviceViewModel.loadServicesIfNotLoaded()
         clientViewModel.loadClients()
         categoryViewModel.loadCategories()
         typeViewModel.loadServiceTypes()
@@ -69,7 +71,10 @@ fun ServiceListTab(
                         service = service,
                         clientName = clientName,
                         category = category,
-                        type = type
+                        type = type,
+                        onClick = {
+                            navController.navigate("serviceDetails/${service.id}")
+                        }
                     )
                 }
             }

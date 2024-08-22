@@ -96,7 +96,10 @@ fun SearchScreen(
                                     service = result,
                                     clientName = clientName,
                                     category = category,
-                                    type = type
+                                    type = type,
+                                    onClick = {
+                                        navController.navigate("serviceDetails/${result.id}")
+                                    }
                                 )
                             }
                         }

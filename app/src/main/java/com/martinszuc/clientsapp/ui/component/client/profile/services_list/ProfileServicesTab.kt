@@ -22,7 +22,6 @@ fun ProfileServicesTab(
     serviceCategoryViewModel: ServiceCategoryViewModel = hiltViewModel(),
     serviceTypeViewModel: ServiceTypeViewModel = hiltViewModel()
 ) {
-    val services by sharedServiceViewModel.services.collectAsState()
     val categories by serviceCategoryViewModel.categories.collectAsState()
     val types by serviceTypeViewModel.serviceTypes.collectAsState()
 
@@ -32,10 +31,14 @@ fun ProfileServicesTab(
         serviceTypeViewModel.loadServiceTypes()
     }
 
+    val clientServices = sharedServiceViewModel.clientServices.collectAsState()
+
+    val servicesForClient = clientServices.value[clientId] ?: emptyList()
+
     LazyColumn(modifier = Modifier
         .fillMaxSize()
         .padding(16.dp)) {
-        items(services) { service ->
+        items(servicesForClient) { service ->
             val category = categories.find { it.id == service.category_id }
             val type = types.find { it.id == service.type_id }
             ProfileServiceItem(service = service, category = category, type = type)

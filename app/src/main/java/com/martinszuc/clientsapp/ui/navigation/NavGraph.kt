@@ -12,6 +12,7 @@ import com.martinszuc.clientsapp.ui.component.data.DataScreen
 import com.martinszuc.clientsapp.ui.component.menu.MenuScreen
 import com.martinszuc.clientsapp.ui.component.search.SearchScreen
 import com.martinszuc.clientsapp.ui.component.service.ServicesScreen
+import com.martinszuc.clientsapp.ui.component.service.service_details.ServiceProfileScreen
 import com.martinszuc.clientsapp.ui.component.settings.SettingsScreen
 
 sealed class Screen(val route: String) {
@@ -24,6 +25,12 @@ sealed class Screen(val route: String) {
     data class ClientProfile(val clientId: Int) : Screen("clientProfile/$clientId") {
         companion object {
             const val ROUTE = "clientProfile/{clientId}"
+        }
+    }
+    // Service Profile Screen with serviceId parameter
+    data class ServiceProfile(val serviceId: Int) : Screen("serviceDetails/$serviceId") {
+        companion object {
+            const val ROUTE = "serviceDetails/{serviceId}"
         }
     }
 }
@@ -44,7 +51,7 @@ fun NavGraph(
             ClientsScreen(navController)
         }
         composable(Screen.Services.route) {
-            ServicesScreen()
+            ServicesScreen(navController = navController)
         }
         composable(Screen.Search.route) {
             SearchScreen(navController)
@@ -61,7 +68,15 @@ fun NavGraph(
             ClientProfileScreen(clientId, navController)
         }
         composable(Screen.Data.route) {
-            DataScreen()  // New Data screen
+            DataScreen()
+        }
+
+        // Ensure that the Service Profile Screen is added
+        composable(Screen.ServiceProfile.ROUTE) { backStackEntry ->
+            val serviceId = backStackEntry.arguments?.getString("serviceId")?.toIntOrNull()
+            if (serviceId != null) {
+                ServiceProfileScreen(serviceId = serviceId, navController = navController)
+            }
         }
     }
 }

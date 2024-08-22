@@ -13,6 +13,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -26,6 +27,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun ServicesScreen(
+    navController: NavHostController,  // Accept NavController
     serviceViewModel: SharedServiceViewModel = hiltViewModel(),
     clientViewModel: SharedClientViewModel = hiltViewModel()
 ) {
@@ -59,7 +61,7 @@ fun ServicesScreen(
                 modifier = Modifier.fillMaxSize()
             ) { page ->
                 when (page) {
-                    0 -> ServiceListTab(serviceViewModel, clientViewModel)
+                    0 -> ServiceListTab(navController, serviceViewModel, clientViewModel)  // Pass NavController
                 }
             }
         }

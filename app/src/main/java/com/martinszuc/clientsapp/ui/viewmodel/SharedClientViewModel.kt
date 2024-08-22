@@ -25,6 +25,10 @@ class SharedClientViewModel @Inject constructor(
 
     private val logTag = "SharedClientViewModel"
 
+    init {
+        loadClients()  // Automatically load clients on init
+    }
+
     fun selectClient(client: Client) {
         _selectedClient.value = client
     }

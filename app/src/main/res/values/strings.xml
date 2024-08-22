@@ -110,6 +110,9 @@
     <string name="delete_database_desc">Vymazať databázu</string>
     <string name="backup_database_desc">Zálohovať databázu</string>
     <string name="select_photos">Vybrať z galérie</string>
+    <string name="images">Fotky</string>
+    <string name="loading_images">Načítavam fotky</string>
+    <string name="service_details">Detail zakázky</string>
 
     <string-array name="theme_options">
         <item>Light</item>
