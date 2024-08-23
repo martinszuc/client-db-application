@@ -1,4 +1,4 @@
-package com.martinszuc.clientsapp.util
+package com.martinszuc.clientsapp.utils
 
 object AppConstants {
     const val THEME_PREFERENCE= "theme_preference"

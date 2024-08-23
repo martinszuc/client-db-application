@@ -1,4 +1,4 @@
-package com.martinszuc.clientsapp.util
+package com.martinszuc.clientsapp.utils
 
 fun getInitials(name: String): String {
     val parts = name.split(" ")

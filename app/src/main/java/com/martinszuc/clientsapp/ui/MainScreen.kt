@@ -15,8 +15,8 @@ import com.martinszuc.clientsapp.ui.component.settings.SettingsViewModel
 import com.martinszuc.clientsapp.ui.navigation.NavGraph
 import com.martinszuc.clientsapp.ui.navigation.Screen
 import com.martinszuc.clientsapp.ui.theme.AppTheme
-import com.martinszuc.clientsapp.util.AppConstants.THEME_DARK
-import com.martinszuc.clientsapp.util.AppConstants.THEME_SYSTEM_DEFAULT
+import com.martinszuc.clientsapp.utils.AppConstants.THEME_DARK
+import com.martinszuc.clientsapp.utils.AppConstants.THEME_SYSTEM_DEFAULT
 
 @Composable
 fun MainScreen() {

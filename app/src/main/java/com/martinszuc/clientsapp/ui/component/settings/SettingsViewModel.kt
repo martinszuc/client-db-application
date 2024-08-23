@@ -11,9 +11,9 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.martinszuc.clientsapp.data.remote.FirebaseStorageRepository
-import com.martinszuc.clientsapp.util.AppConstants
-import com.martinszuc.clientsapp.util.AppConstants.THEME_DARK
-import com.martinszuc.clientsapp.util.AppConstants.THEME_LIGHT
+import com.martinszuc.clientsapp.utils.AppConstants
+import com.martinszuc.clientsapp.utils.AppConstants.THEME_DARK
+import com.martinszuc.clientsapp.utils.AppConstants.THEME_LIGHT
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

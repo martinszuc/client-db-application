@@ -36,8 +36,8 @@ import com.martinszuc.clientsapp.ui.component.common.CommonOutlinedTextField
 import com.martinszuc.clientsapp.ui.component.profile.ProfilePicture
 import com.martinszuc.clientsapp.ui.theme.profilePictureColors
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
-import com.martinszuc.clientsapp.util.getContactInfo
-import com.martinszuc.clientsapp.util.getInitials
+import com.martinszuc.clientsapp.utils.getContactInfo
+import com.martinszuc.clientsapp.utils.getInitials
 
 @Composable
 fun AddClientDialog(

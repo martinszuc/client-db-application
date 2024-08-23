@@ -16,9 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.martinszuc.clientsapp.R
-import com.martinszuc.clientsapp.util.AppConstants.THEME_DARK
-import com.martinszuc.clientsapp.util.AppConstants.THEME_LIGHT
-import com.martinszuc.clientsapp.util.AppConstants.THEME_SYSTEM_DEFAULT
+import com.martinszuc.clientsapp.utils.AppConstants.THEME_DARK
+import com.martinszuc.clientsapp.utils.AppConstants.THEME_LIGHT
+import com.martinszuc.clientsapp.utils.AppConstants.THEME_SYSTEM_DEFAULT
 
 @Composable
 fun ThemeSelectionDialog(

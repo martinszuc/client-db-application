@@ -1,4 +1,4 @@
-package com.martinszuc.clientsapp.util.imageViewer
+package com.martinszuc.clientsapp.utils.imageViewer
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectTransformGestures

@@ -7,14 +7,33 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -26,11 +45,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.data.entity.Service
+import com.martinszuc.clientsapp.ui.component.common.CommonCancelButton
+import com.martinszuc.clientsapp.ui.component.common.CommonOkButton
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.SharedServiceViewModel
+import com.martinszuc.clientsapp.utils.DateUtils
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 
 @Composable
 fun AddServiceFromProfileDialog(
@@ -47,8 +69,6 @@ fun AddServiceFromProfileDialog(
     val context = LocalContext.current
 
     val calendar = Calendar.getInstance()
-    val dateFormat = SimpleDateFormat("dd/MM/yy", Locale.getDefault())
-    val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
 
     val datePickerDialog = DatePickerDialog(
         context,
@@ -122,7 +142,7 @@ fun AddServiceFromProfileDialog(
                             )
                         }
                         Text(
-                            text = dateFormat.format(selectedDate),
+                            text = DateUtils.formatShortDate(selectedDate),
                             color = MaterialTheme.colorScheme.onSurface,
                             style = MaterialTheme.typography.bodyMedium
                         )
@@ -143,7 +163,7 @@ fun AddServiceFromProfileDialog(
                             )
                         }
                         Text(
-                            text = timeFormat.format(selectedDate),
+                            text = DateUtils.formatTime(selectedDate), // Use DateUtils for formatting
                             color = MaterialTheme.colorScheme.onSurface,
                             style = MaterialTheme.typography.bodyMedium
                         )
@@ -182,15 +202,10 @@ fun AddServiceFromProfileDialog(
         },
         confirmButton = {
             Row(modifier = Modifier.fillMaxWidth()) {
-                Button(
-                    onClick = onDismissRequest,
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Text(text = stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onPrimary)
-                }
+                // Use CommonCancelButton and CommonOkButton
+                CommonCancelButton(onClick = onDismissRequest, modifier = Modifier.weight(1f))
                 Spacer(modifier = Modifier.width(8.dp))
-                Button(
+                CommonOkButton(
                     onClick = {
                         val servicePrice = price.toDoubleOrNull()
                         if (description.isEmpty() || servicePrice == null) {
@@ -199,7 +214,7 @@ fun AddServiceFromProfileDialog(
                                 context.getString(R.string.please_fill_in_all_fields),
                                 Toast.LENGTH_SHORT
                             ).show()
-                            return@Button
+                            return@CommonOkButton
                         }
                         val service = Service(
                             id = 0,
@@ -211,12 +226,11 @@ fun AddServiceFromProfileDialog(
                             type_id = null
                         )
                         scope.launch {
-                                if (photoUris.isNotEmpty()) {
-                                    sharedServiceViewModel.addServiceWithPhotos(service, photoUris) { message ->
-                                    }
-                                } else {
-                                    sharedServiceViewModel.addService(service)
-                                }
+                            if (photoUris.isNotEmpty()) {
+                                sharedServiceViewModel.addServiceWithPhotos(service, photoUris) {}
+                            } else {
+                                sharedServiceViewModel.addService(service)
+                            }
                             sharedClientViewModel.updateLatestServiceDate(clientId, selectedDate)
                             sharedClientViewModel.loadClients()
                             Toast.makeText(
@@ -227,11 +241,8 @@ fun AddServiceFromProfileDialog(
                             onDismissRequest()
                         }
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     modifier = Modifier.weight(1f)
-                ) {
-                    Text(text = stringResource(R.string.save), color = MaterialTheme.colorScheme.onPrimary)
-                }
+                )
             }
         }
     )

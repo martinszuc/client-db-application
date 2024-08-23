@@ -4,7 +4,7 @@ import android.util.Log
 import com.martinszuc.clientsapp.data.entity.Client
 import com.martinszuc.clientsapp.data.repository.ClientRepository
 import com.martinszuc.clientsapp.ui.base.BaseViewModel
-import com.martinszuc.clientsapp.util.AppConstants
+import com.martinszuc.clientsapp.utils.AppConstants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

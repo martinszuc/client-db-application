@@ -1,4 +1,4 @@
-package com.martinszuc.clientsapp.util
+package com.martinszuc.clientsapp.utils
 
 import android.content.Context
 import android.database.Cursor

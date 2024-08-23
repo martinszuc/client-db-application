@@ -25,7 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.ui.AppBar
 import com.martinszuc.clientsapp.ui.component.settings.dialogs.ThemeSelectionDialog
-import com.martinszuc.clientsapp.util.AppConstants
+import com.martinszuc.clientsapp.utils.AppConstants
 import kotlinx.coroutines.launch
 
 @Composable

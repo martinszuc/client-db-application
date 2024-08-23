@@ -58,7 +58,7 @@ import com.martinszuc.clientsapp.ui.component.client.profile.services_list.Profi
 import com.martinszuc.clientsapp.ui.component.profile.ProfilePicture
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.SharedServiceViewModel
-import com.martinszuc.clientsapp.util.getInitials
+import com.martinszuc.clientsapp.utils.getInitials
 import kotlinx.coroutines.launch
 
 @OptIn(
