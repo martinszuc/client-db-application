@@ -6,6 +6,18 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 
+/**
+ * Project: database application
+ *
+ * Author: Bc. Martin Szuc (matoszuc@gmail.com)
+ * GitHub: https://github.com/martinszuc
+ *
+ *
+ * License:
+ * This code is licensed under MIT License. You may not use this file except
+ * in compliance with the License.
+ */
+
 class LocalStorageRepository(private val context: Context) {
 
     // Save the photo to internal storage under the specified directory

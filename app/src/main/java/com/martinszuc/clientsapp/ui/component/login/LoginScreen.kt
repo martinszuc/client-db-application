@@ -13,6 +13,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 
+/**
+ * Project: database application
+ *
+ * Author: Bc. Martin Szuc (matoszuc@gmail.com)
+ * GitHub: https://github.com/martinszuc
+ *
+ *
+ * License:
+ * This code is licensed under MIT License. You may not use this file except
+ * in compliance with the License.
+ */
+
 
 @Composable
 fun LoginScreen(viewModel: LoginViewModel = hiltViewModel(), onLoginSuccess: () -> Unit) {

@@ -14,6 +14,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.martinszuc.clientsapp.R
 
+/**
+ * Project: database application
+ *
+ * Author: Bc. Martin Szuc (matoszuc@gmail.com)
+ * GitHub: https://github.com/martinszuc
+ *
+ *
+ * License:
+ * This code is licensed under MIT License. You may not use this file except
+ * in compliance with the License.
+ */
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppBarWithOptionalBackButton(

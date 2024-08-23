@@ -16,6 +16,18 @@ import com.martinszuc.clientsapp.data.entity.ServiceCategory
 import com.martinszuc.clientsapp.data.entity.ServicePhoto
 import com.martinszuc.clientsapp.data.entity.ServiceType
 
+/**
+ * Project: database application
+ *
+ * Author: Bc. Martin Szuc (matoszuc@gmail.com)
+ * GitHub: https://github.com/martinszuc
+ *
+ *
+ * License:
+ * This code is licensed under MIT License. You may not use this file except
+ * in compliance with the License.
+ */
+
 @Database(
     entities = [Client::class, Service::class, ServiceCategory::class, ServiceType::class, ServicePhoto::class],
     version = 2

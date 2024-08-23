@@ -26,6 +26,18 @@ import com.martinszuc.clientsapp.data.entity.Client
 import com.martinszuc.clientsapp.ui.component.common.ProfilePicture
 import com.martinszuc.clientsapp.utils.getInitials
 
+/**
+ * Project: database application
+ *
+ * Author: Bc. Martin Szuc (matoszuc@gmail.com)
+ * GitHub: https://github.com/martinszuc
+ *
+ *
+ * License:
+ * This code is licensed under MIT License. You may not use this file except
+ * in compliance with the License.
+ */
+
 @Composable
 fun ServiceDropdownMenu(
     clients: List<Client>,

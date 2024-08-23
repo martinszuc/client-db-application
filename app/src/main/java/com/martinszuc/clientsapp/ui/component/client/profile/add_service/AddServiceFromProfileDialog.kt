@@ -54,6 +54,18 @@ import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
 
+/**
+ * Project: database application
+ *
+ * Author: Bc. Martin Szuc (matoszuc@gmail.com)
+ * GitHub: https://github.com/martinszuc
+ *
+ *
+ * License:
+ * This code is licensed under MIT License. You may not use this file except
+ * in compliance with the License.
+ */
+
 @Composable
 fun AddServiceFromProfileDialog(
     clientId: Int,

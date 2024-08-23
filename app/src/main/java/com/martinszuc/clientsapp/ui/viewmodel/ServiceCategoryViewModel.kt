@@ -1,5 +1,17 @@
 package com.martinszuc.clientsapp.ui.viewmodel
 
+/**
+ * Project: database application
+ *
+ * Author: Bc. Martin Szuc (matoszuc@gmail.com)
+ * GitHub: https://github.com/martinszuc
+ *
+ *
+ * License:
+ * This code is licensed under MIT License. You may not use this file except
+ * in compliance with the License.
+ */
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.martinszuc.clientsapp.data.entity.ServiceCategory

@@ -35,6 +35,18 @@ import com.martinszuc.clientsapp.ui.component.common.items.ClientItem
 import com.martinszuc.clientsapp.ui.navigation.Screen
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
 
+/**
+ * Project: database application
+ *
+ * Author: Bc. Martin Szuc (matoszuc@gmail.com)
+ * GitHub: https://github.com/martinszuc
+ *
+ *
+ * License:
+ * This code is licensed under MIT License. You may not use this file except
+ * in compliance with the License.
+ */
+
 @Composable
 fun ClientsScreen(
     navController: NavHostController,

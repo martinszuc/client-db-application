@@ -21,6 +21,18 @@ import com.martinszuc.clientsapp.ui.component.common.AppBarWithoutActions
 import com.martinszuc.clientsapp.ui.component.common.SquareButtonWithIcon
 import com.martinszuc.clientsapp.ui.navigation.Screen
 
+/**
+ * Project: database application
+ *
+ * Author: Bc. Martin Szuc (matoszuc@gmail.com)
+ * GitHub: https://github.com/martinszuc
+ *
+ *
+ * License:
+ * This code is licensed under MIT License. You may not use this file except
+ * in compliance with the License.
+ */
+
 @Composable
 fun MenuScreen(navController: NavHostController) {
     Scaffold(
