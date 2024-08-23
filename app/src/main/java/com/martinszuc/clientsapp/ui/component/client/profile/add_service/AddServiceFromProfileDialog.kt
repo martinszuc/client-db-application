@@ -45,8 +45,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.data.entity.Service
-import com.martinszuc.clientsapp.ui.component.common.CommonCancelButton
-import com.martinszuc.clientsapp.ui.component.common.CommonOkButton
+import com.martinszuc.clientsapp.ui.component.common.CancelButton
+import com.martinszuc.clientsapp.ui.component.common.OkButton
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.SharedServiceViewModel
 import com.martinszuc.clientsapp.utils.DateUtils
@@ -203,9 +203,9 @@ fun AddServiceFromProfileDialog(
         confirmButton = {
             Row(modifier = Modifier.fillMaxWidth()) {
                 // Use CommonCancelButton and CommonOkButton
-                CommonCancelButton(onClick = onDismissRequest, modifier = Modifier.weight(1f))
+                CancelButton(onClick = onDismissRequest, modifier = Modifier.weight(1f))
                 Spacer(modifier = Modifier.width(8.dp))
-                CommonOkButton(
+                OkButton(
                     onClick = {
                         val servicePrice = price.toDoubleOrNull()
                         if (description.isEmpty() || servicePrice == null) {
@@ -214,7 +214,7 @@ fun AddServiceFromProfileDialog(
                                 context.getString(R.string.please_fill_in_all_fields),
                                 Toast.LENGTH_SHORT
                             ).show()
-                            return@CommonOkButton
+                            return@OkButton
                         }
                         val service = Service(
                             id = 0,

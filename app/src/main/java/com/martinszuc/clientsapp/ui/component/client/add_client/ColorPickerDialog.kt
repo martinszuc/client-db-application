@@ -22,7 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.martinszuc.clientsapp.R
-import com.martinszuc.clientsapp.ui.component.common.CommonOkButton
+import com.martinszuc.clientsapp.ui.component.common.OkButton
 import com.martinszuc.clientsapp.ui.theme.profilePictureColors
 
 @Composable
@@ -80,7 +80,7 @@ fun ColorPickerDialog(
             }
         },
         confirmButton = {
-            CommonOkButton(onClick = {
+            OkButton(onClick = {
                 Log.d(logTag, "Done button clicked")
                 onDismissRequest()
             })
