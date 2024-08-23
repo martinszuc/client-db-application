@@ -1,6 +1,24 @@
+// Color.kt
 package com.martinszuc.clientsapp.ui.theme
 
 import androidx.compose.ui.graphics.Color
+
+// String-based colors for ColorPickerDialog
+val color_1 = "#FF5733"
+val color_2 = "#33FF57"
+val color_3 = "#3357FF"
+val color_4 = "#FF33A1"
+val color_5 = "#FF8C33"
+val color_6 = "#8C33FF"
+val color_7 = "#33FFC4"
+val color_8 = "#FF3380"
+val color_9 = "#3380FF"
+val color_10 = "#FF5E33"
+
+val profilePictureColors = listOf(
+    color_1, color_2, color_3, color_4, color_5,
+    color_6, color_7, color_8, color_9, color_10
+)
 
 // Light Theme Colors
 val md_theme_light_primary = Color(0xFFAB2C5D)

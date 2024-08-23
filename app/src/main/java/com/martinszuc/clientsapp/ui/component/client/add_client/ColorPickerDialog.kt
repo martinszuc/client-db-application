@@ -22,6 +22,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.martinszuc.clientsapp.R
+import com.martinszuc.clientsapp.ui.component.common.CommonOkButton
+import com.martinszuc.clientsapp.ui.theme.profilePictureColors
 
 @Composable
 fun ColorPickerDialog(
@@ -30,11 +32,6 @@ fun ColorPickerDialog(
     onDismissRequest: () -> Unit
 ) {
     val logTag = "ColorPickerDialog"
-    val colors = listOf(
-        "#FF5733", "#33FF57", "#3357FF", "#FF33A1",
-        "#FF8C33", "#8C33FF", "#33FFC4", "#FF3380",
-        "#3380FF", "#FF5E33"
-    )
 
     AlertDialog(
         onDismissRequest = {
@@ -47,14 +44,14 @@ fun ColorPickerDialog(
                 Text(stringResource(R.string.select_a_default_color))
                 Spacer(modifier = Modifier.height(8.dp))
                 Column {
-                    for (i in colors.indices step 5) {
+                    for (i in profilePictureColors.indices step 5) {
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(4.dp),
                             horizontalArrangement = Arrangement.SpaceEvenly
                         ) {
-                            colors.subList(i, i + 5.coerceAtMost(colors.size)).forEach { color ->
+                            profilePictureColors.subList(i, i + 5.coerceAtMost(profilePictureColors.size)).forEach { color ->
                                 Box(
                                     modifier = Modifier
                                         .size(40.dp)
@@ -83,12 +80,10 @@ fun ColorPickerDialog(
             }
         },
         confirmButton = {
-            Button(onClick = {
+            CommonOkButton(onClick = {
                 Log.d(logTag, "Done button clicked")
                 onDismissRequest()
-            }) {
-                Text(stringResource(R.string.save))
-            }
+            })
         }
     )
 }

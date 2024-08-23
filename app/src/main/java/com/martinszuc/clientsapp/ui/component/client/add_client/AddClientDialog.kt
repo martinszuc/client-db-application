@@ -34,6 +34,7 @@ import com.martinszuc.clientsapp.data.entity.Client
 import com.martinszuc.clientsapp.ui.component.common.CommonDialogButtons
 import com.martinszuc.clientsapp.ui.component.common.CommonOutlinedTextField
 import com.martinszuc.clientsapp.ui.component.profile.ProfilePicture
+import com.martinszuc.clientsapp.ui.theme.profilePictureColors
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
 import com.martinszuc.clientsapp.util.getContactInfo
 import com.martinszuc.clientsapp.util.getInitials
@@ -46,11 +47,14 @@ fun AddClientDialog(
 ) {
     val logTag = "AddClientDialog"
 
+    // Initialize the state for the form fields
     var name by remember { mutableStateOf("") }
     var phone by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var profilePictureUrl by remember { mutableStateOf<String?>(null) }
-    var profilePictureColor by remember { mutableStateOf<String?>(null) }
+
+    // Initialize the profile picture color with a random color from the list
+    var profilePictureColor by remember { mutableStateOf<String?>(profilePictureColors.random()) }
     var showColorDialog by remember { mutableStateOf(false) }
 
     // Contact picker launcher
