@@ -17,7 +17,6 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,8 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.data.entity.Client
-import com.martinszuc.clientsapp.ui.component.common.CommonCancelButton
-import com.martinszuc.clientsapp.ui.component.common.CommonOkButton
+import com.martinszuc.clientsapp.ui.component.common.CommonDialogButtons
+import com.martinszuc.clientsapp.ui.component.common.CommonOutlinedTextField
 import com.martinszuc.clientsapp.ui.component.profile.ProfilePicture
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
 import com.martinszuc.clientsapp.util.getContactInfo
@@ -130,41 +129,38 @@ fun AddClientDialog(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 // Name input
-                OutlinedTextField(
+                CommonOutlinedTextField(
                     value = name,
                     onValueChange = {
                         name = it
                         Log.d(logTag, "Name input: $it")
                     },
-                    label = { Text(text = stringResource(R.string.name)) },
-                    modifier = Modifier.fillMaxWidth()
+                    label = stringResource(R.string.name)
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
 
                 // Phone input
-                OutlinedTextField(
+                CommonOutlinedTextField(
                     value = phone,
                     onValueChange = {
                         phone = it
                         Log.d(logTag, "Phone input: $it")
                     },
-                    label = { Text(text = stringResource(R.string.phone)) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                    modifier = Modifier.fillMaxWidth()
+                    label = stringResource(R.string.phone),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
 
                 // Email input
-                OutlinedTextField(
+                CommonOutlinedTextField(
                     value = email,
                     onValueChange = {
                         email = it
                         Log.d(logTag, "Email input: $it")
                     },
-                    label = { Text(text = stringResource(R.string.email)) },
-                    modifier = Modifier.fillMaxWidth()
+                    label = stringResource(R.string.email)
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -178,25 +174,23 @@ fun AddClientDialog(
                 }
             }
         },
-        // Confirm (OK) button
         confirmButton = {
-            CommonOkButton(onClick = {
-                val client = Client(
-                    id = 0,
-                    name = name,
-                    phone = phone,
-                    email = email,
-                    profilePictureUrl = profilePictureUrl,
-                    profilePictureColor = profilePictureColor
-                )
-                Log.d(logTag, "Saving client: $client")
-                sharedClientViewModel.addClient(client)
-                onDismissRequest()
-            })
-        },
-        // Dismiss (Cancel) button
-        dismissButton = {
-            CommonCancelButton(onClick = { onDismissRequest() })
+            CommonDialogButtons(
+                onCancelClick = { onDismissRequest() },
+                onConfirmClick = {
+                    val client = Client(
+                        id = 0,
+                        name = name,
+                        phone = phone,
+                        email = email,
+                        profilePictureUrl = profilePictureUrl,
+                        profilePictureColor = profilePictureColor
+                    )
+                    Log.d(logTag, "Saving client: $client")
+                    sharedClientViewModel.addClient(client)
+                    onDismissRequest()
+                }
+            )
         }
     )
 }
