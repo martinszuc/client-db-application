@@ -23,7 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.martinszuc.clientsapp.R
-import com.martinszuc.clientsapp.ui.AppBar
+import com.martinszuc.clientsapp.ui.component.common.AppBarWithoutActions
 import com.martinszuc.clientsapp.ui.component.settings.dialogs.ThemeSelectionDialog
 import com.martinszuc.clientsapp.utils.AppConstants
 import kotlinx.coroutines.launch
@@ -40,7 +40,7 @@ fun SettingsScreen(
     var showDeleteDialog by remember { mutableStateOf(false) }
 
     Scaffold(
-        topBar = { AppBar(title = stringResource(R.string.settings)) }
+        topBar = { AppBarWithoutActions(title = stringResource(R.string.settings)) }
     ) { innerPadding ->
         Column(
             modifier = Modifier

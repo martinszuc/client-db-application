@@ -18,7 +18,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.martinszuc.clientsapp.R
-import com.martinszuc.clientsapp.ui.AppBar
+import com.martinszuc.clientsapp.ui.component.common.AppBarWithoutActions
 import com.martinszuc.clientsapp.ui.component.service.service_list.ServiceListTab
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.SharedServiceViewModel
@@ -35,7 +35,7 @@ fun ServicesScreen(
     val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
-        topBar = { AppBar(title = stringResource(R.string.label_services)) }
+        topBar = { AppBarWithoutActions(title = stringResource(R.string.label_services)) }
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
             // Tab Row

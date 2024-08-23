@@ -120,6 +120,7 @@
     <string name="delete_selected_photos_confirmation">Určite vymazať vybrané fotky?</string>
     <string name="pick_photos">Vybrať fotky</string>
     <string name="ok">OK</string>
+    <string name="back">Naspať</string>
 
     <string-array name="theme_options">
         <item>Light</item>

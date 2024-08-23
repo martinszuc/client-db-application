@@ -1,8 +1,8 @@
 package com.martinszuc.clientsapp.ui.viewmodel;
 
 import com.martinszuc.clientsapp.data.local.LocalStorageRepository;
-import com.martinszuc.clientsapp.data.remote.FirebaseStorageRepository;
 import com.martinszuc.clientsapp.data.local.data_repository.ServiceRepository;
+import com.martinszuc.clientsapp.data.remote.FirebaseStorageRepository;
 import dagger.internal.DaggerGenerated;
 import dagger.internal.Factory;
 import dagger.internal.QualifierMetadata;

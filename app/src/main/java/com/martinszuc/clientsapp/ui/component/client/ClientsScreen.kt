@@ -29,8 +29,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.martinszuc.clientsapp.R
-import com.martinszuc.clientsapp.ui.AppBar
 import com.martinszuc.clientsapp.ui.component.client.add_client.AddClientDialog
+import com.martinszuc.clientsapp.ui.component.common.AppBarWithoutActions
 import com.martinszuc.clientsapp.ui.navigation.Screen
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
 
@@ -63,7 +63,7 @@ fun ClientsScreen(
     }
 
     Scaffold(
-        topBar = { AppBar(title = stringResource(R.string.label_clients)) },
+        topBar = { AppBarWithoutActions(title = stringResource(R.string.label_clients)) },
         floatingActionButton = {
             FloatingActionButton(onClick = {
                 Log.d(logTag, "Add Client button clicked")

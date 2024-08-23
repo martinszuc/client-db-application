@@ -20,7 +20,7 @@ import com.martinszuc.clientsapp.ui.viewmodel.SharedServiceViewModel
 @Composable
 fun ProfileServicesTab(
     clientId: Int,
-    navController: NavHostController,  // Accept NavHostController to navigate to service details
+    navController: NavHostController,
     sharedServiceViewModel: SharedServiceViewModel = hiltViewModel(),
     serviceCategoryViewModel: ServiceCategoryViewModel = hiltViewModel(),
     serviceTypeViewModel: ServiceTypeViewModel = hiltViewModel()
@@ -52,7 +52,6 @@ fun ProfileServicesTab(
                 category = category,
                 type = type,
                 onClick = { serviceId ->
-                    // Navigate to com.martinszuc.clientsapp.ui.component.service.service_details.ServiceProfileScreen when the item is clicked
                     navController.navigate(Screen.ServiceProfile(serviceId).route)
                 }
             )

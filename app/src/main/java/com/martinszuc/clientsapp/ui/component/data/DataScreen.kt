@@ -18,7 +18,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.martinszuc.clientsapp.R
-import com.martinszuc.clientsapp.ui.AppBar
+import com.martinszuc.clientsapp.ui.component.common.AppBarWithoutActions
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
@@ -29,7 +29,7 @@ fun DataScreen() {
 
     Scaffold(
         topBar = {
-            AppBar(title = stringResource(R.string.data))
+            AppBarWithoutActions(title = stringResource(R.string.data))
         }
     ) { innerPadding ->
         Column(

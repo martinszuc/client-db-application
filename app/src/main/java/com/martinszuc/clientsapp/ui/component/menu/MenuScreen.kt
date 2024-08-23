@@ -27,7 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.martinszuc.clientsapp.R
-import com.martinszuc.clientsapp.ui.AppBar
+import com.martinszuc.clientsapp.ui.component.common.AppBarWithoutActions
 import com.martinszuc.clientsapp.ui.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,7 +35,7 @@ import com.martinszuc.clientsapp.ui.navigation.Screen
 fun MenuScreen(navController: NavHostController) {
     Scaffold(
         topBar = {
-            AppBar(
+            AppBarWithoutActions(
                 title = stringResource(R.string.label_menu)
             )
         }
