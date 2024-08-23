@@ -22,7 +22,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -31,7 +30,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -49,9 +47,21 @@ import coil.compose.rememberAsyncImagePainter
 import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.data.entity.Service
 import com.martinszuc.clientsapp.ui.component.common.AppBarWithOptionalBackButton
+import com.martinszuc.clientsapp.ui.component.common.dialogs.ConfirmationDialog
+import com.martinszuc.clientsapp.utils.DateUtils
 import com.martinszuc.clientsapp.utils.imageViewer.FullScreenImageViewer
-import java.text.SimpleDateFormat
-import java.util.Locale
+
+/**
+ * Project: database application
+ *
+ * Author: Bc. Martin Szuc (matoszuc@gmail.com)
+ * GitHub: https://github.com/martinszuc
+ *
+ *
+ * License:
+ * This code is licensed under MIT License. You may not use this file except
+ * in compliance with the License.
+ */
 
 @Composable
 fun ServiceProfileContent(
@@ -156,8 +166,7 @@ fun ServiceProfileContent(
             Spacer(modifier = Modifier.height(8.dp))
 
             // Date
-            val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-            val formattedDate = dateFormat.format(service.date)
+            val formattedDate = DateUtils.formatLongDateWithTime(service.date)
             Text(
                 text = stringResource(R.string.d_tum, formattedDate),
                 style = MaterialTheme.typography.bodyLarge,
@@ -241,46 +250,28 @@ fun ServiceProfileContent(
 
             // Confirmation Dialog for deleting selected photos
             if (showDeleteDialog) {
-                AlertDialog(
-                    onDismissRequest = { showDeleteDialog = false },
-                    title = { Text(text = stringResource(R.string.confirmation)) },
-                    text = { Text(text = stringResource(R.string.delete_selected_photos_confirmation)) },
-                    confirmButton = {
-                        TextButton(onClick = {
-                            onDeleteSelectedPhotos(selectedPhotos)
-                            selectedPhotos.clear()  // Clear selection after deletion
-                            showDeleteDialog = false
-                        }) {
-                            Text(text = stringResource(R.string.yes))
-                        }
+                ConfirmationDialog(
+                    title = stringResource(R.string.confirmation),
+                    message = stringResource(R.string.delete_selected_photos_confirmation),
+                    onConfirm = {
+                        onDeleteSelectedPhotos(selectedPhotos)
+                        selectedPhotos.clear()  // Clear selection after deletion
+                        showDeleteDialog = false
                     },
-                    dismissButton = {
-                        TextButton(onClick = { showDeleteDialog = false }) {
-                            Text(text = stringResource(R.string.no))
-                        }
-                    }
+                    onDismiss = { showDeleteDialog = false }
                 )
             }
 
             // Confirmation Dialog for deleting the entire service
             if (showDeleteServiceDialog) {
-                AlertDialog(
-                    onDismissRequest = { showDeleteServiceDialog = false },
-                    title = { Text(text = stringResource(R.string.confirmation)) },
-                    text = { Text(text = stringResource(R.string.delete_service_confirmation)) },
-                    confirmButton = {
-                        TextButton(onClick = {
-                            onDeleteService()
-                            showDeleteServiceDialog = false
-                        }) {
-                            Text(text = stringResource(R.string.yes))
-                        }
+                ConfirmationDialog(
+                    title = stringResource(R.string.confirmation),
+                    message = stringResource(R.string.delete_service_confirmation),
+                    onConfirm = {
+                        onDeleteService()
+                        showDeleteServiceDialog = false
                     },
-                    dismissButton = {
-                        TextButton(onClick = { showDeleteServiceDialog = false }) {
-                            Text(text = stringResource(R.string.no))
-                        }
-                    }
+                    onDismiss = { showDeleteServiceDialog = false }
                 )
             }
         }

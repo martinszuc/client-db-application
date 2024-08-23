@@ -12,11 +12,25 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.ui.component.settings.SettingsViewModel
+import com.martinszuc.clientsapp.ui.navigation.BottomNavItem
+import com.martinszuc.clientsapp.ui.navigation.BottomNavigationBar
 import com.martinszuc.clientsapp.ui.navigation.NavGraph
 import com.martinszuc.clientsapp.ui.navigation.Screen
 import com.martinszuc.clientsapp.ui.theme.AppTheme
 import com.martinszuc.clientsapp.utils.AppConstants.THEME_DARK
 import com.martinszuc.clientsapp.utils.AppConstants.THEME_SYSTEM_DEFAULT
+
+/**
+ * Project: database application
+ *
+ * Author: Bc. Martin Szuc (matoszuc@gmail.com)
+ * GitHub: https://github.com/martinszuc
+ *
+ *
+ * License:
+ * This code is licensed under MIT License. You may not use this file except
+ * in compliance with the License.
+ */
 
 @Composable
 fun MainScreen() {

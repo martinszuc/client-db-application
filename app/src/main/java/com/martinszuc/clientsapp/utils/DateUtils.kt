@@ -32,4 +32,9 @@ object DateUtils {
     fun formatShortDate(date: Date): String = shortDateFormat.format(date)
     fun formatLongDate(date: Date): String = longDateFormat.format(date)
     fun formatTime(date: Date): String = timeFormat.format(date)
+
+    // Long date and time format (dd/MM/yyyy HH:mm)
+    fun formatLongDateWithTime(date: Date): String {
+        return "${longDateFormat.format(date)} ${timeFormat.format(date)}"
+    }
 }

@@ -26,13 +26,25 @@ import com.martinszuc.clientsapp.ui.component.client.profile.add_service.AddServ
 import com.martinszuc.clientsapp.ui.component.client.profile.services_list.ProfileServicesTab
 import com.martinszuc.clientsapp.ui.component.common.AppBarWithBackButtonAndActions
 import com.martinszuc.clientsapp.ui.component.common.ProfilePicture
+import com.martinszuc.clientsapp.ui.component.common.dialogs.ConfirmationDialog
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
 import com.martinszuc.clientsapp.utils.getInitials
 import kotlinx.coroutines.launch
 
+/**
+ * Project: database application
+ *
+ * Author: Bc. Martin Szuc (matoszuc@gmail.com)
+ * GitHub: https://github.com/martinszuc
+ *
+ *
+ * License:
+ * This code is licensed under MIT License. You may not use this file except
+ * in compliance with the License.
+ */
+
 @OptIn(
-    ExperimentalMaterial3Api::class, ExperimentalPagerApi::class,
-    ExperimentalFoundationApi::class
+    ExperimentalPagerApi::class, ExperimentalFoundationApi::class
 )
 @Composable
 fun ClientProfileScreen(
@@ -47,9 +59,8 @@ fun ClientProfileScreen(
     var showCallDialog by remember { mutableStateOf(false) }
     var phoneNumber by remember { mutableStateOf("") }
     var showMenu by remember { mutableStateOf(false) }
-    var showDeleteDialog by remember { mutableStateOf(false) }
-    var showAddServiceDialog by remember { mutableStateOf(false) } // State to show AddServiceFromProfileDialog
     var showDeleteClientDialog by remember { mutableStateOf(false) }
+    var showAddServiceDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
     LaunchedEffect(clientId) {
@@ -178,51 +189,29 @@ fun ClientProfileScreen(
                 )
             }
 
+            // Call Client Dialog
             if (showCallDialog) {
-                AlertDialog(
-                    onDismissRequest = { showCallDialog = false },
-                    title = { Text(text = stringResource(R.string.call_client)) },
-                    text = { Text(text = stringResource(R.string.confirm_call, phoneNumber)) },
-                    confirmButton = {
-                        TextButton(
-                            onClick = {
-                                showCallDialog = false
-                                val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber"))
-                                context.startActivity(intent)
-                            }
-                        ) {
-                            Text(text = stringResource(R.string.yes))
-                        }
+                ConfirmationDialog(
+                    title = stringResource(R.string.call_client),
+                    message = stringResource(R.string.confirm_call, phoneNumber),
+                    onConfirm = {
+                        val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber"))
+                        context.startActivity(intent)
                     },
-                    dismissButton = {
-                        TextButton(onClick = { showCallDialog = false }) {
-                            Text(text = stringResource(R.string.no))
-                        }
-                    }
+                    onDismiss = { showCallDialog = false }
                 )
             }
 
+            // Delete Client Dialog
             if (showDeleteClientDialog) {
-                AlertDialog(
-                    onDismissRequest = { showDeleteClientDialog = false },
-                    title = { Text(text = stringResource(R.string.delete_client)) },
-                    text = { Text(text = stringResource(R.string.confirm_delete_client, client?.name ?: "")) },
-                    confirmButton = {
-                        TextButton(
-                            onClick = {
-                                sharedClientViewModel.deleteClient(client!!.id)
-                                showDeleteClientDialog = false
-                                navController.popBackStack()
-                            }
-                        ) {
-                            Text(text = stringResource(R.string.delete))
-                        }
+                ConfirmationDialog(
+                    title = stringResource(R.string.delete_client),
+                    message = stringResource(R.string.confirm_delete_client, client?.name ?: ""),
+                    onConfirm = {
+                        sharedClientViewModel.deleteClient(client!!.id)
+                        navController.popBackStack()
                     },
-                    dismissButton = {
-                        TextButton(onClick = { showDeleteClientDialog = false }) {
-                            Text(text = stringResource(R.string.cancel))
-                        }
-                    }
+                    onDismiss = { showDeleteClientDialog = false }
                 )
             }
 

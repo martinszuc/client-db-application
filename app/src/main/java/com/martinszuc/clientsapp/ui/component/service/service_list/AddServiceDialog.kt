@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
@@ -47,14 +46,26 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.data.entity.Service
+import com.martinszuc.clientsapp.ui.component.common.OkAndCancelButtons
 import com.martinszuc.clientsapp.ui.component.service.ServiceDropdownMenu
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.SharedServiceViewModel
+import com.martinszuc.clientsapp.utils.DateUtils
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
-import java.util.Locale
+
+/**
+ * Project: database application
+ *
+ * Author: Bc. Martin Szuc (matoszuc@gmail.com)
+ * GitHub: https://github.com/martinszuc
+ *
+ *
+ * License:
+ * This code is licensed under MIT License. You may not use this file except
+ * in compliance with the License.
+ */
 
 @Composable
 fun AddServiceDialog(
@@ -77,8 +88,6 @@ fun AddServiceDialog(
     }
 
     val calendar = Calendar.getInstance()
-    val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-    val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
 
     val datePickerDialog = DatePickerDialog(
         context,
@@ -110,8 +119,11 @@ fun AddServiceDialog(
             if (uris.isNotEmpty()) {  // Limit to 4 photos
                 photoUris = uris
             } else {
-                Toast.makeText(context,
-                    context.getString(R.string.nevybrali_ste_adne_fotky), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.nevybrali_ste_adne_fotky),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     )
@@ -166,7 +178,7 @@ fun AddServiceDialog(
                             )
                         }
                         Text(
-                            text = dateFormat.format(selectedDate),
+                            text = DateUtils.formatLongDate(selectedDate),
                             color = MaterialTheme.colorScheme.onSurface,
                             style = MaterialTheme.typography.bodyMedium
                         )
@@ -187,7 +199,7 @@ fun AddServiceDialog(
                             )
                         }
                         Text(
-                            text = timeFormat.format(selectedDate),
+                            text = DateUtils.formatTime(selectedDate),
                             color = MaterialTheme.colorScheme.onSurface,
                             style = MaterialTheme.typography.bodyMedium
                         )
@@ -225,52 +237,47 @@ fun AddServiceDialog(
             }
         },
         confirmButton = {
-            Row(modifier = Modifier.fillMaxWidth()) {
-                Button(
-                    onClick = onDismissRequest,
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Text(text = stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onPrimary)
-                }
-                Spacer(modifier = Modifier.width(8.dp))
-                Button(
-                    onClick = {
-                        val servicePrice = price.toDoubleOrNull()
-                        if (selectedClientId == null || description.isEmpty() || servicePrice == null) {
-                            Toast.makeText(context,
-                                context.getString(R.string.please_fill_in_all_fields), Toast.LENGTH_SHORT).show()
-                            return@Button
-                        }
-                        val service = Service(
-                            id = 0,
-                            client_id = selectedClientId!!,
-                            description = description,
-                            date = selectedDate,
-                            price = servicePrice,
-                            category_id = null,
-                            type_id = null
-                        )
+            OkAndCancelButtons(
+                onCancelClick = onDismissRequest,
+                onConfirmClick = {
+                    val servicePrice = price.toDoubleOrNull()
+                    if (selectedClientId == null || description.isEmpty() || servicePrice == null) {
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.please_fill_in_all_fields),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@OkAndCancelButtons
+                    }
+                    val service = Service(
+                        id = 0,
+                        client_id = selectedClientId!!,
+                        description = description,
+                        date = selectedDate,
+                        price = servicePrice,
+                        category_id = null,
+                        type_id = null
+                    )
 
-                        scope.launch {
-                            if (photoUris.isNotEmpty()) {
-                                sharedServiceViewModel.addServiceWithPhotos(service, photoUris) { message ->
-                                }
-                            } else {
-                                sharedServiceViewModel.addService(service)
+                    scope.launch {
+                        if (photoUris.isNotEmpty()) {
+                            sharedServiceViewModel.addServiceWithPhotos(service, photoUris) { message ->
+                                // Handle result if needed
                             }
-                            sharedClientViewModel.updateLatestServiceDate(selectedClientId!!, selectedDate)
-                            sharedClientViewModel.loadClients()
-                            Toast.makeText(context, context.getString(R.string.service_added_successfully), Toast.LENGTH_SHORT).show()
-                            onDismissRequest()
+                        } else {
+                            sharedServiceViewModel.addService(service)
                         }
-                    },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Text(text = stringResource(R.string.save), color = MaterialTheme.colorScheme.onPrimary)
+                        sharedClientViewModel.updateLatestServiceDate(selectedClientId!!, selectedDate)
+                        sharedClientViewModel.loadClients()
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.service_added_successfully),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        onDismissRequest()
+                    }
                 }
-            }
+            )
         }
     )
 }

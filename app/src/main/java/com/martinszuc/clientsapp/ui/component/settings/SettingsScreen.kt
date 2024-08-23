@@ -4,13 +4,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -24,9 +22,22 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.ui.component.common.AppBarWithoutActions
+import com.martinszuc.clientsapp.ui.component.common.dialogs.ConfirmationDialog
 import com.martinszuc.clientsapp.ui.component.settings.dialogs.ThemeSelectionDialog
 import com.martinszuc.clientsapp.utils.AppConstants
 import kotlinx.coroutines.launch
+
+/**
+ * Project: database application
+ *
+ * Author: Bc. Martin Szuc (matoszuc@gmail.com)
+ * GitHub: https://github.com/martinszuc
+ *
+ *
+ * License:
+ * This code is licensed under MIT License. You may not use this file except
+ * in compliance with the License.
+ */
 
 @Composable
 fun SettingsScreen(
@@ -79,30 +90,18 @@ fun SettingsScreen(
 
             // Confirmation dialog for deleting the database
             if (showDeleteDialog) {
-                AlertDialog(
-                    onDismissRequest = { showDeleteDialog = false },
-                    title = { Text(text = stringResource(R.string.confirmation)) },
-                    text = { Text(text = stringResource(R.string.delete_database_confirmation)) },
-                    confirmButton = {
-                        TextButton(
-                            onClick = {
-                                // Handle database deletion logic here
-                                showDeleteDialog = false
-                            }
-                        ) {
-                            Text(text = stringResource(R.string.yes))
-                        }
+                ConfirmationDialog(
+                    title = stringResource(R.string.confirmation),
+                    message = stringResource(R.string.delete_database_confirmation),
+                    onConfirm = {
+                        // Handle database deletion logic here
+                        showDeleteDialog = false
                     },
-                    dismissButton = {
-                        TextButton(
-                            onClick = { showDeleteDialog = false }
-                        ) {
-                            Text(text = stringResource(R.string.no))
-                        }
-                    }
+                    onDismiss = { showDeleteDialog = false }
                 )
             }
 
+            // Theme selection dialog
             if (showThemeDialog) {
                 ThemeSelectionDialog(
                     themePreference = themePreference,

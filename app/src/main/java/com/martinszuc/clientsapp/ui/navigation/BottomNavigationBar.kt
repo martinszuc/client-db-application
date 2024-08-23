@@ -1,4 +1,4 @@
-package com.martinszuc.clientsapp.ui
+package com.martinszuc.clientsapp.ui.navigation
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Icon
@@ -11,6 +11,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+
+/**
+ * Project: database application
+ *
+ * Author: Bc. Martin Szuc (matoszuc@gmail.com)
+ * GitHub: https://github.com/martinszuc
+ *
+ *
+ * License:
+ * This code is licensed under MIT License. You may not use this file except
+ * in compliance with the License.
+ */
 
 @Composable
 fun BottomNavigationBar(navController: NavController, items: List<BottomNavItem>) {

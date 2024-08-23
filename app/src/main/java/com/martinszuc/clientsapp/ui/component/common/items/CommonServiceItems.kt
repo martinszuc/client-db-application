@@ -33,8 +33,18 @@ import com.martinszuc.clientsapp.data.entity.Service
 import com.martinszuc.clientsapp.data.entity.ServiceCategory
 import com.martinszuc.clientsapp.data.entity.ServiceType
 import com.martinszuc.clientsapp.utils.DateUtils
-import java.text.SimpleDateFormat
-import java.util.Locale
+
+/**
+ * Project: database application
+ *
+ * Author: Bc. Martin Szuc (matoszuc@gmail.com)
+ * GitHub: https://github.com/martinszuc
+ *
+ *
+ * License:
+ * This code is licensed under MIT License. You may not use this file except
+ * in compliance with the License.
+ */
 
 @Composable
 fun ProfileServiceItem(
@@ -65,8 +75,7 @@ fun ServiceItem(
     type: ServiceType?,
     onClick: () -> Unit
 ) {
-    val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-    val formattedDate = dateFormat.format(service.date)
+    val formattedDate = DateUtils.formatLongDateWithTime(service.date)
 
     Card(
         modifier = Modifier

@@ -23,6 +23,19 @@ import androidx.compose.ui.unit.dp
 import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.data.entity.ServiceCategory
 
+/**
+ * Project: database application
+ *
+ * Author: Bc. Martin Szuc (matoszuc@gmail.com)
+ * GitHub: https://github.com/martinszuc
+ *
+ *
+ * License:
+ * This code is licensed under MIT License. You may not use this file except
+ * in compliance with the License.
+ */
+
+@Deprecated("Not used currently")
 @Composable
 fun AddTypeDialog(
     categories: List<ServiceCategory>,

@@ -12,6 +12,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.martinszuc.clientsapp.R
 
+/**
+ * Project: Clients database application
+ *
+ * Author: Bc. Martin Szuc (matoszuc@gmail.com)
+ * GitHub: https://github.com/martinszuc
+ *
+ *
+ * License:
+ * This code is licensed under MIT License. You may not use this file except
+ * in compliance with the License.
+ */
+
+@Deprecated("Not used currently")
 @Composable
 fun AddCategoryOrTypeDialog(
     onDismissRequest: () -> Unit,
