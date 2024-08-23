@@ -3,7 +3,7 @@ package com.martinszuc.clientsapp.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.martinszuc.clientsapp.data.entity.ServiceCategory
-import com.martinszuc.clientsapp.data.repository.ServiceCategoryRepository
+import com.martinszuc.clientsapp.data.local.data_repository.ServiceCategoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -7,10 +7,10 @@ import com.martinszuc.clientsapp.data.database.dao.ServiceDao
 import com.martinszuc.clientsapp.data.database.dao.ServicePhotoDao
 import com.martinszuc.clientsapp.data.database.dao.ServiceTypeDao
 import com.martinszuc.clientsapp.data.local.LocalStorageRepository
-import com.martinszuc.clientsapp.data.repository.ClientRepository
-import com.martinszuc.clientsapp.data.repository.ServiceCategoryRepository
-import com.martinszuc.clientsapp.data.repository.ServiceRepository
-import com.martinszuc.clientsapp.data.repository.ServiceTypeRepository
+import com.martinszuc.clientsapp.data.local.data_repository.ClientRepository
+import com.martinszuc.clientsapp.data.local.data_repository.ServiceCategoryRepository
+import com.martinszuc.clientsapp.data.local.data_repository.ServiceRepository
+import com.martinszuc.clientsapp.data.local.data_repository.ServiceTypeRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

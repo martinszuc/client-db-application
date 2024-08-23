@@ -1,7 +1,7 @@
 package com.martinszuc.clientsapp.ui.viewmodel
 
 import com.martinszuc.clientsapp.data.entity.ServicePhoto
-import com.martinszuc.clientsapp.data.repository.ServiceRepository
+import com.martinszuc.clientsapp.data.local.data_repository.ServiceRepository
 import com.martinszuc.clientsapp.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

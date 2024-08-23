@@ -2,7 +2,7 @@ package com.martinszuc.clientsapp.ui.viewmodel
 
 import android.util.Log
 import com.martinszuc.clientsapp.data.entity.Client
-import com.martinszuc.clientsapp.data.repository.ClientRepository
+import com.martinszuc.clientsapp.data.local.data_repository.ClientRepository
 import com.martinszuc.clientsapp.ui.base.BaseViewModel
 import com.martinszuc.clientsapp.utils.AppConstants
 import dagger.hilt.android.lifecycle.HiltViewModel

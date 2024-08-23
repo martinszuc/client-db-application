@@ -1,4 +1,4 @@
-package com.martinszuc.clientsapp.data.repository
+package com.martinszuc.clientsapp.data.local.data_repository
 
 import com.martinszuc.clientsapp.data.database.dao.ServiceCategoryDao
 import com.martinszuc.clientsapp.data.entity.ServiceCategory
