@@ -25,14 +25,14 @@ import androidx.navigation.NavHostController
 import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.data.entity.Client
 import com.martinszuc.clientsapp.data.entity.Service
-import com.martinszuc.clientsapp.ui.component.client.ClientItem
 import com.martinszuc.clientsapp.ui.component.common.AppBarWithoutActions
-import com.martinszuc.clientsapp.ui.component.service.ServiceItem
+import com.martinszuc.clientsapp.ui.component.common.items.ClientItem
+import com.martinszuc.clientsapp.ui.component.common.items.ServiceItem
 import com.martinszuc.clientsapp.ui.navigation.Screen
 import com.martinszuc.clientsapp.ui.viewmodel.ServiceCategoryViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.ServiceTypeViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
-
+@Deprecated("Not used")
 @Composable
 fun SearchScreen(
     navController: NavHostController,

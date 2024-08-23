@@ -23,7 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.data.entity.Client
-import com.martinszuc.clientsapp.ui.component.profile.ProfilePicture
+import com.martinszuc.clientsapp.ui.component.common.ProfilePicture
 import com.martinszuc.clientsapp.utils.getInitials
 
 @Composable

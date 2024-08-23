@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.martinszuc.clientsapp.ui.component.common.items.ProfileServiceItem
 import com.martinszuc.clientsapp.ui.navigation.Screen
 import com.martinszuc.clientsapp.ui.viewmodel.ServiceCategoryViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.ServiceTypeViewModel
@@ -43,14 +44,9 @@ fun ProfileServicesTab(
             .padding(16.dp)
     ) {
         items(servicesForClient) { service ->
-            val category = categories.find { it.id == service.category_id }
-            val type = types.find { it.id == service.type_id }
-
             // Call ProfileServiceItem and pass the navigation to the service profile screen
             ProfileServiceItem(
                 service = service,
-                category = category,
-                type = type,
                 onClick = { serviceId ->
                     navController.navigate(Screen.ServiceProfile(serviceId).route)
                 }

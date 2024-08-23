@@ -1,4 +1,20 @@
-package com.martinszuc.clientsapp.ui.component.profile
+package com.martinszuc.clientsapp.ui.component.common
+
+/**
+ * Project: Clients database application
+ * File: CommonProfilePicture
+ *
+ * Author: Bc. Martin Szuc (matoszuc@gmail.com)
+ * GitHub: https://github.com/martinszuc
+ *
+ * Created on: 8/23/24 at 5:03 PM
+ *
+ *
+ * License:
+ * This code is licensed under MIT License. You may not use this file except
+ * in compliance with the License.
+ */
+
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box

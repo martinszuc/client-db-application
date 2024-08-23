@@ -31,6 +31,7 @@ import androidx.navigation.NavHostController
 import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.ui.component.client.add_client.AddClientDialog
 import com.martinszuc.clientsapp.ui.component.common.AppBarWithoutActions
+import com.martinszuc.clientsapp.ui.component.common.items.ClientItem
 import com.martinszuc.clientsapp.ui.navigation.Screen
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
 

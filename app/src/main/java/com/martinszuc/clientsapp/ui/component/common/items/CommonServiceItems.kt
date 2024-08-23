@@ -1,4 +1,19 @@
-package com.martinszuc.clientsapp.ui.component.service
+package com.martinszuc.clientsapp.ui.component.common.items
+
+/**
+ * Project: Clients database application
+ * File: CommonServiceItems
+ *
+ * Author: Bc. Martin Szuc (matoszuc@gmail.com)
+ * GitHub: https://github.com/martinszuc
+ *
+ * Created on: 8/23/24 at 5:12 PM
+ *
+ *
+ * License:
+ * This code is licensed under MIT License. You may not use this file except
+ * in compliance with the License.
+ */
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -17,8 +32,30 @@ import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.data.entity.Service
 import com.martinszuc.clientsapp.data.entity.ServiceCategory
 import com.martinszuc.clientsapp.data.entity.ServiceType
+import com.martinszuc.clientsapp.utils.DateUtils
 import java.text.SimpleDateFormat
 import java.util.Locale
+
+@Composable
+fun ProfileServiceItem(
+    service: Service,
+    onClick: (Int) -> Unit  // Add onClick to handle navigation
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+            .clickable { onClick(service.id) },  // Make card clickable and trigger navigation
+        shape = MaterialTheme.shapes.medium,
+        elevation = CardDefaults.cardElevation(4.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(text = stringResource(R.string.popis, service.description))
+            Text(text = stringResource(R.string.cena, service.price.toString()))
+            Text(text = stringResource(R.string.d_tum, DateUtils.formatLongDate(service.date)))
+        }
+    }
+}
 
 @Composable
 fun ServiceItem(

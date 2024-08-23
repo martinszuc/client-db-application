@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.martinszuc.clientsapp.R
-import com.martinszuc.clientsapp.ui.component.service.ServiceItem
+import com.martinszuc.clientsapp.ui.component.common.items.ServiceItem
 import com.martinszuc.clientsapp.ui.viewmodel.ServiceCategoryViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.ServiceTypeViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel

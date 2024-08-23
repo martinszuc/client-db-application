@@ -25,7 +25,7 @@ import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.ui.component.client.profile.add_service.AddServiceFromProfileDialog
 import com.martinszuc.clientsapp.ui.component.client.profile.services_list.ProfileServicesTab
 import com.martinszuc.clientsapp.ui.component.common.AppBarWithBackButtonAndActions
-import com.martinszuc.clientsapp.ui.component.profile.ProfilePicture
+import com.martinszuc.clientsapp.ui.component.common.ProfilePicture
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
 import com.martinszuc.clientsapp.utils.getInitials
 import kotlinx.coroutines.launch

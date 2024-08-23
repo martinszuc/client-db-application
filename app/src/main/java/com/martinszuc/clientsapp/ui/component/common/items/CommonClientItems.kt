@@ -1,4 +1,20 @@
-package com.martinszuc.clientsapp.ui.component.client
+package com.martinszuc.clientsapp.ui.component.common.items
+
+/**
+ * Project: Clients database application
+ * File: CommonClientItems
+ *
+ * Author: Bc. Martin Szuc (matoszuc@gmail.com)
+ * GitHub: https://github.com/martinszuc
+ *
+ * Created on: 8/23/24 at 5:14 PM
+ *
+ *
+ * License:
+ * This code is licensed under MIT License. You may not use this file except
+ * in compliance with the License.
+ */
+
 
 import android.util.Log
 import androidx.compose.foundation.clickable
@@ -18,7 +34,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.data.entity.Client
-import com.martinszuc.clientsapp.ui.component.profile.ProfilePicture
+import com.martinszuc.clientsapp.ui.component.common.ProfilePicture
+import com.martinszuc.clientsapp.utils.DateUtils
 import com.martinszuc.clientsapp.utils.getInitials
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -53,7 +70,7 @@ fun ClientItem(client: Client, onClick: (Client) -> Unit) {
                 Text(text = client.email ?: stringResource(R.string.no_email), style = MaterialTheme.typography.bodyMedium)
                 Text(text = client.phone ?: stringResource(R.string.no_phone), style = MaterialTheme.typography.bodyMedium)
                 client.latestServiceDate?.let {
-                    val formattedDateTime = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).format(it)
+                    val formattedDateTime = DateUtils.formatLongDate(it)
                     Text(text = stringResource(R.string.latest_service_formated, formattedDateTime), style = MaterialTheme.typography.bodySmall)
                 }
             }
