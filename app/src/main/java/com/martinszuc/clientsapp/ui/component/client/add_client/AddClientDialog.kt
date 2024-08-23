@@ -32,6 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.data.entity.Client
+import com.martinszuc.clientsapp.ui.component.common.CommonCancelButton
+import com.martinszuc.clientsapp.ui.component.common.CommonOkButton
 import com.martinszuc.clientsapp.ui.component.profile.ProfilePicture
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
 import com.martinszuc.clientsapp.util.getContactInfo
@@ -52,23 +54,28 @@ fun AddClientDialog(
     var profilePictureColor by remember { mutableStateOf<String?>(null) }
     var showColorDialog by remember { mutableStateOf(false) }
 
-    val contactPickerLauncher = rememberLauncherForActivityResult(ActivityResultContracts.PickContact()) { uri ->
-        uri?.let {
-            val contactInfo = getContactInfo(context, it)
-            name = contactInfo.name
-            phone = contactInfo.phone
-            email = contactInfo.email
+    // Contact picker launcher
+    val contactPickerLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.PickContact()) { uri ->
+            uri?.let {
+                val contactInfo = getContactInfo(context, it)
+                name = contactInfo.name
+                phone = contactInfo.phone
+                email = contactInfo.email
+            }
         }
-    }
 
-    val imagePickerLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        uri?.let {
-            Log.d(logTag, "Image selected: $it")
-            profilePictureUrl = it.toString()
-            profilePictureColor = null // Clear the color if an image is uploaded
+    // Image picker launcher
+    val imagePickerLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            uri?.let {
+                Log.d(logTag, "Image selected: $it")
+                profilePictureUrl = it.toString()
+                profilePictureColor = null // Clear the color if an image is uploaded
+            }
         }
-    }
 
+    // Color picker dialog
     if (showColorDialog) {
         ColorPickerDialog(
             onColorSelected = { color ->
@@ -89,6 +96,7 @@ fun AddClientDialog(
         )
     }
 
+    // Main dialog
     AlertDialog(
         onDismissRequest = {
             Log.d(logTag, "Add client dialog dismissed")
@@ -121,6 +129,7 @@ fun AddClientDialog(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
+                // Name input
                 OutlinedTextField(
                     value = name,
                     onValueChange = {
@@ -130,7 +139,10 @@ fun AddClientDialog(
                     label = { Text(text = stringResource(R.string.name)) },
                     modifier = Modifier.fillMaxWidth()
                 )
+
                 Spacer(modifier = Modifier.height(8.dp))
+
+                // Phone input
                 OutlinedTextField(
                     value = phone,
                     onValueChange = {
@@ -141,7 +153,10 @@ fun AddClientDialog(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                     modifier = Modifier.fillMaxWidth()
                 )
+
                 Spacer(modifier = Modifier.height(8.dp))
+
+                // Email input
                 OutlinedTextField(
                     value = email,
                     onValueChange = {
@@ -151,7 +166,10 @@ fun AddClientDialog(
                     label = { Text(text = stringResource(R.string.email)) },
                     modifier = Modifier.fillMaxWidth()
                 )
+
                 Spacer(modifier = Modifier.height(8.dp))
+
+                // Select contact button
                 Button(onClick = {
                     Log.d(logTag, "Selecting contact")
                     contactPickerLauncher.launch(null)
@@ -160,32 +178,25 @@ fun AddClientDialog(
                 }
             }
         },
+        // Confirm (OK) button
         confirmButton = {
-            Button(
-                onClick = {
-                    val client = Client(
-                        id = 0,
-                        name = name,
-                        phone = phone,
-                        email = email,
-                        profilePictureUrl = profilePictureUrl,
-                        profilePictureColor = profilePictureColor
-                    )
-                    Log.d(logTag, "Saving client: $client")
-                    sharedClientViewModel.addClient(client)
-                    onDismissRequest()
-                }
-            ) {
-                Text(text = stringResource(R.string.save))
-            }
-        },
-        dismissButton = {
-            Button(onClick = {
-                Log.d(logTag, "Cancel button clicked")
+            CommonOkButton(onClick = {
+                val client = Client(
+                    id = 0,
+                    name = name,
+                    phone = phone,
+                    email = email,
+                    profilePictureUrl = profilePictureUrl,
+                    profilePictureColor = profilePictureColor
+                )
+                Log.d(logTag, "Saving client: $client")
+                sharedClientViewModel.addClient(client)
                 onDismissRequest()
-            }) {
-                Text(text = stringResource(R.string.cancel))
-            }
+            })
+        },
+        // Dismiss (Cancel) button
+        dismissButton = {
+            CommonCancelButton(onClick = { onDismissRequest() })
         }
     )
 }
