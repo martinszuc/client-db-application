@@ -19,6 +19,8 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.ui.component.common.AppBarWithoutActions
+import com.martinszuc.clientsapp.ui.component.data.tab1.TabContent1
+import com.martinszuc.clientsapp.ui.component.data.tab2.TabContent2
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
@@ -67,25 +69,5 @@ fun DataScreen() {
                 }
             }
         }
-    }
-}
-
-@Composable
-fun TabContent1() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = "Placeholder for Tab 1")
-    }
-}
-
-@Composable
-fun TabContent2() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = "Placeholder for Tab 2")
     }
 }
