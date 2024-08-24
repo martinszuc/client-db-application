@@ -116,4 +116,26 @@ dependencies {
     implementation 'androidx.emoji2:emoji2-bundled:1.4.0'
     implementation 'androidx.emoji2:emoji2-views:1.4.0'
 
+    // Unit Testing dependencies
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.mockito:mockito-core:5.12.0'
+    testImplementation 'io.mockk:mockk:1.12.0'
+    // Android UI and integration tests
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.6.8"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:1.6.8"
+    testImplementation "org.robolectric:robolectric:4.9"
+    // Mocking framework for Android UI tests
+    androidTestImplementation "io.mockk:mockk-android:1.12.0"
+    // Required for ViewModel and LiveData testing
+    testImplementation "androidx.arch.core:core-testing:2.2.0"
+    // Required for Coroutines testing
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3"
+    // Robolectric (for unit testing Android framework behavior)
+    testImplementation "org.robolectric:robolectric:4.8"
+    // Compose UI testing (Debug Manifest)
+    debugImplementation "androidx.compose.ui:ui-test-manifest:1.6.8"
+
+
 }
