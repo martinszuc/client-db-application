@@ -1,18 +1,26 @@
 # Client Database Application
 
-This is a simple database application for storing and managing client information.
+This is a comprehensive database application designed for service providers to manage clients and their services. The app allows users to store client details, keep track of services provided, and even attach photos to services for documentation.
 
 ## Features
-- Add new clients to the database
-- View a list of all clients
-- View client details
-- Edit client information
-- Delete clients from the database
+
+- **Add New Clients**: Easily add clients to the database with their contact information.
+- **Client List**: View a list of all clients stored in the application.
+- **Client Details**: View detailed information about individual clients.
+- **Edit Client Information**: Update client details such as name, phone number, email, and more.
+- **Delete Clients**: Remove clients and their associated data from the database.
+- **Add Services**: Record services provided to clients, including description, date, and price.
+- **Photo Attachments to Services**: Add photos from the gallery to a service entry to keep visual records of the work done.
+- **Cloud Backup with Firebase**: Securely backup and restore client data and service records to/from Firebase for safekeeping.
+- **Service Photos Backup**: Automatically back up service-related photos to Firebase Storage, ensuring no data is lost.
 
 ## Technologies Used
-- Kotlin
-- SQLite Database
-- Android Studio
+
+- **Kotlin**: For the Android application development.
+- **Jetpack Compose**: For UI development with modern, declarative components.
+- **Firebase**: For cloud backup and restoring client data and service-related photos.
+- **Room Database**: For local storage of client and service data.
+- **Hilt**: For dependency injection to make the codebase modular and maintainable.
 
 ## Installation
 1. Clone the repository to your local machine using the following command:
