@@ -102,14 +102,10 @@ fun SearchScreen(
                                 val clientName by produceState<String>("") {
                                     value = sharedClientViewModel.getClientName(result.client_id)
                                 }
-                                val category = categories.find { it.id == result.category_id }
-                                val type = types.find { it.id == result.type_id }
 
                                 ServiceItem(
                                     service = result,
                                     clientName = clientName,
-                                    category = category,
-                                    type = type,
                                     onClick = {
                                         navController.navigate("serviceDetails/${result.id}")
                                     }

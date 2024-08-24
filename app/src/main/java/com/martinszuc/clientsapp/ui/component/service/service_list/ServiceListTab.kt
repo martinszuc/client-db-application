@@ -76,14 +76,10 @@ fun ServiceListTab(
                     val clientName by produceState(initialValue = "") {
                         value = clients.find { it.id == service.client_id }?.name ?: "Unknown Client"
                     }
-                    val category = categories.find { it.id == service.category_id }
-                    val type = types.find { it.id == service.type_id }
 
                     ServiceItem(
                         service = service,
                         clientName = clientName,
-                        category = category,
-                        type = type,
                         onClick = {
                             navController.navigate("serviceDetails/${service.id}")
                         }

@@ -25,18 +25,6 @@ import java.util.Date
             parentColumns = ["id"],
             childColumns = ["client_id"],
             onDelete = ForeignKey.CASCADE
-        ),
-        ForeignKey(
-            entity = ServiceCategory::class,
-            parentColumns = ["id"],
-            childColumns = ["category_id"],
-            onDelete = ForeignKey.SET_NULL  // Choose the appropriate behavior
-        ),
-        ForeignKey(
-            entity = ServiceType::class,
-            parentColumns = ["id"],
-            childColumns = ["type_id"],
-            onDelete = ForeignKey.SET_NULL  // Choose the appropriate behavior
         )
     ]
 )
@@ -46,6 +34,4 @@ data class Service(
     val description: String,
     val date: Date,
     val price: Double,
-    val category_id: Int?,
-    val type_id: Int?
 )

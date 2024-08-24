@@ -233,9 +233,7 @@ fun AddServiceFromProfileDialog(
                             client_id = clientId,
                             description = description,
                             date = selectedDate,
-                            price = servicePrice,
-                            category_id = null,
-                            type_id = null
+                            price = servicePrice
                         )
                         scope.launch {
                             if (photoUris.isNotEmpty()) {

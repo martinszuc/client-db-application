@@ -71,8 +71,6 @@ fun ProfileServiceItem(
 fun ServiceItem(
     service: Service,
     clientName: String,
-    category: ServiceCategory?,
-    type: ServiceType?,
     onClick: () -> Unit
 ) {
     val formattedDate = DateUtils.formatLongDateWithTime(service.date)
@@ -86,15 +84,6 @@ fun ServiceItem(
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            category?.let {
-                Row {
-                    Text(text = "${it.emoji} ${it.name}", style = MaterialTheme.typography.bodyMedium)
-                    type?.let { type ->
-                        Text(text = " • ", style = MaterialTheme.typography.bodyMedium)
-                        Text(text = "${type.emoji} ${type.name}", style = MaterialTheme.typography.bodyMedium)
-                    }
-                }
-            }
             Text(text = stringResource(R.string.popis, service.description))
             Text(text = stringResource(R.string.cena, service.price.toString()))
             Text(text = stringResource(R.string.d_tum, formattedDate))

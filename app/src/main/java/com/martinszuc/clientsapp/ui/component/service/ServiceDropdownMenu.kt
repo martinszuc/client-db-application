@@ -45,18 +45,30 @@ fun ServiceDropdownMenu(
     onItemSelected: (Int) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val selectedItem = if (selectedIndex >= 0) clients[selectedIndex].name else stringResource(R.string.select_client_add)
+    val selectedClient = if (selectedIndex >= 0) clients[selectedIndex] else null
+    val selectedItem = selectedClient?.name ?: stringResource(R.string.select_client_add)
+
+    // Use the selected client's profile picture color, or default to MaterialTheme's primary color
+    val buttonColor = selectedClient?.profilePictureColor?.let { colorHex ->
+        try {
+            androidx.compose.ui.graphics.Color(android.graphics.Color.parseColor(colorHex))
+        } catch (e: Exception) {
+            MaterialTheme.colorScheme.primary // Fallback if the color string is invalid
+        }
+    } ?: MaterialTheme.colorScheme.primary
 
     Box(modifier = Modifier.fillMaxWidth()) {
         Button(
             onClick = { expanded = true },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primary
+                containerColor = buttonColor,
+                contentColor = MaterialTheme.colorScheme.onPrimary
             )
         ) {
             Text(text = selectedItem, color = MaterialTheme.colorScheme.onPrimary)
         }
+
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
