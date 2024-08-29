@@ -16,8 +16,8 @@ package com.martinszuc.clientsapp.utils
  */
 
 
+import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.junit.Assert.*
 import java.util.Date
 
 class DateUtilsTest {

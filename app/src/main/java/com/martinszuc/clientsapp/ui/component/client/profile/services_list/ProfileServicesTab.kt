@@ -15,9 +15,6 @@ import androidx.navigation.NavHostController
 import com.martinszuc.clientsapp.ui.component.common.items.ProfileServiceItem
 import com.martinszuc.clientsapp.ui.navigation.Screen
 import com.martinszuc.clientsapp.ui.viewmodel.ProfileServiceViewModel
-import com.martinszuc.clientsapp.ui.viewmodel.ServiceCategoryViewModel
-import com.martinszuc.clientsapp.ui.viewmodel.ServiceTypeViewModel
-import com.martinszuc.clientsapp.ui.viewmodel.SharedServiceViewModel
 
 /**
  * Project: database application

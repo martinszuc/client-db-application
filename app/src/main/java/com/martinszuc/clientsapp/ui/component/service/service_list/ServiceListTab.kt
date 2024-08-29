@@ -15,7 +15,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -26,8 +25,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.ui.component.common.items.ServiceItem
-import com.martinszuc.clientsapp.ui.viewmodel.ServiceCategoryViewModel
-import com.martinszuc.clientsapp.ui.viewmodel.ServiceTypeViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.SharedServiceViewModel
 

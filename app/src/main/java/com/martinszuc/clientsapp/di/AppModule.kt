@@ -2,15 +2,11 @@ package com.martinszuc.clientsapp.di
 
 import android.content.Context
 import com.martinszuc.clientsapp.data.database.dao.ClientDao
-import com.martinszuc.clientsapp.data.database.dao.ServiceCategoryDao
 import com.martinszuc.clientsapp.data.database.dao.ServiceDao
 import com.martinszuc.clientsapp.data.database.dao.ServicePhotoDao
-import com.martinszuc.clientsapp.data.database.dao.ServiceTypeDao
 import com.martinszuc.clientsapp.data.local.LocalStorageRepository
 import com.martinszuc.clientsapp.data.local.data_repository.ClientRepository
-import com.martinszuc.clientsapp.data.local.data_repository.ServiceCategoryRepository
 import com.martinszuc.clientsapp.data.local.data_repository.ServiceRepository
-import com.martinszuc.clientsapp.data.local.data_repository.ServiceTypeRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -44,21 +40,7 @@ object AppModule {
     fun provideServiceRepository(serviceDao: ServiceDao,servicePhotoDao: ServicePhotoDao): ServiceRepository {
         return ServiceRepository(serviceDao, servicePhotoDao)
     }
-    @Provides
-    @Singleton
-    fun provideServiceCategoryRepository(
-        dao: ServiceCategoryDao
-    ): ServiceCategoryRepository {
-        return ServiceCategoryRepository(dao)
-    }
 
-    @Provides
-    @Singleton
-    fun provideServiceTypeRepository(
-        dao: ServiceTypeDao
-    ): ServiceTypeRepository {
-        return ServiceTypeRepository(dao)
-    }
     // Provide LocalStorageRepository
     @Provides
     @Singleton

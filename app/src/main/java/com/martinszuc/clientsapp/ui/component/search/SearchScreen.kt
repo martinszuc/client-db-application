@@ -29,8 +29,6 @@ import com.martinszuc.clientsapp.ui.component.common.AppBarWithoutActions
 import com.martinszuc.clientsapp.ui.component.common.items.ClientItem
 import com.martinszuc.clientsapp.ui.component.common.items.ServiceItem
 import com.martinszuc.clientsapp.ui.navigation.Screen
-import com.martinszuc.clientsapp.ui.viewmodel.ServiceCategoryViewModel
-import com.martinszuc.clientsapp.ui.viewmodel.ServiceTypeViewModel
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel
 
 /**
@@ -51,12 +49,8 @@ fun SearchScreen(
     navController: NavHostController,
     viewModel: SearchViewModel = hiltViewModel(),
     sharedClientViewModel: SharedClientViewModel = hiltViewModel(),
-    categoryViewModel: ServiceCategoryViewModel = hiltViewModel(),
-    typeViewModel: ServiceTypeViewModel = hiltViewModel()
 ) {
     val searchResults by viewModel.searchResults.collectAsState()
-    val categories by categoryViewModel.categories.collectAsState()
-    val types by typeViewModel.serviceTypes.collectAsState()
     var query by remember { mutableStateOf("") }
 
     Scaffold(
