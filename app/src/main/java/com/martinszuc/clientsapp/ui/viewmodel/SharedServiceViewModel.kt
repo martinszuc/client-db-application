@@ -16,8 +16,8 @@ import android.net.Uri
 import com.martinszuc.clientsapp.data.entity.Service
 import com.martinszuc.clientsapp.data.entity.ServicePhoto
 import com.martinszuc.clientsapp.data.local.LocalStorageRepository
-import com.martinszuc.clientsapp.data.remote.FirebaseStorageRepository
 import com.martinszuc.clientsapp.data.local.data_repository.ServiceRepository
+import com.martinszuc.clientsapp.data.remote.FirebaseStorageRepository
 import com.martinszuc.clientsapp.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,7 +36,6 @@ class SharedServiceViewModel @Inject constructor(
     val services: StateFlow<List<Service>> = _services.asStateFlow()
 
     private val _clientServices = MutableStateFlow<Map<Int, List<Service>>>(emptyMap())
-    val clientServices: StateFlow<Map<Int, List<Service>>> = _clientServices.asStateFlow()
 
     // Flag to check if services are already loaded
     private var areServicesLoaded = false
@@ -68,18 +67,6 @@ class SharedServiceViewModel @Inject constructor(
         )
     }
 
-    fun loadServicesForClient(clientId: Int) {
-        val clientServices = _services.value.filter { it.client_id == clientId }
-        _clientServices.value = _clientServices.value.toMutableMap().apply {
-            put(clientId, clientServices)
-        }
-    }
-
-    private fun updateClientServices(servicesList: List<Service>) {
-        val groupedServices = servicesList.groupBy { it.client_id }
-        _clientServices.value = groupedServices
-    }
-
     // Add a new service and update both the all-services list and client-specific map
     fun addService(service: Service) {
         launchDataLoad(
@@ -89,7 +76,6 @@ class SharedServiceViewModel @Inject constructor(
             },
             onSuccess = { servicesList ->
                 _services.value = servicesList.sortedByDescending { it.id }
-                updateClientServices(servicesList)
             },
             onFailure = {
                 // Handle the failure
@@ -98,7 +84,11 @@ class SharedServiceViewModel @Inject constructor(
     }
 
     // Add a new service with photos
-    fun addServiceWithPhotos(service: Service, photoUris: List<Uri>, onUploadFailure: (String) -> Unit) {
+    fun addServiceWithPhotos(
+        service: Service,
+        photoUris: List<Uri>,
+        onUploadFailure: (String) -> Unit
+    ) {
         launchDataLoad(
             execution = {
                 // Insert the service and get its ID
@@ -109,7 +99,11 @@ class SharedServiceViewModel @Inject constructor(
                     val localDirectory = "service_images"
                     val fileName = "service_${serviceId}_photo_$index.jpg"
 
-                    val photoFile = localStorageRepository.savePhotoToInternalStorage(uri, fileName, localDirectory)
+                    val photoFile = localStorageRepository.savePhotoToInternalStorage(
+                        uri,
+                        fileName,
+                        localDirectory
+                    )
 
                     if (photoFile != null) {
                         // Insert photo into the local database
@@ -137,9 +131,10 @@ class SharedServiceViewModel @Inject constructor(
                         onUploadFailure("Failed to save photo to internal storage: $fileName")
                     }
                 }
+                serviceRepository.getServices()
             },
-            onSuccess = {
-                // Handle success (e.g., update UI)
+            onSuccess = { servicesList ->
+                _services.value = servicesList.sortedByDescending { it.id }
             },
             onFailure = {
                 // Handle failure (e.g., show error)
@@ -147,14 +142,22 @@ class SharedServiceViewModel @Inject constructor(
         )
     }
 
-    fun addPhotosForService(serviceId: Int, photoUris: List<Uri>, onUploadFailure: (String) -> Unit) {
+    fun addPhotosForService(
+        serviceId: Int,
+        photoUris: List<Uri>,
+        onUploadFailure: (String) -> Unit
+    ) {
         launchDataLoad(
             execution = {
                 photoUris.forEachIndexed { index, uri ->
                     val localDirectory = "service_images"
                     val fileName = "service_${serviceId}_photo_$index.jpg"
 
-                    val photoFile = localStorageRepository.savePhotoToInternalStorage(uri, fileName, localDirectory)
+                    val photoFile = localStorageRepository.savePhotoToInternalStorage(
+                        uri,
+                        fileName,
+                        localDirectory
+                    )
 
                     if (photoFile != null) {
                         val servicePhoto = ServicePhoto(
@@ -189,7 +192,11 @@ class SharedServiceViewModel @Inject constructor(
     }
 
     // Delete a service and its associated photos
-    fun deleteService(service: Service, onDeleteSuccess: () -> Unit, onDeleteFailure: (String) -> Unit) {
+    fun deleteService(
+        service: Service,
+        onDeleteSuccess: () -> Unit,
+        onDeleteFailure: (String) -> Unit
+    ) {
         launchDataLoad(
             execution = {
                 // First, delete all photos associated with the service

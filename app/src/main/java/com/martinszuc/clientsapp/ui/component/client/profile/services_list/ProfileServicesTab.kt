@@ -14,9 +14,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.martinszuc.clientsapp.ui.component.common.items.ProfileServiceItem
 import com.martinszuc.clientsapp.ui.navigation.Screen
-import com.martinszuc.clientsapp.ui.viewmodel.ServiceCategoryViewModel
-import com.martinszuc.clientsapp.ui.viewmodel.ServiceTypeViewModel
-import com.martinszuc.clientsapp.ui.viewmodel.SharedServiceViewModel
+import com.martinszuc.clientsapp.ui.viewmodel.ProfileServiceViewModel
 
 /**
  * Project: database application
@@ -34,29 +32,23 @@ import com.martinszuc.clientsapp.ui.viewmodel.SharedServiceViewModel
 fun ProfileServicesTab(
     clientId: Int,
     navController: NavHostController,
-    sharedServiceViewModel: SharedServiceViewModel = hiltViewModel(),
-    serviceCategoryViewModel: ServiceCategoryViewModel = hiltViewModel(),
-    serviceTypeViewModel: ServiceTypeViewModel = hiltViewModel()
+    profileServiceViewModel: ProfileServiceViewModel = hiltViewModel(),
 ) {
-    val categories by serviceCategoryViewModel.categories.collectAsState()
-    val types by serviceTypeViewModel.serviceTypes.collectAsState()
-
+    // Fetch services for the given client when the tab is opened
     LaunchedEffect(clientId) {
-        sharedServiceViewModel.loadServicesForClient(clientId)
-        serviceCategoryViewModel.loadCategories()
-        serviceTypeViewModel.loadServiceTypes()
+        profileServiceViewModel.loadServicesForClient(clientId)
     }
 
-    val clientServices = sharedServiceViewModel.clientServices.collectAsState()
-    val servicesForClient = clientServices.value[clientId] ?: emptyList()
+    // Collect services for the client
+    val clientServices by profileServiceViewModel.clientServices.collectAsState()
 
+    // Display services using LazyColumn
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        items(servicesForClient) { service ->
-            // Call ProfileServiceItem and pass the navigation to the service profile screen
+        items(clientServices) { service ->
             ProfileServiceItem(
                 service = service,
                 onClick = { serviceId ->

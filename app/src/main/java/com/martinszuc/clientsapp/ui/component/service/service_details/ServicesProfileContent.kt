@@ -5,7 +5,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,6 +39,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -71,21 +72,19 @@ fun ServiceProfileContent(
     isLoadingImages: Boolean,
     navController: NavHostController,
     onAddPhotos: (List<Uri>) -> Unit,
-    onDeleteSelectedPhotos: (List<String>) -> Unit,  // Callback for deleting selected photos
-    onDeleteService: () -> Unit  // Callback for deleting the entire service
+    onDeleteSelectedPhotos: (List<String>) -> Unit,
+    onDeleteService: () -> Unit
 ) {
     var selectedImageUri by remember { mutableStateOf<String?>(null) }
     var showMenu by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
     var showDeleteServiceDialog by remember { mutableStateOf(false) }
-    val selectedPhotos = remember { mutableStateListOf<String>() }  // List of selected photos
-
-    // File picker launcher
+    val selectedPhotos = remember { mutableStateListOf<String>() }
     val filePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetMultipleContents()
     ) { uris: List<Uri> ->
         if (uris.isNotEmpty()) {
-            onAddPhotos(uris)  // Pass selected photos to the parent handler
+            onAddPhotos(uris)
         }
     }
 
@@ -202,7 +201,7 @@ fun ServiceProfileContent(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(400.dp)  // Constrain height to avoid infinite height error
+                        .height(400.dp)
                 ) {
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(2),
@@ -218,12 +217,21 @@ fun ServiceProfileContent(
                                 modifier = Modifier
                                     .size(100.dp)
                                     .border(2.dp, if (isSelected) Color.Red else Color.Transparent)
-                                    .clickable {
-                                        if (isSelected) {
-                                            selectedPhotos.remove(uri)
-                                        } else {
-                                            selectedPhotos.add(uri)
-                                        }
+                                    .pointerInput(Unit) {
+                                        detectTapGestures(
+                                            onLongPress = {
+                                                // Start selection mode
+                                                if (isSelected) {
+                                                    selectedPhotos.remove(uri)
+                                                } else {
+                                                    selectedPhotos.add(uri)
+                                                }
+                                            },
+                                            onTap = {
+                                                // Open image viewer
+                                                selectedImageUri = uri
+                                            }
+                                        )
                                     }
                             ) {
                                 Image(
@@ -255,7 +263,7 @@ fun ServiceProfileContent(
                     message = stringResource(R.string.delete_selected_photos_confirmation),
                     onConfirm = {
                         onDeleteSelectedPhotos(selectedPhotos)
-                        selectedPhotos.clear()  // Clear selection after deletion
+                        selectedPhotos.clear()
                         showDeleteDialog = false
                     },
                     onDismiss = { showDeleteDialog = false }

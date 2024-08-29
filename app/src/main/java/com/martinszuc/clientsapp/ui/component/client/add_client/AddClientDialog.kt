@@ -31,8 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.martinszuc.clientsapp.R
 import com.martinszuc.clientsapp.data.entity.Client
-import com.martinszuc.clientsapp.ui.component.common.OkAndCancelButtons
 import com.martinszuc.clientsapp.ui.component.common.CommonOutlinedTextField
+import com.martinszuc.clientsapp.ui.component.common.OkAndCancelButtons
 import com.martinszuc.clientsapp.ui.component.common.ProfilePicture
 import com.martinszuc.clientsapp.ui.theme.profilePictureColors
 import com.martinszuc.clientsapp.ui.viewmodel.SharedClientViewModel

@@ -37,8 +37,6 @@ import com.martinszuc.clientsapp.data.entity.Client
 import com.martinszuc.clientsapp.ui.component.common.ProfilePicture
 import com.martinszuc.clientsapp.utils.DateUtils
 import com.martinszuc.clientsapp.utils.getInitials
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 @Composable
 fun ClientItem(client: Client, onClick: (Client) -> Unit) {

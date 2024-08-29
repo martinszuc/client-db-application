@@ -1,9 +1,5 @@
 package com.martinszuc.clientsapp.ui.viewmodel
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
-import org.junit.Assert.assertEquals
-
 /**
  * Project: Clients database application
  * File: SharedServiceVIewModelTest
@@ -19,24 +15,32 @@ import org.junit.Assert.assertEquals
  * in compliance with the License.
  */
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import android.net.Uri
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.martinszuc.clientsapp.TestCoroutineRule
 import com.martinszuc.clientsapp.data.entity.Service
 import com.martinszuc.clientsapp.data.local.LocalStorageRepository
-import com.martinszuc.clientsapp.data.remote.FirebaseStorageRepository
 import com.martinszuc.clientsapp.data.local.data_repository.ServiceRepository
-import io.mockk.*
+import com.martinszuc.clientsapp.data.remote.FirebaseStorageRepository
+import io.mockk.Runs
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.just
+import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.*
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
 import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.robolectric.RobolectricTestRunner
 import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 import java.io.File
-import java.util.*
+import java.util.Date
 
 @ExperimentalCoroutinesApi
 @RunWith(RobolectricTestRunner::class)  // Use RobolectricTestRunner for Android tests
