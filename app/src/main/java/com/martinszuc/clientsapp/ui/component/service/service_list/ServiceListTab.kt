@@ -45,23 +45,17 @@ import com.martinszuc.clientsapp.ui.viewmodel.SharedServiceViewModel
 
 @Composable
 fun ServiceListTab(
-    navController: NavHostController,  // Accept NavController
+    navController: NavHostController,
     serviceViewModel: SharedServiceViewModel = hiltViewModel(),
     clientViewModel: SharedClientViewModel = hiltViewModel(),
-    categoryViewModel: ServiceCategoryViewModel = hiltViewModel(),
-    typeViewModel: ServiceTypeViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
         serviceViewModel.loadServicesIfNotLoaded()
         clientViewModel.loadClients()
-        categoryViewModel.loadCategories()
-        typeViewModel.loadServiceTypes()
     }
 
     val services by serviceViewModel.services.collectAsState()
     val clients by clientViewModel.clients.collectAsState()
-    val categories by categoryViewModel.categories.collectAsState()
-    val types by typeViewModel.serviceTypes.collectAsState()
     var showDialog by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -73,10 +67,7 @@ fun ServiceListTab(
         } else {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(services) { service ->
-                    val clientName by produceState(initialValue = "") {
-                        value = clients.find { it.id == service.client_id }?.name ?: "Unknown Client"
-                    }
-
+                    val clientName = clients.find { it.id == service.client_id }?.name ?: "Unknown Client"
                     ServiceItem(
                         service = service,
                         clientName = clientName,
